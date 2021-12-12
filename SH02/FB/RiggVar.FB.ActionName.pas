@@ -64,15 +64,7 @@ begin
     faCycleColorSchemeM: result := 'faCycleColorSchemeM';
     faCycleColorSchemeP: result := 'faCycleColorSchemeP';
 
-    { Keyboard }
-    faKeyboard01: result := 'faKeyboard01';
-    faKeyboard02: result := 'faKeyboard02';
-    faSetShift: result := 'faSetShift';
-    faSetCtrl: result := 'faSetCtrl';
-    faClearShift: result := 'faClearShift';
-
     { FederText }
-    faToggleAllText: result := 'faToggleAllText';
     faToggleTouchFrame: result := 'faToggleTouchFrame';
 
     { Format }
@@ -80,11 +72,6 @@ begin
     faFormatPortrait: result := 'faFormatPortrait';
     faFormatIPhoneLandscape: result := 'faFormatIPhoneLandscape';
     faFormatIPhonePortrait: result := 'faFormatIPhonePortrait';
-
-    { Help }
-    faCycleHelpM: result := 'faCycleHelpM';
-    faCycleHelpP: result := 'faCycleHelpP';
-    faHelpHome: result := 'faHelpHome';
 
     { TouchBarLegend }
     faTouchBarTop: result := 'faTouchBarTop';
@@ -105,11 +92,6 @@ begin
     faCopy: result := 'faCopy';
     faPaste: result := 'faPaste';
     faShare: result := 'faShare';
-
-    { ViewOptions }
-    faToggleMoveMode: result := 'faToggleMoveMode';
-    faLinearMove: result := 'faLinearMove';
-    faExpoMove: result := 'faExpoMove';
 
     { Scene }
     faSudoku9: result := 'faSudoku9';

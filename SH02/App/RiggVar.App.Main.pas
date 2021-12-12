@@ -28,8 +28,6 @@ type
 
 var
   Main: TMain;
-  CmdLineInt: Integer = 0;
-  CmdLineVal: string = '';
 
 type
   MainConst = class
@@ -42,10 +40,6 @@ type
   MainVar = class
   class var
     AppIsClosing: Boolean;
-    BatchStopRequested: Boolean;
-    WantTextureRepeat: Boolean;
-    TextureRepeat: Boolean;
-    ShouldRecycleSocket: Boolean;
     AppTitle: string;
 
     ColorScheme: TColorScheme;
@@ -58,7 +52,6 @@ type
     ClientHeight: Integer;
 
     class constructor Create;
-    class destructor Destroy;
   end;
 
 implementation
@@ -72,11 +65,6 @@ begin
   ShiftState := [];
 
   ColorScheme := TColorScheme.Create(5);
-end;
-
-class destructor MainVar.Destroy;
-begin
-  inherited;
 end;
 
 end.

@@ -38,7 +38,6 @@ type
     procedure EndTransform(g: TCanvas);
   private
     procedure DrawToCanvas(g: TCanvas);
-    procedure DrawTestFigure(g: TCanvas);
     procedure DrawSudokuGrid(g: TCanvas);
   private
     DrawCounter: Integer;
@@ -86,42 +85,6 @@ procedure TSudokuGraph.SetImage(const Value: TOriginalImage);
 begin
   FImage := Value;
   InitBitmap;
-end;
-
-procedure TSudokuGraph.DrawTestFigure(g: TCanvas);
-var
-  P1, P2: TPointF;
-  x, y: single;
-  A, B: TPointF;
-  R: TRectF;
-  Corners: TCorners;
-  CornerRadius: single;
-begin
-  x := 200;
-  y := 200;
-  A := PointF(0, 0);
-  B := PointF(x, y);
-  R := TRectF.Create(A, B);
-
-  g.Stroke.Thickness := 5.0;
-  g.Stroke.Color := claYellow;
-  CornerRadius := 50;
-  Corners := [
-    TCorner.TopLeft,
-    TCorner.TopRight,
-    TCorner.BottomLeft,
-    TCorner.BottomRight
-  ];
-  g.Fill.Color := claAqua;
-  g.FillRect(R, CornerRadius, CornerRadius, Corners, Translucent, TCornerType.Bevel);
-  g.DrawRect(R, 30, 10, [TCorner.BottomRight], Opaque, TCornerType.Bevel);
-
-  P1 := PointF(0, 0);
-  P2 := PointF(100, 100);
-
-  g.Stroke.Thickness := 5.0;
-  g.Stroke.Color := claRed;
-  g.DrawLine(P1, P2, Opaque);
 end;
 
 procedure TSudokuGraph.BeginTransform(g: TCanvas);

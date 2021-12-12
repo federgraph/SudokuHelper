@@ -28,17 +28,12 @@ type
     CurrentScheme: Integer;
     DefaultScheme: Integer;
 
-    claBackground3D: TAlphaColor;
-
+    claBackground: TAlphaColor;
     claLabelText: TAlphaColor;
-    claSampleText: TAlphaColor;
-    claOptionText: TAlphaColor;
     claToolBtnFill: TAlphaColor;
     claTouchBtnFill: TAlphaColor;
     claCornerScrollbar: TAlphaColor;
     claCornerBtnText: TAlphaColor;
-    claEquationFill: TAlphaColor;
-    claEquationText: TAlphaColor;
     claTouchbarText: TAlphaColor;
 
     constructor Create(cs: Integer);
@@ -64,90 +59,68 @@ begin
   case cs of
     1:
     begin
-      claBackground3D := claLavender;
+      claBackground := claLavender;
       claLabelText := claGray;
-      claSampleText := claGray;
       claToolBtnFill := claGray;
       claTouchBtnFill := claGray;
       claCornerScrollbar := claGray;
       claCornerBtnText:= claBlue;
-      claEquationFill := claNull;
-      claEquationText := claBlack;
     end;
     2:
     begin
-      claBackground3D := StringToAlphaColor('#FFBBBBBB');
+      claBackground := StringToAlphaColor('#FFBBBBBB');
       claLabelText := claWhite;
-      claSampleText := claWhite;
       claToolBtnFill := claGray;
       claTouchBtnFill := claGray;
       claCornerScrollbar := claGray;
       claCornerBtnText:= claBlue;
-      claEquationFill := claNull;
-      claEquationText := claBlack;
     end;
     3:
     begin
-      claBackground3D := claCornflowerBlue;
+      claBackground := claCornflowerBlue;
       claLabelText := claWhite;
-      claSampleText := claWhite;
       claToolBtnFill := claWhite;
       claTouchBtnFill := claWhite;
       claCornerScrollbar := claWhite;
       claCornerBtnText:= claWhite;
-      claEquationFill := claNull;
-      claEquationText := claBlack;
     end;
     4:
     begin
-      claBackground3D := StringToAlphaColor('#FF372E69');
+      claBackground := StringToAlphaColor('#FF372E69');
       claLabelText := claWhite;
-      claSampleText := claWhite;
       claToolBtnFill := claWhite;
       claTouchBtnFill := claWhite;
       claCornerScrollbar := claWhite;
       claCornerBtnText:= claWhite;
-      claEquationFill := claNull;
-      claEquationText := claWhite;
     end;
     5:
     begin
-      claBackground3D := StringToAlphaColor('#FF333333');
+      claBackground := StringToAlphaColor('#FF333333');
       claLabelText := claWhite;
-      claSampleText := claWhite;
       claToolBtnFill := claWhite;
       claTouchBtnFill := claWhite;
       claCornerScrollbar := claGray;
       claCornerBtnText:= claWhite;
-      claEquationFill := claNull;
-      claEquationText := claWhite;
     end;
     6:
     begin
-      claBackground3D := claBlack;
+      claBackground := claBlack;
       claLabelText := claWhite;
-      claSampleText := claWhite;
       claToolBtnFill := claWhite;
       claTouchBtnFill := claWhite;
       claCornerScrollbar := claGray;
       claCornerBtnText:= claWhite;
-      claEquationFill := claNull;
-      claEquationText := claWhite;
     end;
     7:
     begin
-      claBackground3D := claNull;
+      claBackground := claNull;
       claLabelText := claBlack;
-      claSampleText := claBlack;
       claToolBtnFill := claGray;
       claTouchBtnFill := claGray;
       claCornerScrollbar := claGray;
       claCornerBtnText:= claWhite;
-      claEquationFill := claNull;
-      claEquationText := claBlack;
     end;
   end;
-  claOptionText := claSampleText;
 end;
 
 end.

@@ -19,16 +19,12 @@
 interface
 
 uses
-  System.Math,
-  System.SysUtils,
   System.Classes,
   System.Types,
   System.UITypes,
   System.UIConsts,
   FMX.Types,
-  FMX.Objects,
   RiggVar.FB.ActionConst,
-  RiggVar.FB.Action,
   RiggVar.FederModel.TouchBase;
 
 type

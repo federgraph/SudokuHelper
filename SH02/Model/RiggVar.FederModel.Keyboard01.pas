@@ -258,7 +258,7 @@ begin
       result := faPlace15
 
     else if KeyChar = 'g' then
-      result := faLinearMove
+
     else if KeyChar = 'G' then
 
     else if KeyChar = 'h' then

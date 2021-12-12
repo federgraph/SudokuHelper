@@ -60,7 +60,6 @@ type
     FTouch: Integer;
     FSudoku: ISudokuHelper;
     FCurrentValue: Integer;
-    procedure SetIsUp(const Value: Boolean);
     procedure InitFederText(ft: TFederTouch0);
     procedure InitRaster;
     function GetFederText: TFederTouchBase;
@@ -68,13 +67,14 @@ type
     function GetIsPhone: Boolean;
     function GetIsPortrait: Boolean;
     function GetTouchbarLayout: Integer;
+    function GetColorScheme: Integer;
     procedure InitText;
     procedure InitTouch;
-    procedure SetColorScheme3D(const Value: Integer);
+    procedure InitializeSudoku;
+    procedure SetIsUp(const Value: Boolean);
+    procedure SetColorScheme(const Value: Integer);
     procedure SetTouch(const Value: Integer);
     procedure SetTouchbarLayout(const Value: Integer);
-    function GetColorScheme3D: Integer;
-    procedure InitializeSudoku;
     procedure SetCurrentValue(const Value: Integer);
   public
     SudokuHostForm: ISudokuHostForm;
@@ -84,8 +84,8 @@ type
     ActionMapTablet: TActionMap;
     ActionMapPhone: TActionMap;
     Keyboard: TFederKeyboard01;
-    FederText1: TFederTouch;
-    FederText2: TFederTouchPhone;
+    FederTextTablet: TFederTouch;
+    FederTextPhone: TFederTouchPhone;
 
     SudokuGrid: TSudokuGrid;
     SudokuGraph: TSudokuGraph;
@@ -115,17 +115,16 @@ type
     procedure StartNew(Value: Integer);
     procedure HandleCharacter(AChar: Char);
 
-    property ColorScheme3D: Integer read GetColorScheme3D write SetColorScheme3D;
+    property ColorScheme: Integer read GetColorScheme write SetColorScheme;
+    property IsUp: Boolean read FIsUp write SetIsUp;
     property IsPhone: Boolean read GetIsPhone;
     property IsLandscape: Boolean read GetIsLandscape;
     property IsPortrait: Boolean read GetIsPortrait;
     property Touch: Integer read FTouch write SetTouch;
     property TouchbarLayout: Integer read GetTouchbarLayout write SetTouchbarLayout;
     property FederText: TFederTouchBase read GetFederText;
-    property IsUp: Boolean read FIsUp write SetIsUp;
 
     property Sudoku: ISudokuHelper read FSudoku write FSudoku;
-
     property CurrentValue: Integer read FCurrentValue write SetCurrentValue;
   end;
 
@@ -154,16 +153,16 @@ begin
   InitRaster;
 
   TTouchBtn.WantHint := True;
-  FederText1 := TFederTouch.Create(nil);
-  FederText2 := TFederTouchPhone.Create(nil);
+  FederTextTablet := TFederTouch.Create(nil);
+  FederTextPhone := TFederTouchPhone.Create(nil);
 
   ActionHandler := TFederActionHandler.Create;
 end;
 
 destructor TMain0.Destroy;
 begin
-  FederText1.Free;
-  FederText2.Free;
+  FederTextTablet.Free;
+  FederTextPhone.Free;
   Keyboard.Free;
   ActionMapTablet.Free;
   ActionMapPhone.Free;
@@ -223,18 +222,17 @@ end;
 
 procedure TMain0.InitText;
 begin
-  MainVar.ClientWidth := FormMain.ClientWidth;
-  MainVar.ClientHeight := FormMain.ClientHeight;
-  InitFederText(FederText1);
-  InitFederText(FederText2);
+  InitRaster;
+  InitFederText(FederTextTablet);
+  InitFederText(FederTextPhone);
   Touch := faTouchDesk;
 end;
 
 procedure TMain0.InitTouch;
 begin
   InitRaster;
-  FederText1.Visible := not IsPhone;
-  FederText2.Visible := IsPhone;
+  FederTextTablet.Visible := not IsPhone;
+  FederTextPhone.Visible := IsPhone;
 end;
 
 function TMain0.IsActionChecked(fa: Integer): Boolean;
@@ -251,8 +249,7 @@ procedure TMain0.UpdateTouch;
 begin
   if Assigned(FederText) and FederText.InitOK then
   begin
-    MainVar.ClientWidth := FormMain.ClientWidth;
-    MainVar.ClientHeight := FormMain.ClientHeight;
+    InitRaster;
     InitTouch;
     FederText.UpdateShape;
   end;
@@ -261,17 +258,17 @@ end;
 function TMain0.GetFederText: TFederTouchBase;
 begin
   case FTouch of
-    faTouchTablet: result := FederText1;
-    faTouchPhone: result := FederText2;
+    faTouchTablet: result := FederTextTablet;
+    faTouchPhone: result := FederTextPhone;
     faTouchDesk:
     begin
       if IsPhone then
-        result := FederText2
+        result := FederTextPhone
       else
-        result := FederText1;
+        result := FederTextTablet;
     end;
     else
-      result := FederText1;
+      result := FederTextTablet;
   end;
 end;
 
@@ -289,8 +286,8 @@ begin
     faTouchTablet: result := False;
     else
     begin
-      MinCount := Min(FormMain.ContentHeight, FormMain.ContentWidth) div MainVar.Raster;
-      MaxCount := Max(FormMain.ContentHeight, FormMain.ContentWidth) div MainVar.Raster;
+      MinCount := Min(MainVar.ClientHeight, MainVar.ClientWidth) div MainVar.Raster;
+      MaxCount := Max(MainVar.ClientHeight, MainVar.ClientWidth) div MainVar.Raster;
       result  := (MinCount < 8) or (MaxCount < 12);
     end;
   end;
@@ -309,12 +306,12 @@ begin
     result := 1;
 end;
 
-function TMain0.GetColorScheme3D: Integer;
+function TMain0.GetColorScheme: Integer;
 begin
   result := MainVar.ColorScheme.CurrentScheme;
 end;
 
-procedure TMain0.SetColorScheme3D(const Value: Integer);
+procedure TMain0.SetColorScheme(const Value: Integer);
 begin
   if not BackgroundLock then
   begin
@@ -329,14 +326,14 @@ procedure TMain0.SetTouch(const Value: Integer);
 begin
   FTouch := Value;
   if IsPhone then
-    FederText1.Visible := False
+    FederTextTablet.Visible := False
   else case FTouch of
-    faTouchTablet: FederText1.Visible := True;
-    faTouchPhone: FederText1.Visible := False;
+    faTouchTablet: FederTextTablet.Visible := True;
+    faTouchPhone: FederTextTablet.Visible := False;
   else
-      FederText1.Visible := not IsPhone;
+      FederTextTablet.Visible := not IsPhone;
   end;
-  FederText2.Visible := not FederText1.Visible;
+  FederTextPhone.Visible := not FederTextTablet.Visible;
 
   FederText.UpdateShape;
 end;
@@ -379,7 +376,7 @@ var
 begin
   l := BackgroundLock;
   BackgroundLock := false;
-  i := ColorScheme3D;
+  i := ColorScheme;
   Dec(i);
   if (i < 1) then
     i := MainConst.ColorSchemeCount;
@@ -387,7 +384,7 @@ begin
     i := 1;
 
   MainVar.ColorScheme.DefaultScheme := i;
-  ColorScheme3D := i;
+  ColorScheme := i;
   BackgroundLock := l;
 end;
 
@@ -398,7 +395,7 @@ var
 begin
   l := BackgroundLock;
   BackgroundLock := false;
-  i := ColorScheme3D;
+  i := ColorScheme;
   Inc(i);
   if (i < 1) then
     i := MainConst.ColorSchemeCount;
@@ -406,7 +403,7 @@ begin
     i := 1;
 
   MainVar.ColorScheme.DefaultScheme := i;
-  ColorScheme3D := i;
+  ColorScheme := i;
   BackgroundLock := l;
 end;
 

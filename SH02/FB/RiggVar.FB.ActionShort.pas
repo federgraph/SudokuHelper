@@ -64,15 +64,7 @@ begin
     faCycleColorSchemeM: result := 'c-';
     faCycleColorSchemeP: result := 'c+';
 
-    { Keyboard }
-    faKeyboard01: result := 'kb1';
-    faKeyboard02: result := 'kb2';
-    faSetShift: result := '[s]';
-    faSetCtrl: result := '[c]';
-    faClearShift: result := '[_]';
-
     { FederText }
-    faToggleAllText: result := 'tat';
     faToggleTouchFrame: result := 'fra';
 
     { Format }
@@ -80,11 +72,6 @@ begin
     faFormatPortrait: result := '[fP]';
     faFormatIPhoneLandscape: result := '[fLi]';
     faFormatIPhonePortrait: result := '[fPi]';
-
-    { Help }
-    faCycleHelpM: result := 'H';
-    faCycleHelpP: result := 'h';
-    faHelpHome: result := 'hh';
 
     { TouchBarLegend }
     faTouchBarTop: result := 'tbT';
@@ -105,11 +92,6 @@ begin
     faCopy: result := '^c';
     faPaste: result := '^v';
     faShare: result := 'sha';
-
-    { ViewOptions }
-    faToggleMoveMode: result := 'tmm';
-    faLinearMove: result := 'lmm';
-    faExpoMove: result := 'emm';
 
     { Select Sudoku Value }
     faSelect0: result := '0';

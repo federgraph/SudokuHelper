@@ -22,8 +22,6 @@ type
   TFederAction = Integer;
 
 const
-  // --- generated code snippet ---
-
   { EmptyAction }
   faNoop = 0;
 
@@ -39,129 +37,109 @@ const
   faShowMemo = 7;
   faShowActions = 8;
   faShowInfo = 9;
-  faShowData = 17;
-  faShowRepo = 18;
+  faShowData = 10;
+  faShowRepo = 11;
 
   { TouchLayout }
-  faTouchTablet = 19;
-  faTouchPhone = 20;
-  faTouchDesk = 21;
+  faTouchTablet = 12;
+  faTouchPhone = 13;
+  faTouchDesk = 14;
 
   { Scene }
-  faSudoku9 = 22;
-  faSudoku12 = 23;
-  faSudoku16 = 24;
+  faSudoku9 = 15;
+  faSudoku12 = 16;
+  faSudoku16 = 17;
 
-  { Plot }
-  faPlace0 = 27;
-  faPlace1 = 28;
-  faPlace2 = 29;
-  faPlace3 = 30;
-  faPlace4 = 31;
-  faPlace5 = 32;
-  faPlace6 = 33;
-  faPlace7 = 34;
-  faPlace8 = 35;
-  faPlace9 = 36;
-  faPlace10 = 37;
-  faPlace11 = 38;
-  faPlace12 = 39;
-  faPlace13 = 40;
-
-  faPlace14 = 41;
-  faPlace15 = 42;
-  faPlace16 = 43;
-
-  { Graph }
-  faNavColFirst = 47;
-  faNavColLast = 48;
-  faNavRowFirst = 49;
-  faNavRowLast = 50;
+  { Placing }
+  faPlace0 = 18;
+  faPlace1 = 19;
+  faPlace2 = 20;
+  faPlace3 = 21;
+  faPlace4 = 22;
+  faPlace5 = 23;
+  faPlace6 = 24;
+  faPlace7 = 25;
+  faPlace8 = 26;
+  faPlace9 = 27;
+  faPlace10 = 28;
+  faPlace11 = 29;
+  faPlace12 = 30;
+  faPlace13 = 31;
+  faPlace14 = 32;
+  faPlace15 = 33;
+  faPlace16 = 34;
 
   { Wheel }
-  faPlusOne = 69;
-  faWheelLeft = 70;
-  faWheelRight = 71;
-  faWheelDown = 72;
-  faWheelUp = 73;
+  faPlusOne = 35;
+  faWheelLeft = 36;
+  faWheelRight = 37;
+  faWheelDown = 38;
+  faWheelUp = 39;
 
   { ColorScheme }
-  faCycleColorSchemeM = 74;
-  faCycleColorSchemeP = 75;
-
-  { Keyboard }
-  faKeyboard01 = 76;
-  faKeyboard02 = 77;
-  faSetShift = 78;
-  faSetCtrl = 79;
-  faClearShift = 80;
+  faCycleColorSchemeM = 40;
+  faCycleColorSchemeP = 41;
 
   { FederText }
-  faToggleAllText = 94;
-  faToggleTouchFrame = 95;
+  faToggleTouchFrame = 42;
 
   { Format }
-  faFormatLandscape = 122;
-  faFormatPortrait = 123;
-  faFormatIPhoneLandscape = 124;
-  faFormatIPhonePortrait = 125;
+  faFormatLandscape = 43;
+  faFormatPortrait = 44;
+  faFormatIPhoneLandscape = 45;
+  faFormatIPhonePortrait = 46;
 
   { Navigation }
-  faNavRowP = 162;
-  faNavRowM = 163;
-  faNavColM = 164;
-  faNavColP = 165;
+  faNavRowP = 47;
+  faNavRowM = 48;
+  faNavColM = 49;
+  faNavColP = 59;
 
-  { Help }
-  faCycleHelpM = 166;
-  faCycleHelpP = 167;
-  faHelpHome = 168;
+  faNavColFirst = 60;
+  faNavColLast = 61;
+  faNavRowFirst = 62;
+  faNavRowLast = 63;
 
   { TouchBarLegend }
-  faTouchBarTop = 169;
-  faTouchBarBottom = 170;
-  faTouchBarLeft = 171;
-  faTouchBarRight = 172;
+  faTouchBarTop = 64;
+  faTouchBarBottom = 65;
+  faTouchBarLeft = 66;
+  faTouchBarRight = 67;
 
   { Reset }
-  faReset = 173;
+  faReset = 68;
 
   { DropTarget }
-  faToggleDropTarget = 177;
+  faToggleDropTarget = 69;
 
   { CopyPaste }
-  faSave = 178;
-  faLoad = 179;
-  faOpen = 180;
-  faCopy = 181;
-  faPaste = 182;
-  faShare = 183;
-
-  { ViewOptions }
-  faToggleMoveMode = 184;
-  faLinearMove = 185;
-  faExpoMove = 186;
+  faSave = 70;
+  faLoad = 71;
+  faOpen = 72;
+  faCopy = 73;
+  faPaste = 74;
+  faShare = 75;
 
   { Selection }
-  faSelect0 = 187;
-  faSelect1 = 188;
-  faSelect2 = 189;
-  faSelect3 = 190;
-  faSelect4 = 191;
-  faSelect5 = 192;
-  faSelect6 = 193;
-  faSelect7 = 194;
-  faSelect8 = 195;
-  faSelect9 = 196;
-  faSelect10 = 197;
-  faSelect11 = 198;
-  faSelect12 = 199;
-  faSelect13 = 200;
-  faSelect14 = 201;
-  faSelect15 = 202;
-  faSelect16 = 203;
+  faSelect0 = 76;
+  faSelect1 = 77;
+  faSelect2 = 78;
+  faSelect3 = 79;
+  faSelect4 = 80;
+  faSelect5 = 81;
+  faSelect6 = 82;
+  faSelect7 = 83;
+  faSelect8 = 84;
+  faSelect9 = 85;
+  faSelect10 = 86;
+  faSelect11 = 87;
+  faSelect12 = 88;
+  faSelect13 = 89;
+  faSelect14 = 90;
+  faSelect15 = 91;
+  faSelect16 = 92;
 
-  faMax = 220;
+  faMax = 93;
 
 implementation
 

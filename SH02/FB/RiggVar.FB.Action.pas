@@ -66,7 +66,7 @@ end;
 
 procedure TFederActionHandlerBase.Execute(fa: TFederAction);
 begin
-  { virtual, do noting here }
+  { virtual, do nothing here }
 end;
 
 procedure TFederActionHandlerBase.CheckForDuplicates(ML: TStringList);
@@ -76,7 +76,7 @@ end;
 
 procedure TFederActionHandlerBase.ExportTable(ML: TStrings);
 begin
-  { virtual, do noting here }
+  { virtual, do nothing here }
 end;
 
 end.

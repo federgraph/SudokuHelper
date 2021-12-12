@@ -22,17 +22,13 @@ uses
   System.SysUtils,
   System.Classes,
   System.Math,
-  System.Types,
   System.UITypes,
   System.UIConsts,
   System.Generics.Collections,
   FMX.Types,
   FMX.Objects,
   FMX.Controls,
-  FMX.Graphics,
   RiggVar.FB.ActionConst,
-  RiggVar.FB.ActionMap,
-  RiggVar.FB.Action,
   RiggVar.FB.Touch;
 
 type
@@ -203,7 +199,6 @@ const
 implementation
 
 uses
-//  RiggVar.FB.Def,
   RiggVar.App.Main;
 
 { TTouchBtn }
