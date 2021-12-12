@@ -1,0 +1,18 @@
+object FormMain: TFormMain
+  Left = 0
+  Top = 0
+  Caption = 'FrmMain'
+  ClientHeight = 583
+  ClientWidth = 895
+  Position = Designed
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnKeyUp = FormKeyUp
+  OnMouseUp = FormMouseUp
+  OnResize = FormResize
+  OnShow = FormShow
+  DesignerMasterStyle = 0
+end
