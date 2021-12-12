@@ -45,8 +45,8 @@ begin
     faShowMemo: result := 'Form Memo';
     faShowActions: result := 'Form Actions';
     faShowInfo: result := 'Form Info';
-    faShowData: result := 'Data';
-    faShowRepo: result := 'Repository';
+    faShowData: result := 'Form Data';
+    faShowRepo: result := 'Form Repository';
 
     { TouchLayout }
     faTouchTablet: result := 'Touch Tablet';
@@ -57,8 +57,8 @@ begin
     faPlusOne: result := 'Plus One';
     faWheelLeft: result := 'Wheel -1';
     faWheelRight: result := 'Wheel +1';
-    faWheelDown: result := 'Wheel +10';
     faWheelUp: result := 'Wheel -10';
+    faWheelDown: result := 'Wheel +10';
 
     { ColorScheme }
     faCycleColorSchemeM: result := 'cycle color scheme -';
@@ -83,7 +83,7 @@ begin
     faReset: result := 'Reset';
 
     { DropTarget }
-    faToggleDropTarget: result := 'Drop target';
+    faToggleDropTarget: result := 'Drop Target';
 
     { CopyPaste }
     faSave: result := 'Save';
@@ -112,7 +112,7 @@ begin
     faSelect15: result := 'Select Sudoku Value 15';
     faSelect16: result := 'Select Sudoku Value 16';
 
-    { Plot }
+    { Placing }
     faPlace0: result := 'P0';
     faPlace1: result := 'P1';
     faPlace2: result := 'P2';
@@ -127,15 +127,15 @@ begin
     faPlace11: result := 'P11';
     faPlace12: result := 'P12';
     faPlace13: result := 'P13';
-    faPlace14: result := 'F1';
-    faPlace15: result := 'F2';
-    faPlace16: result := 'F3';
+    faPlace14: result := 'P14';
+    faPlace15: result := 'P15';
+    faPlace16: result := 'P16';
 
     { Navigation }
-    faNavRowP: result := 'Nav Row +';
-    faNavRowM: result := 'Nav Row +';
     faNavColM: result := 'Nav Col -';
     faNavColP: result := 'Nav Col +';
+    faNavRowM: result := 'Nav Row -';
+    faNavRowP: result := 'Nav Row +';
 
     faNavColFirst: result := 'Nav Col First';
     faNavColLast: result := 'Nav Col Last';

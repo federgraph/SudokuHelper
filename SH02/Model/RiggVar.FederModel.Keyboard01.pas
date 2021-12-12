@@ -158,19 +158,6 @@ begin
     else if KeyChar = '0' then
       result := faPlace0
 
-    else if KeyChar = '!' then
-
-    else if KeyChar = '"' then
-
-    else if KeyChar = '§' then
-
-    else if KeyChar = '$' then
-
-    else if KeyChar = '%' then
-
-    else if KeyChar = '&' then
-
-
     else if KeyChar = '*' then
       result := faActionPageM
     else if KeyChar = '+' then
@@ -181,53 +168,12 @@ begin
 
     else if KeyChar = '?' then
 
-
-    else if KeyChar = '/' then
-
-    else if KeyChar = '°' then
-
-
-    else if KeyChar = '~' then
-
-    else if KeyChar = 'µ' then
-
-    else if KeyChar = '@' then
-
-    else if KeyChar = '€' then
-
-    else if KeyChar = '£' then
-
-    else if KeyChar = '¥' then
-
-
-    else if KeyChar = '²' then
-      result := faNoop
-    else if KeyChar = '³' then
-      result := faNoop
-
-    else if KeyChar = '^' then
-      result := faActionPageE
-    else if KeyChar = '`' then
-
-    else if KeyChar = '´' then
-
-    else if KeyChar = '''' then
-
     else if KeyChar = '|' then
 
-    else if KeyChar = '{' then
-      result := faCycleColorSchemeM
-    else if KeyChar = '}' then
-      result := faCycleColorSchemeP
-    else if KeyChar = '[' then
-
-    else if KeyChar = ']' then
-
     else if KeyChar = '(' then
-
+      result := faCycleColorSchemeM
     else if KeyChar = ')' then
-
-    else if KeyChar = 'ß' then
+      result := faCycleColorSchemeP
 
     else if KeyChar = 'a' then
       result := faPlace10
@@ -265,7 +211,6 @@ begin
 
     else if KeyChar = 'H' then
 
-
     else if KeyChar = 'i' then
       result := faWheelRight
     else if KeyChar = 'I' then
@@ -283,7 +228,6 @@ begin
     else if KeyChar = 'l' then
 
     else if KeyChar = 'L' then
-
 
     else if KeyChar = 'm' then
 
@@ -355,38 +299,6 @@ begin
       result := faSudoku12
     else if Key = vkF3 then
       result := faSudoku16
-    else if Key = vkF4 then
-      result := faNoop
-    else if Key = vkF5 then
-      result := faNoop
-
-    else if KeyChar = ';' then
-
-    else if KeyChar = ':' then
-
-    else if KeyChar = '_' then
-
-    else if KeyChar = ',' then
-
-    else if KeyChar = '.' then
-
-    else if KeyChar = '-' then
-
-    else if KeyChar = 'ä' then
-
-    else if KeyChar = 'Ä' then
-
-    else if KeyChar = 'ö' then
-
-    else if KeyChar = 'Ö' then
-
-    else if KeyChar = 'ü' then
-
-    else if KeyChar = 'Ü' then
-
-    else if KeyChar = '<' then
-
-    else if KeyChar = '>' then
 
   end;
 end;

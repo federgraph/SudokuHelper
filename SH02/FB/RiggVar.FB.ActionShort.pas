@@ -45,7 +45,7 @@ begin
     faShowMemo: result := 'FM';
     faShowActions: result := 'FA';
     faShowInfo: result := 'FI';
-    faShowData: result := 'PD';
+    faShowData: result := 'FD';
     faShowRepo: result := 'FR';
 
     { TouchLayout }
@@ -112,7 +112,7 @@ begin
     faSelect15: result := '15';
     faSelect16: result := '16';
 
-    { Placing Sudoku Value }
+    { Placing Sudoku Values }
     faPlace0: result := 'P0';
     faPlace1: result := 'P1';
     faPlace2: result := 'P2';
