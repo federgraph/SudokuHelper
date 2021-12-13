@@ -1,4 +1,4 @@
-object FormMain: TFormMain
+﻿object FormMain: TFormMain
   Left = 0
   Top = 0
   Caption = 'FrmMain'
@@ -12,6 +12,7 @@ object FormMain: TFormMain
   OnDestroy = FormDestroy
   OnKeyUp = FormKeyUp
   OnMouseUp = FormMouseUp
+  OnMouseWheel = FormMouseWheel
   OnResize = FormResize
   OnShow = FormShow
   DesignerMasterStyle = 0

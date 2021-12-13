@@ -30,6 +30,7 @@ type
     procedure FormKeyUp(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
 
     procedure Execute(fa: TFederAction); override;
+    function GetChecked(fa: TFederAction): Boolean; override;
   end;
 
 implementation
@@ -74,6 +75,14 @@ begin
   begin
     Execute(fa);
     Key := 0;
+  end;
+end;
+
+function TFederActionHandler.GetChecked(fa: TFederAction): Boolean;
+begin
+  result := False;
+  case fa of
+    faSelect0..faSelect16: result := Main.CurrentValue = fa - faSelect0;
   end;
 end;
 
@@ -129,6 +138,7 @@ begin
   end;
   if M.Sudoku <> nil then
     M.Sudoku.Display.Refresh;
+  M.FederText.CheckState;
 end;
 
 end.

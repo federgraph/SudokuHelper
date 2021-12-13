@@ -102,6 +102,9 @@ type
     procedure DoTouchbarRight(Delta: single);
     procedure DoTouchbarBottom(Delta: single);
 
+    procedure DoBigWheel(Delta: single);
+    procedure DoSmallWheel(Delta: single);
+
     procedure Init;
     procedure UpdateText;
     procedure UpdateTouch;
@@ -179,7 +182,7 @@ end;
 
 procedure TMain0.FederTextCheckState;
 begin
-  //
+  FederText.CheckState;
 end;
 
 procedure TMain0.SetIsUp(const Value: Boolean);
@@ -346,22 +349,34 @@ end;
 
 procedure TMain0.DoTouchbarLeft(Delta: single);
 begin
-//  DoBigWheel(Delta);
+
 end;
 
 procedure TMain0.DoTouchbarTop(Delta: single);
 begin
-//  DoMM(fmkRZ, Delta, 0);
+
 end;
 
 procedure TMain0.DoTouchbarRight(Delta: single);
+var
+  d: single;
 begin
-//  DoSmallWheel(Delta);
+  if Delta > 0 then
+    d := 1
+  else
+    d := -1;
+  DoBigWheel(-d);
 end;
 
 procedure TMain0.DoTouchbarBottom(Delta: single);
+var
+  d: single;
 begin
-//  DoZoom(-Delta / 20);
+  if Delta > 0 then
+    d := 1
+  else
+    d := -1;
+  DoSmallWheel(-d);
 end;
 
 procedure TMain0.CycleToolSet(i: Integer);
@@ -478,6 +493,16 @@ end;
 function TSudokuHostForm.GetRightClickAction: TRightClickAction;
 begin
   result := TRightClickAction.SetCandidate;
+end;
+
+procedure TMain0.DoBigWheel(Delta: single);
+begin
+  SudokuGrid.NavRow(Round(Delta));
+end;
+
+procedure TMain0.DoSmallWheel(Delta: single);
+begin
+  SudokuGrid.NavCol(Round(Delta));
 end;
 
 end.

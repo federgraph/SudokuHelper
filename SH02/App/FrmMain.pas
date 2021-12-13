@@ -39,9 +39,8 @@ type
     procedure FormResize(Sender: TObject);
     procedure FormKeyUp(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
     procedure FormMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
+    procedure FormMouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; var Handled: Boolean);
   private
-    procedure SudokuImageMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
-  protected
     Raster: single;
     Margin: single;
     ComponentsCreated: Boolean;
@@ -50,6 +49,7 @@ type
     SudokuImage: TOriginalImage;
     SudokuGraph: TSudokuGraph;
 
+    procedure SudokuImageMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
     procedure HandleShowHint(Sender: TObject);
 
     function GetIsUp: Boolean;
@@ -58,11 +58,11 @@ type
     procedure InitSudokuGraph;
     procedure UpdateSudokuGraph;
     procedure CreateComponents;
-    procedure HandleAction(fa: Integer);
-  public
-    procedure UpdateBackground;
 
     property IsUp: Boolean read GetIsUp write SetIsUp;
+  public
+    procedure UpdateBackground;
+    procedure HandleAction(fa: Integer);
   end;
 
 var
@@ -253,6 +253,25 @@ begin
   SudokuImageMouseUp(Sender, Button, Shift,
   X - SudokuImage.Position.X,
   Y - SudokuImage.Position.Y);
+end;
+
+procedure TFormMain.FormMouseWheel(Sender: TObject; Shift: TShiftState;
+  WheelDelta: Integer; var Handled: Boolean);
+var
+  delta: Integer;
+begin
+  if IsUp then
+  begin
+    if WheelDelta > 0 then
+      delta := 1
+    else
+      delta := -1;
+
+    if ssShift in Shift then
+      Main.DoBigWheel(delta)
+    else
+      Main.DoSmallWheel(delta);
+  end;
 end;
 
 end.
