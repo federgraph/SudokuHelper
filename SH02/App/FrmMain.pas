@@ -58,6 +58,9 @@ type
     procedure InitSudokuGraph;
     procedure UpdateSudokuGraph;
     procedure CreateComponents;
+    procedure ActionsBtnClick(Sender: TObject);
+    procedure DestroyForms;
+    procedure MemoBtnClick(Sender: TObject);
 
     property IsUp: Boolean read GetIsUp write SetIsUp;
   public
@@ -73,6 +76,8 @@ implementation
 {$R *.fmx}
 
 uses
+  FrmAction,
+  FrmMemo,
   RiggVar.App.Main;
 
 { TFormMain }
@@ -121,8 +126,23 @@ begin
 
   SudokuGraph.Free;
 
+  DestroyForms;
   Main.Free;
   Main := nil;
+end;
+
+procedure TFormMain.DestroyForms;
+begin
+  if FormAction <> nil then
+  begin
+    FormAction.DisposeOf;
+    FormAction := nil;
+  end;
+  if FormMemo <> nil then
+  begin
+    FormMemo.DisposeOf;
+    FormMemo := nil;
+  end;
 end;
 
 procedure TFormMain.FormShow(Sender: TObject);
@@ -132,6 +152,26 @@ begin
     FormShown := True;
     Main.InitFirstSudoku;
   end;
+end;
+
+procedure TFormMain.MemoBtnClick(Sender: TObject);
+begin
+  if not Assigned(FormMemo) then
+  begin
+    FormMemo := TFormMemo.Create(nil);
+    FormMemo.Memo.Lines.Clear;
+    Main.WriteHelpText(FormMemo.Memo.Lines);
+  end;
+  FormMemo.Visible := True;
+end;
+
+procedure TFormMain.ActionsBtnClick(Sender: TObject);
+begin
+  if not Assigned(FormAction) then
+  begin
+    FormAction := TFormAction.Create(nil);
+  end;
+  FormAction.Visible := True;
 end;
 
 procedure TFormMain.SetIsUp(const Value: Boolean);
@@ -202,7 +242,8 @@ procedure TFormMain.HandleAction(fa: Integer);
 begin
   case fa of
     faNoop: ;
-
+    faShowActions: ActionsBtnClick(nil);
+    faShowMemo: MemoBtnClick(nil);
     else
     begin
       { do nothing }

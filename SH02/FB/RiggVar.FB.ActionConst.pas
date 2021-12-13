@@ -21,7 +21,12 @@ interface
 type
   TFederAction = Integer;
 
+// --- generated code snippet ---
+// Note that some of the defined actions
+//   may not be implemented in this version of the app.
+
 const
+
   { EmptyAction }
   faNoop = 0;
 
@@ -45,101 +50,100 @@ const
   faTouchPhone = 13;
   faTouchDesk = 14;
 
-  { Scene }
-  faSudoku9 = 15;
-  faSudoku12 = 16;
-  faSudoku16 = 17;
-
-  { Placing }
-  faPlace0 = 18;
-  faPlace1 = 19;
-  faPlace2 = 20;
-  faPlace3 = 21;
-  faPlace4 = 22;
-  faPlace5 = 23;
-  faPlace6 = 24;
-  faPlace7 = 25;
-  faPlace8 = 26;
-  faPlace9 = 27;
-  faPlace10 = 28;
-  faPlace11 = 29;
-  faPlace12 = 30;
-  faPlace13 = 31;
-  faPlace14 = 32;
-  faPlace15 = 33;
-  faPlace16 = 34;
-
   { Wheel }
-  faPlusOne = 35;
-  faWheelLeft = 36;
-  faWheelRight = 37;
-  faWheelDown = 38;
-  faWheelUp = 39;
+  faPlusOne = 15;
+  faWheelLeft = 16;
+  faWheelRight = 17;
+  faWheelDown = 18;
+  faWheelUp = 19;
 
   { ColorScheme }
-  faCycleColorSchemeM = 40;
-  faCycleColorSchemeP = 41;
+  faCycleColorSchemeM = 20;
+  faCycleColorSchemeP = 21;
 
   { FederText }
-  faToggleTouchFrame = 42;
+  faToggleTouchFrame = 22;
 
   { Format }
-  faFormatLandscape = 43;
-  faFormatPortrait = 44;
-  faFormatIPhoneLandscape = 45;
-  faFormatIPhonePortrait = 46;
-
-  { Navigation }
-  faNavRowP = 47;
-  faNavRowM = 48;
-  faNavColM = 49;
-  faNavColP = 59;
-
-  faNavColFirst = 60;
-  faNavColLast = 61;
-  faNavRowFirst = 62;
-  faNavRowLast = 63;
+  faFormatLandscape = 23;
+  faFormatPortrait = 24;
+  faFormatIPhoneLandscape = 25;
+  faFormatIPhonePortrait = 26;
 
   { TouchBarLegend }
-  faTouchBarTop = 64;
-  faTouchBarBottom = 65;
-  faTouchBarLeft = 66;
-  faTouchBarRight = 67;
+  faTouchBarTop = 27;
+  faTouchBarBottom = 28;
+  faTouchBarLeft = 29;
+  faTouchBarRight = 30;
 
   { Reset }
-  faReset = 68;
+  faReset = 31;
 
   { DropTarget }
-  faToggleDropTarget = 69;
+  faToggleDropTarget = 32;
 
   { CopyPaste }
-  faSave = 70;
-  faLoad = 71;
-  faOpen = 72;
-  faCopy = 73;
-  faPaste = 74;
-  faShare = 75;
+  faSave = 33;
+  faLoad = 34;
+  faOpen = 35;
+  faCopy = 36;
+  faPaste = 37;
+  faShare = 38;
 
-  { Selection }
-  faSelect0 = 76;
-  faSelect1 = 77;
-  faSelect2 = 78;
-  faSelect3 = 79;
-  faSelect4 = 80;
-  faSelect5 = 81;
-  faSelect6 = 82;
-  faSelect7 = 83;
-  faSelect8 = 84;
-  faSelect9 = 85;
-  faSelect10 = 86;
-  faSelect11 = 87;
-  faSelect12 = 88;
-  faSelect13 = 89;
-  faSelect14 = 90;
-  faSelect15 = 91;
-  faSelect16 = 92;
+  { SudokuScene }
+  faSudoku9 = 39;
+  faSudoku12 = 40;
+  faSudoku16 = 41;
 
-  faMax = 93;
+  { SudokuNavigation }
+  faNavColM = 42;
+  faNavColP = 43;
+  faNavRowM = 44;
+  faNavRowP = 45;
+  faNavColFirst = 46;
+  faNavColLast = 47;
+  faNavRowFirst = 48;
+  faNavRowLast = 49;
+
+  { SudokuSelection }
+  faSelect0 = 50;
+  faSelect1 = 51;
+  faSelect2 = 52;
+  faSelect3 = 53;
+  faSelect4 = 54;
+  faSelect5 = 55;
+  faSelect6 = 56;
+  faSelect7 = 57;
+  faSelect8 = 58;
+  faSelect9 = 59;
+  faSelect10 = 60;
+  faSelect11 = 61;
+  faSelect12 = 62;
+  faSelect13 = 63;
+  faSelect14 = 64;
+  faSelect15 = 65;
+  faSelect16 = 66;
+
+  { SudokuPlacing }
+  faPlace0 = 67;
+  faPlace1 = 68;
+  faPlace2 = 69;
+  faPlace3 = 70;
+  faPlace4 = 71;
+  faPlace5 = 72;
+  faPlace6 = 73;
+  faPlace7 = 74;
+  faPlace8 = 75;
+  faPlace9 = 76;
+  faPlace10 = 77;
+  faPlace11 = 78;
+  faPlace12 = 79;
+  faPlace13 = 80;
+  faPlace14 = 81;
+  faPlace15 = 82;
+  faPlace16 = 83;
+
+  faMax = 84;
 
 implementation
 

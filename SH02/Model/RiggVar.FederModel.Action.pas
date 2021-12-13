@@ -135,6 +135,11 @@ begin
     faSudoku12: M.StartNew(12);
     faSudoku16: M.StartNew(16);
 
+    else
+    begin
+      M.HandleAction(fa);
+    end;
+
   end;
   if M.Sudoku <> nil then
     M.Sudoku.Display.Refresh;

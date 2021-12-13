@@ -94,42 +94,42 @@ begin
     faShare: result := 'Share';
 
     { Select }
-    faSelect0: result := 'Select Clear Value 0';
-    faSelect1: result := 'Select Sudoku Value 1';
-    faSelect2: result := 'Select Sudoku Value 2';
-    faSelect3: result := 'Select Sudoku Value 3';
-    faSelect4: result := 'Select Sudoku Value 4';
-    faSelect5: result := 'Select Sudoku Value 5';
-    faSelect6: result := 'Select Sudoku Value 6';
-    faSelect7: result := 'Select Sudoku Value 7';
-    faSelect8: result := 'Select Sudoku Value 8';
-    faSelect9: result := 'Select Sudoku Value 9';
-    faSelect10: result := 'Select Sudoku Value 10';
-    faSelect11: result := 'Select Sudoku Value 11';
-    faSelect12: result := 'Select Sudoku Value 12';
-    faSelect13: result := 'Select Sudoku Value 13';
-    faSelect14: result := 'Select Sudoku Value 14';
-    faSelect15: result := 'Select Sudoku Value 15';
-    faSelect16: result := 'Select Sudoku Value 16';
+    faSelect0: result := 'Select 0';
+    faSelect1: result := 'Select 1';
+    faSelect2: result := 'Select 2';
+    faSelect3: result := 'Select 3';
+    faSelect4: result := 'Select 4';
+    faSelect5: result := 'Select 5';
+    faSelect6: result := 'Select 6';
+    faSelect7: result := 'Select 7';
+    faSelect8: result := 'Select 8';
+    faSelect9: result := 'Select 9';
+    faSelect10: result := 'Select 10';
+    faSelect11: result := 'Select 11';
+    faSelect12: result := 'Select 12';
+    faSelect13: result := 'Select 13';
+    faSelect14: result := 'Select 14';
+    faSelect15: result := 'Select 15';
+    faSelect16: result := 'Select 16';
 
     { Placing }
-    faPlace0: result := 'P0';
-    faPlace1: result := 'P1';
-    faPlace2: result := 'P2';
-    faPlace3: result := 'P3';
-    faPlace4: result := 'P4';
-    faPlace5: result := 'P5';
-    faPlace6: result := 'P6';
-    faPlace7: result := 'P7';
-    faPlace8: result := 'P8';
-    faPlace9: result := 'P9';
-    faPlace10: result := 'P10';
-    faPlace11: result := 'P11';
-    faPlace12: result := 'P12';
-    faPlace13: result := 'P13';
-    faPlace14: result := 'P14';
-    faPlace15: result := 'P15';
-    faPlace16: result := 'P16';
+    faPlace0: result := 'Place 0';
+    faPlace1: result := 'Place 1';
+    faPlace2: result := 'Place 2';
+    faPlace3: result := 'Place 3';
+    faPlace4: result := 'Place 4';
+    faPlace5: result := 'Place 5';
+    faPlace6: result := 'Place 6';
+    faPlace7: result := 'Place 7';
+    faPlace8: result := 'Place 8';
+    faPlace9: result := 'Place 9';
+    faPlace10: result := 'Place 10';
+    faPlace11: result := 'Place 11';
+    faPlace12: result := 'Place 12';
+    faPlace13: result := 'Place 13';
+    faPlace14: result := 'Place 14';
+    faPlace15: result := 'Place 15';
+    faPlace16: result := 'Place 16';
 
     { Navigation }
     faNavColM: result := 'Nav Col -';

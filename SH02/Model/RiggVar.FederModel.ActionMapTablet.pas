@@ -152,8 +152,8 @@ begin
       InitAC(cl, 8, faNoop, cla);
 
       cl := BottomLeft;
-      InitAC(cl, 1, faNoop, cla);
-      InitAC(cl, 2, faNoop, cla);
+      InitAC(cl, 1, faShowActions, claAquamarine);
+      InitAC(cl, 2, faShowMemo, claAquamarine);
       InitAC(cl, 3, faNoop, cla);
       InitAC(cl, 4, faCycleColorSchemeM, cla);
       InitAC(cl, 5, faCycleColorSchemeP, cla);

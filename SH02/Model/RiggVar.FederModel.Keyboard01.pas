@@ -294,10 +294,13 @@ begin
     else if Key = vkReturn then
 
     else if Key = vkF1 then
-      result := faSudoku9
+      result := faShowMemo
+
     else if Key = vkF2 then
-      result := faSudoku12
+      result := faSudoku9
     else if Key = vkF3 then
+      result := faSudoku12
+    else if Key = vkF4 then
       result := faSudoku16
 
   end;
