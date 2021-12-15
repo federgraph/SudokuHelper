@@ -66,15 +66,17 @@ implementation
 uses
   System.SysUtils,
   FMX.StdCtrls,
+  RiggVar.FB.ActionConst,
+  RiggVar.FB.ActionLong,
   SH.DataStorageBase,
   SH.DisplayhandlerBase,
   SH.InputhandlerBase;
 
-resourcestring
-  CSudoku16x16 = '16x16 Sudoku';
-  CSudoku16x16Gosu = '16x16 Sudoku Gosu';
-  CHeptSudoku16x16 = '16x16 Sudoku (heptadecimal)';
-  CHeptSudoku16x16Gosu = '16x16 Sudoku Gosu (heptadecimal)';
+//resourcestring
+//  CSudoku16x16 = '16x16 Sudoku';
+//  CSudoku16x16Gosu = '16x16 Sudoku Gosu';
+//  CHeptSudoku16x16 = '16x16 Sudoku (heptadecimal)';
+//  CHeptSudoku16x16Gosu = '16x16 Sudoku Gosu (heptadecimal)';
 
 const
   CMaxValue = 16;
@@ -121,7 +123,8 @@ end;
 
 class function T16x16SudokuHelper.GetDisplayname: string;
 begin
-  Result := CSudoku16x16;
+//  Result := CSudoku16x16;
+  result := GetFederActionLong(faSudoku16A);
 end;
 
 procedure T16x16SudokuGosuHelper.CreateDataStorage;
@@ -131,7 +134,8 @@ end;
 
 class function T16x16SudokuGosuHelper.GetDisplayname: string;
 begin
-  Result := CSudoku16x16Gosu;
+//  Result := CSudoku16x16Gosu;
+  result := GetFederActionLong(faSudoku16B);
 end;
 
 function T16x16SudokuDisplayhandler.GetDefaultCellSize: Integer;
@@ -158,7 +162,8 @@ end;
 
 class function T16x16HeptSudokuHelper.GetDisplayname: string;
 begin
-  Result := CHeptSudoku16x16;
+//  Result := CHeptSudoku16x16;
+  result := GetFederActionLong(faSudoku16C);
 end;
 
 {== T16x16HeptSudokuGosuHelper =========================================}
@@ -170,10 +175,11 @@ end;
 
 class function T16x16HeptSudokuGosuHelper.GetDisplayname: string;
 begin
-  Result := CHeptSudoku16x16Gosu;
+//  Result := CHeptSudoku16x16Gosu;
+  result := GetFederActionLong(faSudoku16D);
 end;
 
-{== T16x16HeptSudokuDisplayhandler =====================================}
+{== T16x16HeptSudokuDisplayHandler =====================================}
 
 {! Get the string to draw in a cell for cell value }
 function T16x16HeptSudokuDisplayhandler.GetSymbol(aValue: TSudokuValue): string;

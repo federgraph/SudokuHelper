@@ -69,15 +69,17 @@ implementation
 uses
   System.SysUtils,
   FMX.StdCtrls,
+  RiggVar.FB.ActionConst,
+  RiggVar.FB.ActionLong,
   SH.DataStorageBase,
   SH.DisplayHandlerBase,
   SH.InputHandlerBase;
 
-resourcestring
-  CSudoku12x12 = '12x12 Sudoku';
-  CSudoku12x12Gosu = '12x12 Sudoku Gosu';
-  CHexSudoku12x12 = '12x12 Sudoku (hexadecimal)';
-  CHexSudoku12x12Gosu = '12x12 Sudoku Gosu (hexadecimal)';
+//resourcestring
+//  CSudoku12x12 = '12x12 Sudoku';
+//  CSudoku12x12Gosu = '12x12 Sudoku Gosu';
+//  CHexSudoku12x12 = '12x12 Sudoku (hexadecimal)';
+//  CHexSudoku12x12Gosu = '12x12 Sudoku Gosu (hexadecimal)';
 
 const
   CMaxValue = 12;
@@ -133,7 +135,8 @@ end;
 
 class function T12x12SudokuHelper.GetDisplayname: string;
 begin
-  Result := CSudoku12x12;
+//  Result := CSudoku12x12;
+  result := GetFederActionLong(faSudoku12A);
 end;
 
 {== T12x12SudokuGosuHelper ============================================}
@@ -145,7 +148,8 @@ end;
 
 class function T12x12SudokuGosuHelper.GetDisplayname: string;
 begin
-  Result := CSudoku12x12Gosu;
+//  Result := CSudoku12x12Gosu;
+  result := GetFederActionLong(faSudoku12B);
 end;
 
 {== T12x12SudokuInputhandler ==========================================}
@@ -169,7 +173,8 @@ end;
 
 class function T12x12HexSudokuHelper.GetDisplayname: string;
 begin
-  Result := CHexSudoku12x12;
+//  Result := CHexSudoku12x12;
+  result := GetFederActionLong(faSudoku12C);
 end;
 
 {== T12x12HexSudokuGosuHelper =========================================}
@@ -181,7 +186,8 @@ end;
 
 class function T12x12HexSudokuGosuHelper.GetDisplayname: string;
 begin
-  Result := CHexSudoku12x12Gosu;
+//Result := CHexSudoku12x12Gosu;
+  result := GetFederActionLong(faSudoku12D);
 end;
 
 {== T12x12HexSudokuDisplayhandler =====================================}

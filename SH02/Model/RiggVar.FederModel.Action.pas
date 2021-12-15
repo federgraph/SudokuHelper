@@ -131,9 +131,18 @@ begin
     faNavRowFirst: M.SudokuGrid.NavRow(-99);
     faNavRowLast: M.SudokuGrid.NavRow(99);
 
-    faSudoku9: M.StartNew(9);
-    faSudoku12: M.StartNew(12);
-    faSudoku16: M.StartNew(16);
+    faSudoku09A: M.StartNew(fa);
+    faSudoku09B: M.StartNew(fa);
+
+    faSudoku12A: M.StartNew(fa);
+    faSudoku12B: M.StartNew(fa);
+    faSudoku12C: M.StartNew(fa);
+    faSudoku12D: M.StartNew(fa);
+
+    faSudoku16A: M.StartNew(fa);
+    faSudoku16B: M.StartNew(fa);
+    faSudoku16C: M.StartNew(fa);
+    faSudoku16D: M.StartNew(fa);
 
     else
     begin

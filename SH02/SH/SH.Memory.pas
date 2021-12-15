@@ -56,6 +56,8 @@ uses
   System.IOUtils,
   System.RegularExpressions,
   System.Win.Registry,
+  RiggVar.FB.ActionConst,
+  RiggVar.FB.ActionLong,
   PB.CharactersU,
   PB.CommonTypesU,
   PB.InterlockedOpsU,
@@ -134,8 +136,11 @@ begin
 end;
 
 function TAppMemory.GetLastSudoku: string;
+var
+  DefaultSudokuName: string;
 begin
-  Result := Memory.ReadString(CSettings, CLastSudokuKey, CClassicSudoku9x9);
+  DefaultSudokuName := GetFederActionLong(faSudoku09A);
+  Result := Memory.ReadString(CSettings, CLastSudokuKey, DefaultSudokuName);
 end;
 
 procedure TAppMemory.SetLastFolder(const Value: string);

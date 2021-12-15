@@ -90,60 +90,67 @@ const
   faPaste = 37;
   faShare = 38;
 
-  { SudokuScene }
-  faSudoku9 = 39;
-  faSudoku12 = 40;
-  faSudoku16 = 41;
-
   { SudokuNavigation }
-  faNavColM = 42;
-  faNavColP = 43;
-  faNavRowM = 44;
-  faNavRowP = 45;
-  faNavColFirst = 46;
-  faNavColLast = 47;
-  faNavRowFirst = 48;
-  faNavRowLast = 49;
+  faNavColM = 39;
+  faNavColP = 40;
+  faNavRowM = 41;
+  faNavRowP = 42;
+  faNavColFirst = 43;
+  faNavColLast = 44;
+  faNavRowFirst = 45;
+  faNavRowLast = 46;
 
   { SudokuSelection }
-  faSelect0 = 50;
-  faSelect1 = 51;
-  faSelect2 = 52;
-  faSelect3 = 53;
-  faSelect4 = 54;
-  faSelect5 = 55;
-  faSelect6 = 56;
-  faSelect7 = 57;
-  faSelect8 = 58;
-  faSelect9 = 59;
-  faSelect10 = 60;
-  faSelect11 = 61;
-  faSelect12 = 62;
-  faSelect13 = 63;
-  faSelect14 = 64;
-  faSelect15 = 65;
-  faSelect16 = 66;
+  faSelect0 = 47;
+  faSelect1 = 48;
+  faSelect2 = 49;
+  faSelect3 = 50;
+  faSelect4 = 51;
+  faSelect5 = 52;
+  faSelect6 = 53;
+  faSelect7 = 54;
+  faSelect8 = 55;
+  faSelect9 = 56;
+  faSelect10 = 57;
+  faSelect11 = 58;
+  faSelect12 = 59;
+  faSelect13 = 60;
+  faSelect14 = 61;
+  faSelect15 = 62;
+  faSelect16 = 63;
 
   { SudokuPlacing }
-  faPlace0 = 67;
-  faPlace1 = 68;
-  faPlace2 = 69;
-  faPlace3 = 70;
-  faPlace4 = 71;
-  faPlace5 = 72;
-  faPlace6 = 73;
-  faPlace7 = 74;
-  faPlace8 = 75;
-  faPlace9 = 76;
-  faPlace10 = 77;
-  faPlace11 = 78;
-  faPlace12 = 79;
-  faPlace13 = 80;
-  faPlace14 = 81;
-  faPlace15 = 82;
-  faPlace16 = 83;
+  faPlace0 = 64;
+  faPlace1 = 65;
+  faPlace2 = 66;
+  faPlace3 = 67;
+  faPlace4 = 68;
+  faPlace5 = 69;
+  faPlace6 = 70;
+  faPlace7 = 71;
+  faPlace8 = 72;
+  faPlace9 = 73;
+  faPlace10 = 74;
+  faPlace11 = 75;
+  faPlace12 = 76;
+  faPlace13 = 77;
+  faPlace14 = 78;
+  faPlace15 = 79;
+  faPlace16 = 80;
 
-  faMax = 84;
+  { SudokuScene }
+  faSudoku09A = 81;
+  faSudoku09B = 82;
+  faSudoku12A = 83;
+  faSudoku12B = 84;
+  faSudoku12C = 85;
+  faSudoku12D = 86;
+  faSudoku16A = 87;
+  faSudoku16B = 88;
+  faSudoku16C = 89;
+  faSudoku16D = 90;
+
+  faMax = 91;
 
 implementation
 

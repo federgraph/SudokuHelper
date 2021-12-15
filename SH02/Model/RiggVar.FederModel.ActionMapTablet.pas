@@ -73,7 +73,7 @@ uses
 constructor TActionMapTablet.Create;
 begin
   inherited;
-  FPageCount := 2;
+  FPageCount := 3;
   FEscapeIndex := FPageCount + 1;
   ForceActionPageMP := True;
   TestName := 'Tablet Page';
@@ -135,15 +135,54 @@ begin
     begin
       cl := TopLeft;
       //InitAC(cl, 1, faActionPageM, claYellow);
-      InitAC(cl, 2, faSudoku9, claPlum);
-      InitAC(cl, 3, faSudoku12, claPlum);
-      InitAC(cl, 4, faSudoku16, claPlum);
+      InitAC(cl, 2, faSudoku09A, claPlum);
+      InitAC(cl, 3, faSudoku09B, claPlum);
+      InitAC(cl, 4, faNoop, claPlum);
       InitAC(cl, 5, faNoop, claPlum);
       InitAC(cl, 6, faNoop, cla);
 
       cl := TopRight;
+      InitAC(cl, 1, faSudoku12A, claPlum);
+      InitAC(cl, 2, faSudoku12B, claPlum);
+      InitAC(cl, 3, faSudoku12C, claPlum);
+      InitAC(cl, 4, faSudoku12D, claPlum);
+      //InitAC(cl, 5, faActionPageP, claYellow);
+      InitAC(cl, 6, faNoop, cla);
+      InitAC(cl, 7, faNoop, cla);
+      InitAC(cl, 8, faNoop, cla);
+
+      cl := BottomLeft;
       InitAC(cl, 1, faNoop, cla);
-      InitAC(cl, 2, faNoop, claWhite);
+      InitAC(cl, 2, faNoop, cla);
+      InitAC(cl, 3, faNoop, cla);
+      InitAC(cl, 4, faNoop, cla);
+      InitAC(cl, 5, faNoop, cla);
+      InitAC(cl, 6, faNoop, cla);
+      InitAC(cl, 7, faNoop, cla);
+      InitAC(cl, 8, faNoop, cla);
+
+      cl := BottomRight;
+      InitAC(cl, 1, faSudoku16A, claPlum);
+      InitAC(cl, 2, faSudoku16B, claPlum);
+      InitAC(cl, 3, faSudoku16C, claPlum);
+      InitAC(cl, 4, faSudoku16D, claPlum);
+      InitAC(cl, 5, faNoop, cla);
+      InitAC(cl, 6, faNoop, cla);
+    end;
+
+    3:
+    begin
+      cl := TopLeft;
+      //InitAC(cl, 1, faActionPageM, claYellow);
+      InitAC(cl, 2, faNoop, cla);
+      InitAC(cl, 3, faNoop, cla);
+      InitAC(cl, 4, faNoop, cla);
+      InitAC(cl, 5, faNoop, cla);
+      InitAC(cl, 6, faNoop, cla);
+
+      cl := TopRight;
+      InitAC(cl, 1, faNoop, cla);
+      InitAC(cl, 2, faNoop, cla);
       InitAC(cl, 3, faNoop, cla);
       InitAC(cl, 4, faNoop, cla);
       //InitAC(cl, 5, faActionPageP, claYellow);
@@ -152,11 +191,11 @@ begin
       InitAC(cl, 8, faNoop, cla);
 
       cl := BottomLeft;
-      InitAC(cl, 1, faShowActions, claAquamarine);
-      InitAC(cl, 2, faShowMemo, claAquamarine);
+      InitAC(cl, 1, faShowActions, claPlum);
+      InitAC(cl, 2, faShowMemo, claPlum);
       InitAC(cl, 3, faNoop, cla);
-      InitAC(cl, 4, faCycleColorSchemeM, cla);
-      InitAC(cl, 5, faCycleColorSchemeP, cla);
+      InitAC(cl, 4, faCycleColorSchemeM, claCornflowerblue);
+      InitAC(cl, 5, faCycleColorSchemeP, claCornflowerblue);
       InitAC(cl, 6, faNoop, cla);
       InitAC(cl, 7, faNoop, cla);
       InitAC(cl, 8, faNoop, cla);
@@ -169,6 +208,7 @@ begin
       InitAC(cl, 5, faNoop, cla);
       InitAC(cl, 6, faNoop, cla);
     end;
+
   end;
 end;
 

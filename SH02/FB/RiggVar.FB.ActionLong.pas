@@ -143,10 +143,18 @@ begin
     faNavRowLast: result := 'Nav Row Last';
 
     { Scene }
-    faSudoku9: result := 'Sudoku 9x9';
-    faSudoku12: result := 'Sudoku 12x12';
-    faSudoku16: result := 'Sudoku 16x16';
+    faSudoku09A: result := 'Classic Sudoku (9x9)';
+    faSudoku09B: result := 'Classic Sudoku Gosu (9x9)';
 
+    faSudoku12A: result := 'Sudoku 12x12';
+    faSudoku12B: result := '12x12 Sudoku Gosu';
+    faSudoku12C: result := '12x12 Sudoku (hexadecimal)';
+    faSudoku12D: result := '12x12 Sudoku Gosu (hexadecimal)';
+
+    faSudoku16A: result := 'Sudoku 16x16';
+    faSudoku16B: result := '16x16 Sudoku Gosu';
+    faSudoku16C: result := '16x16 Sudoku (heptadecimal)';
+    faSudoku16D: result := '16x16 Sudoku Gosu (heptadecimal)';
   end;
 end;
 

@@ -94,9 +94,18 @@ begin
     faShare: result := 'faShare';
 
     { Scene }
-    faSudoku9: result := 'faSudoku9';
-    faSudoku12: result := 'faSudoku12';
-    faSudoku16: result := 'faSudoku16';
+    faSudoku09A: result := 'faSudoku09A';
+    faSudoku09B: result := 'faSudoku09B';
+
+    faSudoku12A: result := 'faSudoku12A';
+    faSudoku12B: result := 'faSudoku12B';
+    faSudoku12C: result := 'faSudoku12C';
+    faSudoku12D: result := 'faSudoku12D';
+
+    faSudoku16A: result := 'faSudoku16A';
+    faSudoku16B: result := 'faSudoku16B';
+    faSudoku16C: result := 'faSudoku16C';
+    faSudoku16D: result := 'faSudoku16D';
 
     { Current Value Selection }
     faSelect0: result := 'faSelect0';

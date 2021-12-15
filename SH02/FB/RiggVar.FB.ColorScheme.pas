@@ -34,7 +34,6 @@ type
     claTouchBtnFill: TAlphaColor;
     claCornerScrollbar: TAlphaColor;
     claCornerBtnText: TAlphaColor;
-    claTouchbarText: TAlphaColor;
 
     constructor Create(cs: Integer);
 
@@ -47,7 +46,6 @@ implementation
 
 constructor TColorScheme.Create(cs: Integer);
 begin
-  claTouchbarText := claBlack;
   DefaultScheme := cs;
   CurrentScheme := DefaultScheme;
   Init(CurrentScheme);

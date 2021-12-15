@@ -143,9 +143,16 @@ faPaste,
 faShare];
 
 ActionGroupSudokuScene: TActionGroup = [
-faSudoku9,
-faSudoku12,
-faSudoku16];
+faSudoku09A,
+faSudoku09B,
+faSudoku12A,
+faSudoku12B,
+faSudoku12C,
+faSudoku12D,
+faSudoku16A,
+faSudoku16B,
+faSudoku16C,
+faSudoku16D];
 
 ActionGroupSudokuNavigation: TActionGroup = [
 faNavColM,

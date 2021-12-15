@@ -92,10 +92,11 @@ begin
   AddSpecial(ActionGroupReset, 'Reset');
   AddSpecial(ActionGroupDropTarget, 'DropTarget');
   AddSpecial(ActionGroupCopyPaste, 'CopyPaste');
-  AddSpecial(ActionGroupSudokuScene, 'SudokuScene');
+
   AddSpecial(ActionGroupSudokuNavigation, 'SudokuNavigation');
   AddSpecial(ActionGroupSudokuSelection, 'SudokuSelection');
   AddSpecial(ActionGroupSudokuPlacing, 'SudokuPlacing');
+  AddSpecial(ActionGroupSudokuScene, 'SudokuScene');
 
 end;
 

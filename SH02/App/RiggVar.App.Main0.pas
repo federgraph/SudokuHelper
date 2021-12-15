@@ -31,6 +31,7 @@ uses
   RiggVar.FB.ActionTest,
   RiggVar.FB.ActionGroups,
   RiggVar.FB.ActionHelper,
+  RiggVar.FB.ActionLong,
   RiggVar.FB.Touch,
   RiggVar.FederModel.Keyboard01,
   RiggVar.FederModel.Action,
@@ -125,7 +126,7 @@ type
 
     procedure InitFirstSudoku;
     procedure CreateSudokuHelper(const aName: string);
-    procedure StartNew(Value: Integer);
+    procedure StartNew(fa: TFederAction);
     procedure HandleCharacter(AChar: Char);
 
     property ColorScheme: Integer read GetColorScheme write SetColorScheme;
@@ -483,7 +484,7 @@ end;
 procedure TMain0.InitFirstSudoku;
 begin
 //  CreateSudokuHelper(AppMemory.LastSudoku);
-  CreateSudokuHelper(CClassicSudoku9x9);
+  CreateSudokuHelper(GetFederActionLong(faSudoku09A));
 end;
 
 procedure TMain0.CreateSudokuHelper(const aName: string);
@@ -502,17 +503,12 @@ begin
   FormMain.Caption := string.Format(SMainformCaptionMask, [Main.Sudoku.Displayname]);
 end;
 
-procedure TMain0.StartNew(Value: Integer);
+procedure TMain0.StartNew(fa: TFederAction);
 var
-  LSudokuName: string;
+  s: string;
 begin
-  case Value of
-    12: LSudokuName := '12x12 Sudoku';
-    16: LSudokuName := '16x16 Sudoku';
-    else
-      LSudokuName := CClassicSudoku9x9;
-  end;
-  CreateSudokuHelper(LSudokuName);
+  s := ActionHandler.GetCaption(fa);
+  CreateSudokuHelper(s);
 end;
 
 procedure TMain0.SetCurrentValue(const Value: Integer);

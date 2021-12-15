@@ -143,9 +143,18 @@ begin
     faNavRowLast: result := 'nrL';
 
     { Scene }
-    faSudoku9: result := 'S9';
-    faSudoku12: result := 'S12';
-    faSudoku16: result := 'S16';
+    faSudoku09A: result := '9A';
+    faSudoku09B: result := '9B';
+
+    faSudoku12A: result := '12A';
+    faSudoku12B: result := '12B';
+    faSudoku12C: result := '12C';
+    faSudoku12D: result := '12D';
+
+    faSudoku16A: result := '16A';
+    faSudoku16B: result := '16B';
+    faSudoku16C: result := '16C';
+    faSudoku16D: result := '16D';
 
   end;
 end;
