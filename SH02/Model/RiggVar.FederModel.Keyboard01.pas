@@ -28,7 +28,6 @@ type
   TFederKeyboard01 = class(TFederKeyboard)
   public
     constructor Create;
-    function KeyDownAction(var Key: Word; var KeyChar: Char; Shift: TShiftState): TFederAction; override;
     function KeyUpAction(var Key: Word; var KeyChar: Char; Shift: TShiftState): TFederAction; override;
   end;
 
@@ -40,11 +39,6 @@ constructor TFederKeyboard01.Create;
 begin
   inherited;
   TestName := 'Keyboard01';
-end;
-
-function TFederKeyboard01.KeyDownAction(var Key: Word; var KeyChar: Char; Shift: TShiftState): TFederAction;
-begin
-  result := faNoop;
 end;
 
 function TFederKeyboard01.KeyUpAction(var Key: Word; var KeyChar: Char; Shift: TShiftState): TFederAction;
@@ -74,16 +68,8 @@ begin
 
     else if Key = vkDown then
 
-    else if KeyChar = ' ' then
-
-    else if Key = vkSpace then
-
-    else if Key = vkEscape then
-    begin
-      { this is a Windows 8 shortcut (toggle between Startscreen and Desktop) }
-      result := faNoop;
-    end
-
+    else if Key = vkZ then
+      result := faUndo
   end
 
   else
@@ -286,8 +272,10 @@ begin
     else if KeyChar = 'Z' then
 
     else if KeyChar = ' ' then
+      result := faToggleGosu
 
     else if Key = vkSpace then
+      result := faToggleGosu
 
     else if Key = vkDelete then
 

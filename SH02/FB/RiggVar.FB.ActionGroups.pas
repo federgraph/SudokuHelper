@@ -97,7 +97,8 @@ begin
   AddSpecial(ActionGroupSudokuSelection, 'SudokuSelection');
   AddSpecial(ActionGroupSudokuPlacing, 'SudokuPlacing');
   AddSpecial(ActionGroupSudokuScene, 'SudokuScene');
-
+  AddSpecial(ActionGroupSudokuMode, 'SudokuMode');
+  AddSpecial(ActionGroupSudokuCommands, 'SudokuCommands');
 end;
 
 function TActionGroupList.GetGroup(fa: Integer): Integer;

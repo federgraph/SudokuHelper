@@ -93,7 +93,7 @@ begin
     faPaste: result := '^v';
     faShare: result := 'sha';
 
-    { Select Sudoku Value }
+    { SudokuSelection }
     faSelect0: result := '0';
     faSelect1: result := '1';
     faSelect2: result := '2';
@@ -112,7 +112,7 @@ begin
     faSelect15: result := '15';
     faSelect16: result := '16';
 
-    { Placing Sudoku Values }
+    { SudokuPlacing }
     faPlace0: result := 'P0';
     faPlace1: result := 'P1';
     faPlace2: result := 'P2';
@@ -131,7 +131,7 @@ begin
     faPlace15: result := 'P15';
     faPlace16: result := 'P16';
 
-    { Navigation }
+    { SudokuNavigation }
     faNavRowM: result := 'nr-';
     faNavRowP: result := 'nr+';
     faNavColM: result := 'nc-';
@@ -142,7 +142,7 @@ begin
     faNavRowFirst: result := 'nrF';
     faNavRowLast: result := 'nrL';
 
-    { Scene }
+    { SudokuScene }
     faSudoku09A: result := '9A';
     faSudoku09B: result := '9B';
 
@@ -155,6 +155,21 @@ begin
     faSudoku16B: result := '16B';
     faSudoku16C: result := '16C';
     faSudoku16D: result := '16D';
+
+    { SudokuMode }
+    faSetCandidateMode: result := '.SC';
+    faUnsetCandidateMode: result := '.UC';
+    faToggleGosuMode: result := '.TG';
+
+    { SudokuCommands }
+    faToggleGosu: result := 'TG';
+    faNewSudoku: result := 'NS';
+    faSaveSudoku: result := 'SS';
+    faLoadSudoku: result := 'LS';
+    faClearStack: result := 'CS';
+    faUndo: result := '^z';
+    faSetMark: result := 'SM';
+    faRevertToMark: result := 'RtM';
 
   end;
 end;

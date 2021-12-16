@@ -179,12 +179,6 @@ begin
   Main.IsUp := Value;
 end;
 
-procedure TFormMain.FormKeyUp(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
-begin
-  if IsUp then
-    Main.ActionHandler.FormKeyUp(Sender, Key, KeyChar, Shift);
-end;
-
 procedure TFormMain.FormResize(Sender: TObject);
 begin
   if IsUp then
@@ -289,18 +283,26 @@ begin
   Main.Sudoku.InputHandler.HandleCellClick(SudokuGraph.Col, SudokuGraph.Row, Button = TMouseButton.mbRight);
 end;
 
+procedure TFormMain.FormKeyUp(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
+begin
+  MainVar.ShiftState := Shift;
+  if IsUp then
+    Main.ActionHandler.FormKeyUp(Sender, Key, KeyChar, Shift);
+end;
+
 procedure TFormMain.FormMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
 begin
+  MainVar.ShiftState := Shift;
   SudokuImageMouseUp(Sender, Button, Shift,
   X - SudokuImage.Position.X,
   Y - SudokuImage.Position.Y);
 end;
 
-procedure TFormMain.FormMouseWheel(Sender: TObject; Shift: TShiftState;
-  WheelDelta: Integer; var Handled: Boolean);
+procedure TFormMain.FormMouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; var Handled: Boolean);
 var
   delta: Integer;
 begin
+  MainVar.ShiftState := Shift;
   if IsUp then
   begin
     if WheelDelta > 0 then

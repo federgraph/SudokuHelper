@@ -1,4 +1,4 @@
-unit SH.SudokuMain;
+﻿unit SH.SudokuMain;
 
 interface
 
@@ -92,7 +92,6 @@ uses
 
 constructor TSudokuMain.Create;
 begin
-
   inherited;
 //  AppMemory.RestoreFormState(self);
 end;

@@ -37,7 +37,8 @@ implementation
 
 uses
   FrmMain,
-  RiggVar.App.Main;
+  RiggVar.App.Main,
+  SH.Interfaces;
 
 procedure TFederActionHandler.FormKeyUp(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
 var
@@ -79,10 +80,27 @@ begin
 end;
 
 function TFederActionHandler.GetChecked(fa: TFederAction): Boolean;
+var
+  M: TMain;
 begin
   result := False;
+
+  M := Main;
+  if M = nil then
+    Exit;
+  if not M.IsUp then
+    Exit;
+  if M.Sudoku = nil then
+    Exit;
+
   case fa of
-    faSelect0..faSelect16: result := Main.CurrentValue = fa - faSelect0;
+    faSelect0..faSelect16: result := M.CurrentValue = fa - faSelect0;
+
+    faSetCandidateMode: result := M.SetCandidatesButtonDown;
+    faUnsetCandidateMode: result := M.UnsetCandidatesButtonDown;
+    faToggleGosuMode: result := M.ToggleGosuButtonEnabled and M.ToggleGosuButtonDown;
+
+    faUndo: result := M.Sudoku.CanUndo;
   end;
 end;
 
@@ -92,6 +110,10 @@ var
 begin
   M := Main;
   if M = nil then
+    Exit;
+  if not M.IsUp then
+    Exit;
+  if M.Sudoku = nil then
     Exit;
 
   case fa of
@@ -143,6 +165,14 @@ begin
     faSudoku16B: M.StartNew(fa);
     faSudoku16C: M.StartNew(fa);
     faSudoku16D: M.StartNew(fa);
+
+    faSetCandidateMode: M.RightClickAction := TRightClickAction.SetCandidate;
+    faUnsetCandidateMode: M.RightClickAction := TRightClickAction.UnsetCandidate;
+    faToggleGosuMode: M.RightClickAction := TRightClickAction.ToggleGosu;
+
+    faToggleGosu: M.HandleCharacter(' ');
+    faUndo: M.Sudoku.Undo;
+    faClearStack: M.Sudoku.ClearUndostack;
 
     else
     begin

@@ -81,6 +81,9 @@ type
     procedure SetTouch(const Value: Integer);
     procedure SetTouchbarLayout(const Value: Integer);
     procedure SetCurrentValue(const Value: Integer);
+    function GetSetCandidatesButtonDown: Boolean;
+    function GetToggleGosuButtonDown: Boolean;
+    function GetUnsetCandidatesButtonDown: Boolean;
   public
     SudokuHostForm: ISudokuHostForm;
     BackgroundLock: Boolean;
@@ -98,6 +101,10 @@ type
 
     SudokuGrid: TSudokuGrid;
     SudokuGraph: TSudokuGraph;
+
+    ToggleGosuButtonEnabled: Boolean;
+
+    RightClickAction: TRightClickAction;
 
     constructor Create;
     destructor Destroy; override;
@@ -140,6 +147,9 @@ type
 
     property Sudoku: ISudokuHelper read FSudoku write FSudoku;
     property CurrentValue: Integer read FCurrentValue write SetCurrentValue;
+    property ToggleGosuButtonDown: Boolean read GetToggleGosuButtonDown;
+    property SetCandidatesButtonDown: Boolean read GetSetCandidatesButtonDown;
+    property UnsetCandidatesButtonDown: Boolean read GetUnsetCandidatesButtonDown;
   end;
 
 implementation
@@ -156,6 +166,8 @@ uses
 function TSudokuHostForm.GetCurrentCandidate: TSudokuValue;
 begin
   result := 1;
+  if Main.IsUp then
+    result := Main.CurrentValue;
 end;
 
 function TSudokuHostForm.GetCurrentValue: TSudokuValue;
@@ -165,14 +177,29 @@ begin
     result := Main.CurrentValue;
 end;
 
-function TSudokuHostForm.GetModifierkeys: TShiftstate;
+function TSudokuHostForm.GetModifierkeys: TShiftState;
 begin
-  result := [];
+  result := MainVar.ShiftState;
 end;
 
 function TSudokuHostForm.GetRightClickAction: TRightClickAction;
+var
+  LState: TShiftstate;
 begin
-  result := TRightClickAction.SetCandidate;
+  LState:= MainVar.ShiftState;
+  if ssAlt in LState then
+    Result := TRightClickAction.SetCandidate
+  else if ssCtrl in LState then
+    Result := TRightClickAction.UnsetCandidate
+  else if Main.ToggleGosuButtonEnabled and Main.ToggleGosuButtonDown then
+    Result := TRightClickAction.ToggleGosu
+  else if Main.SetCandidatesButtonDown then
+     Result := TRightClickAction.SetCandidate
+  else if Main.UnsetCandidatesButtonDown then
+    Result := TRightClickAction.UnsetCandidate
+  else
+    { default action is to set a candidate }
+    Result := TRightClickAction.SetCandidate
 end;
 
 { TMain0 }
@@ -489,18 +516,18 @@ end;
 
 procedure TMain0.CreateSudokuHelper(const aName: string);
 begin
-  Main.Sudoku := HelperRegistry.CreateInstance(aName);
+  Sudoku := HelperRegistry.CreateInstance(aName);
   InitializeSudoku;
 end;
 
 procedure TMain0.InitializeSudoku;
 begin
-  SudokuGraph.DataStorage := Main.Sudoku.Data;
-  Main.Sudoku.Display.InitializeGrid(SudokuGraph);
-  Main.Sudoku.InputHandler.Initialize(SudokuHostForm);
-//  ToggleGosuButton.Enabled := Main.Sudoku.IsGosu;
-  AppMemory.LastSudoku := Main.Sudoku.Displayname;
-  FormMain.Caption := string.Format(SMainformCaptionMask, [Main.Sudoku.Displayname]);
+  SudokuGraph.DataStorage := Sudoku.Data;
+  Sudoku.Display.InitializeGrid(SudokuGraph);
+  Sudoku.InputHandler.Initialize(SudokuHostForm);
+  ToggleGosuButtonEnabled := Sudoku.IsGosu;
+  AppMemory.LastSudoku := Sudoku.Displayname;
+  FormMain.Caption := string.Format(SMainformCaptionMask, [Sudoku.Displayname]);
 end;
 
 procedure TMain0.StartNew(fa: TFederAction);
@@ -520,6 +547,21 @@ begin
   end;
 end;
 
+function TMain0.GetSetCandidatesButtonDown: Boolean;
+begin
+  result := RightClickAction = TRightClickAction.SetCandidate;
+end;
+
+function TMain0.GetToggleGosuButtonDown: Boolean;
+begin
+  result := RightClickAction = TRightClickAction.ToggleGosu;
+end;
+
+function TMain0.GetUnsetCandidatesButtonDown: Boolean;
+begin
+  result := RightClickAction = TRightClickAction.UnsetCandidate;
+end;
+
 procedure TMain0.DoBigWheel(Delta: single);
 begin
   SudokuGrid.NavRow(Round(Delta));
@@ -533,7 +575,7 @@ end;
 procedure TMain0.CollectShortcuts(fa: Integer; ML: TStrings);
 begin
   Keyboard.GetShortcuts(fa, ML);
-//  Main.ActionMap0.CollectOne(fa, ML);
+//  ActionMap0.CollectOne(fa, ML);
 {$ifdef WantFederText}
   ActionMapTablet.CollectOne(fa, ML);
   ActionMapPhone.CollectOne(fa, ML);
@@ -543,10 +585,10 @@ end;
 
 procedure TMain0.WriteHelpText(ML: TStrings);
 begin
-  ML.Add('# SudokuHelper');
+  ML.Add('# SudokuHelper Readme');
   ML.Add('');
   ML.Add('Copyright © 2021 by Dr. Peter Below,');
-  ML.Add('adapted by Federgraph, see forked GitHub repository.');
+  ML.Add('adapted for SH02 by Federgraph, see forked GitHub repository.');
   ML.Add('');
   ML.Add('SudokuHelper is an application that acts like an electronic Sudoku grid.');
   ML.Add('');
@@ -566,9 +608,9 @@ begin
   ML.Add('- Named marks can be set for the current undo stack state.');
   ML.Add('- The Sudoku can be saved to file, including the undo stack.');
   ML.Add('');
-  ML.Add('## Keyboard interface');
+  ML.Add('## Basics of operation');
   ML.Add('');
-  ML.Add('### Navigating the Grid via keyboard');
+  ML.Add('### Navigating the Grid with keyboard');
   ML.Add('');
   ML.Add('The active cell is marked in yellow, or blue for a Gosu cell.');
   ML.Add('');
@@ -580,7 +622,7 @@ begin
   ML.Add('- PageUp moves to the top cell in the column.');
   ML.Add('- PageDown moves to the bottom cell in the column.');
   ML.Add('');
-  ML.Add('### Setting cell values via keyboard');
+  ML.Add('### Setting cell values with keyboard');
   ML.Add('');
   ML.Add('To set a cell''s value just type the value.');
   ML.Add('- 0 to clear the cell,');
@@ -591,36 +633,16 @@ begin
   ML.Add('');
   ML.Add('### How to toggle Even-Values-Only cell state');
   ML.Add('');
-  ML.Add('> Feature not yet implemented in FMX app.');
-  ML.Add('');
   ML.Add('For Gosu-type Sudokus Spacebar should toggle');
   ML.Add('  the active cells Even-Values-Only state.');
   ML.Add('');
-  ML.Add('### Setting candidates');
-  ML.Add('');
-  ML.Add('> Feature not yet implemented in FMX app.');
+  ML.Add('### Setting candidates with keyboard');
   ML.Add('');
   ML.Add('To set a candidate, hold down the Alt key while typing.');
   ML.Add('To remove a candidate, use the Ctrl key instead.');
   ML.Add('Candidates can only be set on an empty cell.');
   ML.Add('');
-  ML.Add('## Mouse interface');
-  ML.Add('');
-  ML.Add('SH01 VCL:');
-  ML.Add('On the right of the Sudoku grid you see a panel with buttons.');
-  ML.Add('  Buttons near top of panel act on the whole Sudoku.');
-  ML.Add('  Buttons in the middle select normal values.');
-  ML.Add('  Buttons near bottom of panel are setting the mode,');
-  ML.Add('    how a mouse click on a cell of the grid is interpreted.');
-  ML.Add('');
-  ML.Add('SH02 FMX:');
-  ML.Add('You should see a frame of buttons around the border of the main window.');
-  ML.Add('  Some buttons will select the value to be used next,');
-  ML.Add('  some buttons will set the mode of operation,');
-  ML.Add('  and some buttons, probably located on page two');
-  ML.Add('  should act on the whole Sudoku.');
-  ML.Add('');
-  ML.Add('### Setting Values');
+  ML.Add('### Setting values with mouse');
   ML.Add('');
   ML.Add('Using the left mouse button,');
   ML.Add('  first click on one of the numbered buttons to SELECT the value,');
@@ -628,7 +650,7 @@ begin
   ML.Add('');
   ML.Add('Using 0 as value should clear the cell.');
   ML.Add('');
-  ML.Add('### Setting Candidates');
+  ML.Add('### Setting candidates with mouse');
   ML.Add('');
   ML.Add('For candidates it should go like this:');
   ML.Add('- make sure to select the correct value,');
@@ -641,7 +663,17 @@ begin
   ML.Add('');
   ML.Add('The currently active mode should be reflected in the button''s down state.');
   ML.Add('');
-  ML.Add('## Control Buttons');
+  ML.Add('## Sudoku commands');
+  ML.Add('');
+  ML.Add('[Clear stack] action should discard all items on the Undo stack,');
+  ML.Add('  including all stack marks.');
+  ML.Add('//The action should only be enabled if the stack is not empty.');
+  ML.Add('');
+  ML.Add('[Undo] action should undo the last user action that changed the Sudoku''s content,');
+  ML.Add('  including the candidates.');
+  ML.Add('//This action should be enabled only if the stack is not empty.');
+  ML.Add('');
+  ML.Add('Not implemented yet:');
   ML.Add('');
   ML.Add('[New Sudoku] shows a list of the Sudoku types the application can handle.');
   ML.Add('  Select the one you want and click OK.');
@@ -656,14 +688,6 @@ begin
   ML.Add('  It should remember the last folder you saved a Sudoku to or loaded one from.');
   ML.Add('  Pick a filename and click the dialog''s Open button to replace the current Sudoku,');
   ML.Add('  including the Undo stack, with the one saved to the file. ');
-  ML.Add('');
-  ML.Add('[Clear stack] action should discard all items on the Undo stack,');
-  ML.Add('  including all stack marks.');
-  ML.Add('  The action should only be enabled if the stack is not empty.');
-  ML.Add('');
-  ML.Add('[Undo] action should undo the last user action that changed the Sudoku''s content,');
-  ML.Add('  including the candidates.');
-  ML.Add('  This action should be enabled only if the stack is not empty. ');
   ML.Add('');
   ML.Add('[Set Mark] should pop up a simple dialog where you can enter a name for the mark to create.');
   ML.Add('  It then represents the current state of the undo stack. ');

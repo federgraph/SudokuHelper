@@ -150,7 +150,22 @@ const
   faSudoku16C = 89;
   faSudoku16D = 90;
 
-  faMax = 91;
+  { SudokuMode }
+  faSetCandidateMode = 91;
+  faUnsetCandidateMode = 92;
+  faToggleGosuMode = 93;
+
+  { SudokuCommands }
+  faToggleGosu = 94;
+  faNewSudoku = 95;
+  faSaveSudoku = 96;
+  faLoadSudoku = 97;
+  faClearStack = 98;
+  faUndo = 99;
+  faSetMark = 100;
+  faRevertToMark = 101;
+
+  faMax = 102;
 
 implementation
 

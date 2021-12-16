@@ -93,7 +93,7 @@ begin
     faPaste: result := 'faPaste';
     faShare: result := 'faShare';
 
-    { Scene }
+    { SudokuScene }
     faSudoku09A: result := 'faSudoku09A';
     faSudoku09B: result := 'faSudoku09B';
 
@@ -107,7 +107,7 @@ begin
     faSudoku16C: result := 'faSudoku16C';
     faSudoku16D: result := 'faSudoku16D';
 
-    { Current Value Selection }
+    { SudokuSelection }
     faSelect0: result := 'faSelect0';
     faSelect1: result := 'faSelect1';
     faSelect2: result := 'faSelect2';
@@ -126,7 +126,7 @@ begin
     faSelect15: result := 'faSelect15';
     faSelect16: result := 'faSelect16';
 
-    { Value Placing }
+    { SudokuPlacing }
     faPlace0: result := 'faPlace0';
     faPlace1: result := 'faPlace1';
     faPlace2: result := 'faPlace2';
@@ -145,7 +145,7 @@ begin
     faPlace15: result := 'faPlace15';
     faPlace16: result := 'faPlace16';
 
-    { Navigation }
+    { SudokuNavigation }
     faNavColM: result := 'faNavColM';
     faNavColP: result := 'faNavColP';
     faNavRowM: result := 'faNavRowM';
@@ -155,6 +155,21 @@ begin
     faNavColLast: result := 'faNavColLast';
     faNavRowFirst: result := 'faNavRowFirst';
     faNavRowLast: result := 'faNavRowLast';
+
+    { SudokuMode }
+    faSetCandidateMode: result := 'faSetCandidateMode';
+    faUnsetCandidateMode: result := 'faUnsetCandidateMode';
+    faToggleGosuMode: result := 'faToggleGosuMode';
+
+    { SudokuCommands }
+    faToggleGosu: result := 'faToggleGosu';
+    faNewSudoku: result := 'faNewSudoku';
+    faSaveSudoku: result := 'faSaveSudoku';
+    faLoadSudoku: result := 'faLoadSudoku';
+    faClearStack: result := 'faClearStack';
+    faUndo: result := 'faUndo';
+    faSetMark: result := 'faSetMark';
+    faRevertToMark: result := 'faRevertToMark';
 
   end;
 end;

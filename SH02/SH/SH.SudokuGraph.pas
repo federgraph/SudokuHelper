@@ -174,10 +174,7 @@ procedure TSudokuGraph.DrawCellBorders(g: TCanvas; aCell: ISudokuCell; var Rect:
 var
   LLocation: TCellInBlockLocation;
 begin
-  g.Stroke.Color := claBlack;
-  g.StrokeThickness := 1.0;
-  g.StrokeCap := TStrokeCap.Flat;
-  g.StrokeJoin := TStrokeJoin.Miter;
+  { fill cell background }
   if ASelected then
   begin
     if aCell.EvenOnly then
@@ -185,18 +182,25 @@ begin
     else
       g.Fill.Color := claYellow;
   end
-  else if aCell.EvenOnly then
-    g.Fill.Color := claSilver
   else
-    g.Fill.Color := claWhite;
+  begin
+    if aCell.EvenOnly then
+      g.Fill.Color := claSilver
+    else
+      g.Fill.Color := claWhite;
+  end;
+  g.FillRect(Rect, 0, 0, NoCorners, Translucent);
 
-  g.FillRect(Rect, 0, 0, [], Translucent);
-  g.DrawRect(Rect, 0, 0, [], Opaque);
+  { draw cell border rectangle }
+  g.Stroke.Color := claPlum;
+  g.StrokeThickness := 1.0;
+  g.DrawRect(Rect, 0, 0, [], Translucent);
+
+  { draw block border lines }
+  g.Stroke.Color := MainVar.ColorScheme.claBackground;
+  g.StrokeThickness := 1.0;
 
   LLocation := aCell.BlockLocation;
-  g.StrokeThickness := 3.0;
-  g.Stroke.Color := claYellow;
-
   if TBlockPosition.Left in LLocation then
     g.DrawLine(Rect.TopLeft, PointF(Rect.Left, Rect.Bottom), Opaque);
   if (TBlockPosition.Right in LLocation) and (aCell.Col = ColCount) then
@@ -221,30 +225,29 @@ var
     g.FillText(
       R,
       s,
-      false, // WordWrap
-      Opaque, // Opacity
+      False, // WordWrap
+      1.0, // Opacity
       [], // [TFillTextFlag.RightToLeft],
       ha,
       va);
   end;
 
 begin
-  Rect.Inflate(-1, -1);
+  Rect.Inflate(-1.5, -1.5);
 
   N := aCell.Value;
   if N > 0 then
   begin
+    { draw normal cell text }
     fs := Rect.Height * 75 / 100;
     g.Font.Size := fs;
 
     if aCell.IsValid then
     begin
-      g.Stroke.Color  := claBlack;
       g.Fill.Color  := claBlack;
     end
     else
     begin
-      g.Stroke.Color  := claGray;
       g.Fill.Color := claRed;
     end;
 
@@ -253,13 +256,7 @@ begin
   end
   else
   begin
-    g.Stroke.Color := claSilver;
-    if ASelected then
-      g.Fill.Color := claYellow
-    else
-      g.Fill.Color := claSilver;
-    g.FillRect(Rect, 0, 0, NoCorners, Translucent);
-
+    { draw candidates text }
     Candidates := aCell.Candidates;
     if Candidates <> [] then
     begin
@@ -290,6 +287,9 @@ procedure TSudokuGraph.DrawCell(g: TCanvas; ACell: ISudokuCell; ACol, ARow: Inte
 var
   LSelected: Boolean;
 begin
+  g.StrokeCap := TStrokeCap.Flat;
+  g.StrokeJoin := TStrokeJoin.Miter;
+
   LSelected := (ACol = Col) and (ARow = Row);
   DrawCellBorders(g, ACell, Rect, LSelected);
   DrawCellData(g, ACell, Rect, LSelected);

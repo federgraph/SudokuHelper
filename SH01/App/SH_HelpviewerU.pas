@@ -1,4 +1,4 @@
-{!
+﻿{!
 <summary>
  This unit implements a simple browser for the app's helppage.
  </summary>
@@ -60,7 +60,7 @@ class procedure THelpViewerForm.CreateInstance;
 var
   LForm: TForm;
 begin
-  LForm:= THelpViewerForm.Create(Application);
+  LForm := THelpViewerForm.Create(Application);
   LForm.Show;
 end;
 

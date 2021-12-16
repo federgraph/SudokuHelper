@@ -202,6 +202,21 @@ faPlace14,
 faPlace15,
 faPlace16];
 
+ActionGroupSudokuMode: TActionGroup = [
+faSetCandidateMode,
+faUnsetCandidateMode,
+faToggleGosuMode];
+
+ActionGroupSudokuCommands: TActionGroup = [
+faToggleGosu,
+faNewSudoku,
+faSaveSudoku,
+faLoadSudoku,
+faClearStack,
+faUndo,
+faSetMark,
+faRevertToMark];
+
 implementation
 
 end.
