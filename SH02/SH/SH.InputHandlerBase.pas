@@ -73,7 +73,7 @@ type
     FDataStorage: ISudokuData;
     FHost: ISudokuHostForm;
   strict protected
-    function CharToValue(aChar: Char; var aValue: TSudokuValue): boolean; virtual;
+    function CharToValue(aChar: Char; var aValue: TSudokuValue): Boolean; virtual;
     procedure HandleCellClick(aCol, aRow: Integer; aRightClick: Boolean = false);
     procedure HandleCharacter(aCol, aRow: Integer; aChar: Char);
     procedure HandleLeftClick(const aCol, aRow: TSudokuCellIndex);
@@ -141,8 +141,7 @@ end;
  by a set of speed buttons on that form.
  </remarks>
 }
-procedure TBaseSudokuInputHandler.HandleCellClick(aCol, aRow: Integer;
-    aRightClick: Boolean = false);
+procedure TBaseSudokuInputHandler.HandleCellClick(aCol, aRow: Integer; aRightClick: Boolean = false);
 begin
   { Convert grid to Sudoku cell index first }
   Inc(aCol);

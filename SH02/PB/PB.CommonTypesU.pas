@@ -1,4 +1,4 @@
-{!
+﻿{!
 <summary>
  This unit collects some common type declarations.</summary>
 <author>Dr. Peter Below</author>
@@ -210,7 +210,6 @@ type
      for the error message the constructor will compose.</summary>
     }
     function GetFormatMask: string; override;
-
   end;
 
   {!
@@ -273,8 +272,7 @@ begin
   CreateFmt(GetFormatMask, [Procname, Msg]);
 end;
 
-constructor EPBBaseException.Create(aObj: TObject; const Procname,
-  Msg: string);
+constructor EPBBaseException.Create(aObj: TObject; const Procname, Msg: string);
 begin
   if Assigned(aObj) then
     CreateFmt(GetFormatMask, [aObj.ClassName + '.' + Procname, Msg])
@@ -282,8 +280,7 @@ begin
     CreateFmt(GetFormatMask, ['<unknown class>.' + Procname, Msg]);
 end;
 
-constructor EPBBaseException.Create(const Procname, Fmt: string;
-    const Params: Array of const);
+constructor EPBBaseException.Create(const Procname, Fmt: string; const Params: Array of const);
 begin
   Create(Procname, Format(Fmt, Params));
 end;
@@ -308,8 +305,6 @@ begin
   Result := SPostconditionViolated;
 end;
 
-
-
 class function TDynArray.ByteArray(const A: array of Byte): TDynByteArray;
 begin
   SetLength(Result, Length(A));
@@ -317,24 +312,21 @@ begin
     Move(A[0], Result[0], Length(A)*Sizeof(A[0]));
 end;
 
-class function TDynArray.DoubleArray(
-  const A: array of Double): TDoubleArray;
+class function TDynArray.DoubleArray(const A: array of Double): TDoubleArray;
 begin
   SetLength(Result, Length(A));
   if Length(A) > 0 then
     Move(A[0], Result[0], Length(A)*Sizeof(A[0]));
 end;
 
-class function TDynArray.IntegerArray(
-  const A: array of Integer): TIntegerArray;
+class function TDynArray.IntegerArray(const A: array of Integer): TIntegerArray;
 begin
   SetLength(Result, Length(A));
   if Length(A) > 0 then
     Move(A[0], Result[0], Length(A)*Sizeof(A[0]));
 end;
 
-class function TDynArray.InterfaceArray(
-  const A: array of IInterface): TInterfaceArray;
+class function TDynArray.InterfaceArray(const A: array of IInterface): TInterfaceArray;
 var
   I: Integer;
 begin
@@ -343,16 +335,14 @@ begin
      Result[I] := A[I];
 end;
 
-class function TDynArray.ObjectArray(
-  const A: array of TObject): TObjectArray;
+class function TDynArray.ObjectArray(const A: array of TObject): TObjectArray;
 begin
   SetLength(Result, Length(A));
   if Length(A) > 0 then
     Move(A[0], Result[0], Length(A)*Sizeof(A[0]));
 end;
 
-class function TDynArray.SingleArray(
-  const A: array of Single): TSingleArray;
+class function TDynArray.SingleArray(const A: array of Single): TSingleArray;
 begin
   SetLength(Result, Length(A));
   if Length(A) > 0 then
@@ -366,18 +356,16 @@ begin
     and CompareMem(@aSubArray[0], @aArray[0], Length(aSubArray));
 end;
 
-class function TDynArray.StringArray(
-  const A: array of String): TStringArray;
+class function TDynArray.StringArray(const A: array of String): TStringArray;
 var
   I: Integer;
 begin
   SetLength(Result, Length(A));
   for I := 0 to High(A) do
-     Result[I] := A[I];
+    Result[I] := A[I];
 end;
 
-class function TDynArray.ToByteArray(const Data; NumBytes: Cardinal):
-    TDynByteArray;
+class function TDynArray.ToByteArray(const Data; NumBytes: Cardinal): TDynByteArray;
 begin
   SetLength(Result, NumBytes);
   if NumBytes > 0 then

@@ -70,7 +70,7 @@ type
    handler to retrieve information from it. </summary>
   }
   ISudokuHostForm = interface(IInterface)
-  ['{43B9FC00-583F-4496-A340-4DA07A6FB656}']
+  ['{55A1A190-C703-4F69-98A2-9FC63FC4F8E5}']
     function GetCurrentCandidate: TSudokuValue;
     function GetCurrentValue: TSudokuValue;
     function GetModifierKeys: TShiftstate;
@@ -107,7 +107,7 @@ type
    the draw grid used to display the Sudoku. </summary>
   }
   ISudokuDisplay = interface(IInterface)
-  ['{FFCB1047-5CB6-43FF-BF0B-0C897F8884A9}']
+  ['{E0C507B8-E31E-4128-A20D-28F18959111B}']
     {!
     <summary>
      Set up the draw grid as appropriate for the supported Sudoku type.</summary>
@@ -137,7 +137,7 @@ type
    content or state of the cell is changed. </summary>
   }
   ISudokuCell = interface(IInterface)
-  ['{297A2DBD-BD80-4FEE-9C8B-DB7E3CBB9BA2}']
+  ['{F2654335-5F81-44DA-8BEB-03627074047E}']
     {!
     <summary>
      Add a candidate value to the cell. Only does anything if the cell
@@ -226,7 +226,7 @@ type
     (the display handler) to attach handlers to events that fire when
     data changes or the display for a cell needs to be redrawn.  }
   ISudokuDataEvents = interface(IInterface)
-  ['{360B7556-CD9B-48B6-B400-858573CBD854}']
+  ['{59BC165C-B35C-4ECC-AB48-328927C33F59}']
     function GetOnDataChanged: TNotifyEvent;
     function GetOnRedrawCell: TRedrawCellEvent;
     procedure SetOnDataChanged(const Value: TNotifyEvent);
@@ -248,7 +248,7 @@ type
   {! This interface is implemented by the Sudoku helper to give clients
     access to the basic parameters of the Sudoku.  }
   ISudokuProperties = interface(IInterface)
-  ['{4919B7AC-CA22-4AAC-8F13-D008734E8368}']
+  ['{D9012869-4BF2-4293-B2F0-FD15184320F5}']
     function GetBlockHeight: TSudokuValue;
     function GetBlockWidth: TSudokuValue;
     function GetMaxValue: TSudokuValue;
@@ -275,7 +275,7 @@ type
    for a Sudoku </summary>
   }
   ISudokuInputHandler = interface(IInterface)
-  ['{824E901F-260F-4DDA-9B97-54DAF42BAC3B}']
+  ['{46DA0172-8428-4AE6-B2A6-0822EEA9F058}']
     {!
     <summary>
      Handle a mouse click (or tap) on a cell of the Sudoku grid </summary>
@@ -331,7 +331,7 @@ type
    the Undo stack. </summary>
   }
   ISudokuData = interface(IInterface)
-  ['{C29A464D-135E-405A-BB90-03BE8EB4BB5E}']
+  ['{487151FD-BEF8-4352-85A9-68E11A141B43}']
     {!
     <summary>
      Add a named mark for the current undo stack state. </summary>
@@ -409,7 +409,7 @@ type
     <remarks>
      Mark names are not case-sensitive!</remarks>
     }
-    function MarkExists(const aMark: string): boolean;
+    function MarkExists(const aMark: string): Boolean;
     {!
     <summary>
      Reset the data to empty, clear the undo stack. </summary>
@@ -475,7 +475,7 @@ type
    the data is stored (Law of Demeter). </summary>
   }
   ISudokuHelper = interface(IInterface)
-  ['{DB616905-F1C2-47FF-A137-B84DA9A416C6}']
+  ['{F9489E0D-0AAC-41FE-8DA7-42816B391518}']
     {!
     <summary>
      Add a named mark for the current undo stack state </summary>

@@ -39,7 +39,6 @@ type
   { Indexing is [Column, Row]! }
   TSudokuCells = array [TSudokuCellIndex,TSudokuCellIndex] of TSudokuCell;
 
-type
   { The Sudoku blocks form a 2D array,
     but the dimensions depend on the type of Sudoku.
     For a classic 9x9 Sudoku the blocks form a 3x3 array,
@@ -63,177 +62,172 @@ type
   TSudokuBlocksRow = array of TSudokuBlock;
   TSudokuBlocks = array of TSudokuBlocksRow;
 
-{!
-<summary>
- The data storage for a specific Sudoku type will descend from this
- class. </summary>
-<remarks>
- Sudokus are square but they differ in the number of allowed values, the
- number of cells in a row (and column), and the size of a block. This makes
- it difficult to come up with a data structure that can both be copied
- en bloc (necessary for an efficient undo stack design), can be used
- for different types of Sudokus, and is type-safe as well.
+  {!
+  <summary>
+   The data storage for a specific Sudoku type will descend from this
+   class. </summary>
+  <remarks>
+   Sudokus are square but they differ in the number of allowed values, the
+   number of cells in a row (and column), and the size of a block. This makes
+   it difficult to come up with a data structure that can both be copied
+   en bloc (necessary for an efficient undo stack design), can be used
+   for different types of Sudokus, and is type-safe as well.
 
- I decided to go with a fixed-size cell data approach, supporting at
- max a 16x16 Sudoku, which is about the largest practical. This wastes
- some memory space for smaller Sudokus, but I deemed that to be acceptable.
-  </remarks>
+   I decided to go with a fixed-size cell data approach, supporting at
+   max a 16x16 Sudoku, which is about the largest practical. This wastes
+   some memory space for smaller Sudokus, but I deemed that to be acceptable.
+    </remarks>
   }
   TBaseSudokuDatastorage = class abstract(TInterfacedObject, ISudokuData, ISudokuDataEvents, ISudokuProperties)
+  strict protected type
+
+    {! This class wraps a cell in the Sudoku and gives access to it via its
+       ISudokuCell interface. }
+    TSudokuCellHelper = class(TInterfacedObject, ISudokuCell)
+    strict private
+      FCellRef: PSudokuCell;
+      FCol: TSudokuCellIndex;
+      FOwner: TBaseSudokuDatastorage;
+      FRow: TSudokuCellIndex;
+    strict protected type
+      TCellOp = reference to procedure (var aCell: TSudokuCell);
+      procedure AddCandidate(aValue: TSudokuValue);
+      procedure Clear;
+      procedure DoCellOp(aProc: TCellOp);
+      function GetBlockLocation: TCellInBlockLocation;
+      function GetCandidates: TSudokuValues;
+      function GetCol: TSudokuCellIndex;
+      function GetEvenOnly: Boolean;
+      function GetRow: TSudokuCellIndex;
+      function GetValue: TSudokuValue;
+      function IsEmpty: Boolean;
+      function IsValid: Boolean;
+      procedure RemoveCandidate(aValue: TSudokuValue);
+      procedure SetValue(const aValue: TSudokuValue);
+      procedure ToggleEvenOnly;
+    public
+      constructor Create(aCol, aRow: TSudokuCellIndex; var aCell: TSudokuCell; aOwner: TBaseSudokuDatastorage);
+      property Col: TSudokuCellIndex read FCol;
+      property Owner: TBaseSudokuDatastorage read FOwner;
+      property Row: TSudokuCellIndex read FRow;
+      property Value: TSudokuValue read GetValue;
+    end; {TSudokuCellHelper}
+
+    {! Names a position on the undo stack }
+    TStackMark  = record
+      Count: Integer;
+      Name: string;
+    public
+      constructor Create(const aCount: Integer; const aName: string);
+    end; {TStackMark}
+
+    {! Collection of defined stack marks }
+    TStackMarks = class(TStack<TStackMark>)
+    public
+      procedure Load(aReader: TReader);
+      procedure Store(aWriter: TWriter);
+    end; {TStackMarks}
+
+    {! Undo stack, saves the full state of the Sudoku before a change is made }
+    TSudokuStack = class(TStack<TSudokuCells>)
+    strict private
+      FMarks: TStackMarks;
+    public
+      constructor Create;
+      destructor Destroy; override;
+      procedure AddMark(const aName: string);
+      procedure Clear;
+      procedure GetMarks(aList: TStrings);
+      function IsEmpty: Boolean;
+      procedure Load(aReader: TReader);
+      function MarkExists(const aName: string): Boolean;
+      procedure RevertToMark(const aName: string);
+      procedure Store(aWriter: TWriter);
+      procedure ValidateMarks;
+      property Marks: TStackMarks read FMarks;
+    end; {TSudokuStack}
+
   strict protected
-  type
-  {! This class wraps a cell in the Sudoku and gives access to it via its
-     ISudokuCell interface. }
-  TSudokuCellHelper = class(TInterfacedObject, ISudokuCell)
-  strict private
-  var
-    FCellRef: PSudokuCell;
-    FCol: TSudokuCellIndex;
-    FOwner: TBaseSudokuDatastorage;
-    FRow: TSudokuCellIndex;
-  strict protected
-  type
-    TCellOp = reference to procedure (var aCell: TSudokuCell);
-    procedure AddCandidate(aValue: TSudokuValue);
-    procedure Clear;
-    procedure DoCellOp(aProc: TCellOp);
-    function GetBlockLocation: TCellInBlockLocation;
-    function GetCandidates: TSudokuValues;
-    function GetCol: TSudokuCellIndex;
-    function GetEvenOnly: Boolean;
-    function GetRow: TSudokuCellIndex;
-    function GetValue: TSudokuValue;
-    function IsEmpty: Boolean;
-    function IsValid: Boolean;
-    procedure RemoveCandidate(aValue: TSudokuValue);
-    procedure SetValue(const aValue: TSudokuValue);
-    procedure ToggleEvenOnly;
-  public
-    constructor Create(aCol, aRow: TSudokuCellIndex; var aCell: TSudokuCell; aOwner: TBaseSudokuDatastorage);
-    property Col: TSudokuCellIndex read FCol;
-    property Owner: TBaseSudokuDatastorage read FOwner;
-    property Row: TSudokuCellIndex read FRow;
-    property Value: TSudokuValue read GetValue;
-  end; {TSudokuCellHelper}
-
-  {! Names a position on the undo stack }
-  TStackMark  = record
-    Count: Integer;
-    Name: string;
-  public
-    constructor Create(const aCount: Integer; const aName: string);
-  end; {TStackMark}
-
-  {! Collection of defined stack marks }
-  TStackMarks = class(TStack<TStackMark>)
-  public
-    procedure Load(aReader: TReader);
-    procedure Store(aWriter: TWriter);
-  end; {TStackMarks}
-
-  {! Undo stack, saves the full state of the Sudoku before a change is made }
-  TSudokuStack = class(TStack<TSudokuCells>)
-  strict private
-    FMarks: TStackMarks;
-  public
-    constructor Create;
-    destructor Destroy; override;
-    procedure AddMark(const aName: string);
-    procedure Clear;
+    procedure AddMark(const Name: string);
+    function CanUndo: Boolean;
+    procedure CheckInvalidCells;
+    procedure RedrawCell(aCol, aRow: TSudokuCellIndex);
+    procedure ClearUndostack;
+    procedure DataChanged;
+    function DoIsGosu: Boolean;
+    function GetCell(aCol, aRow: TSudokuCellIndex): ISudokuCell;
+    function GetBlockHeight: TSudokuValue;
+    function GetBlockWidth: TSudokuValue;
+    function GetBounds: ISudokuProperties;
+    function GetEvents: ISudokuDataEvents;
     procedure GetMarks(aList: TStrings);
-    function IsEmpty: Boolean;
+    function GetMaxValue: TSudokuValue;
+    function GetOnRedrawCell: TRedrawCellEvent;
+    function GetOnDataChanged: TNotifyEvent;
+    function HasMarks: Boolean;
+    function IsValueValid(aCol, aRow: TSudokuCellIndex; aValue: TSudokuValue): Boolean;
     procedure Load(aReader: TReader);
-    function MarkExists(const aName: string): Boolean;
-    procedure RevertToMark(const aName: string);
+    procedure NewSudoku;
+    procedure RevertToMark(const Name: string);
     procedure Store(aWriter: TWriter);
-    procedure ValidateMarks;
-    property Marks: TStackMarks read FMarks;
-  end; {TSudokuStack}
-
-strict protected
-  procedure AddMark(const Name: string);
-  function CanUndo: Boolean;
-  procedure CheckInvalidCells;
-  procedure RedrawCell(aCol, aRow: TSudokuCellIndex);
-  procedure ClearUndostack;
-  procedure DataChanged;
-  function DoIsGosu: Boolean;
-  function GetCell(aCol, aRow: TSudokuCellIndex): ISudokuCell;
-  function GetBlockHeight: TSudokuValue;
-  function GetBlockWidth: TSudokuValue;
-  function GetBounds: ISudokuProperties;
-  function GetEvents: ISudokuDataEvents;
-  procedure GetMarks(aList: TStrings);
-  function GetMaxValue: TSudokuValue;
-  function GetOnRedrawCell: TRedrawCellEvent;
-  function GetOnDataChanged: TNotifyEvent;
-  function HasMarks: Boolean;
-  function IsValueValid(aCol, aRow: TSudokuCellIndex; aValue: TSudokuValue): Boolean;
-  procedure Load(aReader: TReader);
-  procedure NewSudoku;
-  procedure RevertToMark(const Name: string);
-  procedure Store(aWriter: TWriter);
-  procedure SetOnRedrawCell(const Value: TRedrawCellEvent);
-  procedure SetOnDataChanged(const Value: TNotifyEvent);
-  procedure Undo;
-  procedure UpdateCandidates(aCol, aRow: TSudokuCellIndex);
-  procedure ValidateCellCoord(aCol, aRow: TSudokuCellIndex; const aProcName: string);
-  function ISudokuData.IsGosu = DoIsGosu;
-
-strict private
-var
-  FBlocks : TSudokuBlocks;
-  FCurrentState: TSudokuCells;
-  FIsGosu: Boolean;
-  FMaxValue: TSudokuValue;
-  FOnRedrawCell: TRedrawCellEvent;
-  FOnDataChanged: TNotifyEvent;
-  FBlockHeight: TSudokuValue;
-  FBlockWidth: TSudokuValue;
-  FUndoStack: TSudokuStack;
-  procedure CalculateBlocks;
-  procedure Clear;
-  procedure FindBlockEntry(aCol, aRow: TSudokuCellIndex; var aEntry: TSudokuBlockEntry);
-  function GetBlockLocation(aBlockCol, aBlockRow: Integer): TCellInBlockLocation;
-  function GetCellInBlockLocation(aCol, aRow: TSudokuCellIndex): TCellInBlockLocation;
-  function IsValidBlockValue(aCol, aRow: TSudokuCellIndex; aValue: TSudokuValue): Boolean;
-  function IsValidColValue(aCol: TSudokuCellIndex; aValue: TSudokuValue): Boolean;
-  function IsValidRowValue(aRow: TSudokuCellIndex; aValue: TSudokuValue): Boolean;
-  procedure SetBlockDimensions;
-  procedure SetBlockEntries;
-public
-  constructor Create(const AMaxValue, ABlockHeight, ABlockWidth: TSudokuValue; const AIsGosu: Boolean = false);
-  destructor Destroy; override;
-  function MarkExists(const aMark: string): Boolean;
-  procedure SaveState;
-  {!
-  <value>
-   True marks a Sudoku Gosu, where cells can be defined to only contain
-   even values. Set via the constructor.
-  </value>}
-  property IsGosu: Boolean read FIsGosu;
-  {!
-  <value>
-   Maximium of the valid values for the Sudoku, set via the constructor.
-  </value>}
-  property MaxValue: TSudokuValue read FMaxValue;
-  {!
-  <value>
-   Height of a block for the Sudoku, set via the constructor.
-  </value>}
-  property BlockHeight: TSudokuValue read FBlockHeight;
-  {!
-  <value>
-   Width of a block for the Sudoku, set via the constructor.
-  </value>}
-  property BlockWidth: TSudokuValue read FBlockWidth;
-  {!
-  <value>
-   Access to the Undo stack, for descendants.
-  </value>}
-  property UndoStack: TSudokuStack read FUndoStack;
-end;
-
+    procedure SetOnRedrawCell(const Value: TRedrawCellEvent);
+    procedure SetOnDataChanged(const Value: TNotifyEvent);
+    procedure Undo;
+    procedure UpdateCandidates(aCol, aRow: TSudokuCellIndex);
+    procedure ValidateCellCoord(aCol, aRow: TSudokuCellIndex; const aProcName: string);
+    function ISudokuData.IsGosu = DoIsGosu;
+  strict private
+    FBlocks : TSudokuBlocks;
+    FCurrentState: TSudokuCells;
+    FIsGosu: Boolean;
+    FMaxValue: TSudokuValue;
+    FOnRedrawCell: TRedrawCellEvent;
+    FOnDataChanged: TNotifyEvent;
+    FBlockHeight: TSudokuValue;
+    FBlockWidth: TSudokuValue;
+    FUndoStack: TSudokuStack;
+    procedure CalculateBlocks;
+    procedure Clear;
+    procedure FindBlockEntry(aCol, aRow: TSudokuCellIndex; var aEntry: TSudokuBlockEntry);
+    function GetBlockLocation(aBlockCol, aBlockRow: Integer): TCellInBlockLocation;
+    function GetCellInBlockLocation(aCol, aRow: TSudokuCellIndex): TCellInBlockLocation;
+    function IsValidBlockValue(aCol, aRow: TSudokuCellIndex; aValue: TSudokuValue): Boolean;
+    function IsValidColValue(aCol: TSudokuCellIndex; aValue: TSudokuValue): Boolean;
+    function IsValidRowValue(aRow: TSudokuCellIndex; aValue: TSudokuValue): Boolean;
+    procedure SetBlockDimensions;
+    procedure SetBlockEntries;
+  public
+    constructor Create(const AMaxValue, ABlockHeight, ABlockWidth: TSudokuValue; const AIsGosu: Boolean = false);
+    destructor Destroy; override;
+    function MarkExists(const aMark: string): Boolean;
+    procedure SaveState;
+    {!
+    <value>
+     True marks a Sudoku Gosu, where cells can be defined to only contain
+     even values. Set via the constructor.
+    </value>}
+    property IsGosu: Boolean read FIsGosu;
+    {!
+    <value>
+     Maximium of the valid values for the Sudoku, set via the constructor.
+    </value>}
+    property MaxValue: TSudokuValue read FMaxValue;
+    {!
+    <value>
+     Height of a block for the Sudoku, set via the constructor.
+    </value>}
+    property BlockHeight: TSudokuValue read FBlockHeight;
+    {!
+    <value>
+     Width of a block for the Sudoku, set via the constructor.
+    </value>}
+    property BlockWidth: TSudokuValue read FBlockWidth;
+    {!
+    <value>
+     Access to the Undo stack, for descendants.
+    </value>}
+    property UndoStack: TSudokuStack read FUndoStack;
+  end;
 
 implementation
 

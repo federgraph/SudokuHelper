@@ -235,14 +235,8 @@ end;
 procedure TFormMain.HandleAction(fa: Integer);
 begin
   case fa of
-    faNoop: ;
     faShowActions: ActionsBtnClick(nil);
     faShowMemo: MemoBtnClick(nil);
-    else
-    begin
-      { do nothing }
-    end;
-
   end;
 end;
 
@@ -265,6 +259,13 @@ begin
   Main.FederText.SB00.Caption := Application.Hint;
 end;
 
+procedure TFormMain.FormKeyUp(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
+begin
+  MainVar.ShiftState := Shift;
+  if IsUp then
+    Main.ActionHandler.FormKeyUp(Sender, Key, KeyChar, Shift);
+end;
+
 procedure TFormMain.SudokuImageMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
 var
   LCol: single;
@@ -281,13 +282,6 @@ begin
   SudokuGraph.Col := Floor(LCol);
   SudokuGraph.Row := Floor(LRow);
   Main.Sudoku.InputHandler.HandleCellClick(SudokuGraph.Col, SudokuGraph.Row, Button = TMouseButton.mbRight);
-end;
-
-procedure TFormMain.FormKeyUp(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
-begin
-  MainVar.ShiftState := Shift;
-  if IsUp then
-    Main.ActionHandler.FormKeyUp(Sender, Key, KeyChar, Shift);
 end;
 
 procedure TFormMain.FormMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);

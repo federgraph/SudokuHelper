@@ -25,7 +25,7 @@ uses
 
 type
   IAppMemory = interface(IInterface)
-  ['{629ECBCD-CE8D-4A16-95F6-2363B967462B}']
+  ['{4F4D7EB1-A25E-4D76-BC0A-D03BEC95E751}']
     {! Getter for  the LastFolder property  }
     function GetLastFolder: string;
     {! Getter for the LastSudoku property  }
@@ -105,7 +105,7 @@ begin
     Result := TAppMemory.Create;
     Result._AddRef;
     { the call below does not increment the refcount! }
-    P:= InterlockedCompareExchangeObject(InternalAppMemory, TObject(Pointer(Result)), nil);
+    P := InterlockedCompareExchangeObject(InternalAppMemory, TObject(Pointer(Result)), nil);
     if P <> nil then
     begin
       Result._Release;
