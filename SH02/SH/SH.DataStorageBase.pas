@@ -92,6 +92,7 @@ type
     strict protected type
       TCellOp = reference to procedure (var aCell: TSudokuCell);
       procedure AddCandidate(aValue: TSudokuValue);
+      procedure Select;
       procedure Clear;
       procedure DoCellOp(aProc: TCellOp);
       function GetBlockLocation: TCellInBlockLocation;
@@ -775,11 +776,14 @@ end;
 {! Implements ISudokuData.Undo }
 procedure TBaseSudokuDatastorage.Undo;
 begin
-  if not CanUndo then
-    raise EPreconditionViolation.Create(Classname + '.Undo',STheUndoStackIsEmpty);
-  FCurrentState := Undostack.Pop;
-  Undostack.ValidateMarks;
-  DataChanged;
+//  if not CanUndo then
+//    raise EPreconditionViolation.Create(Classname + '.Undo',STheUndoStackIsEmpty);
+  if CanUndo then
+  begin
+    FCurrentState := Undostack.Pop;
+    Undostack.ValidateMarks;
+    DataChanged;
+  end;
 end;
 
 {!
@@ -1042,6 +1046,16 @@ begin
       begin
         aCell.Clear;
       end);
+end;
+
+{! Implements ISudokuCell.Select }
+procedure TBaseSudokuDatastorage.TSudokuCellHelper.Select;
+begin
+  DoCellOp(
+    procedure (var aCell: TSudokuCell)
+    begin
+      { do nothing, except causing a redraw of the grid }
+    end);
 end;
 
 {!

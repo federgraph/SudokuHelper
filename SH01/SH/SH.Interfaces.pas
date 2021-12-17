@@ -416,7 +416,7 @@ type
     <remarks>
      Mark names are not case-sensitive!</remarks>
     }
-    function MarkExists(const aMark: string): boolean;
+    function MarkExists(const aMark: string): Boolean;
     {!
     <summary>
      Reset the data to empty, clear the undo stack. </summary>

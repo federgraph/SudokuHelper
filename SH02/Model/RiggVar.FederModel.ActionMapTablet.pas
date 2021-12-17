@@ -109,7 +109,7 @@ begin
       InitAC(cl, 4, faSelect8, claPlum);
       //InitAC(cl, 5, faActionPageP, claYellow);
       InitAC(cl, 6, faSelect9, claPlum);
-      InitAC(cl, 7, faNoop, cla);
+      InitAC(cl, 7, faClearStack, claAquamarine);
       InitAC(cl, 8, faUndo, claAquamarine);
 
       cl := BottomLeft;
@@ -118,17 +118,17 @@ begin
       InitAC(cl, 3, faSelect12, claCornflowerblue);
       InitAC(cl, 4, faSelect13, claCornflowerblue);
       InitAC(cl, 5, faSelect14, claCornflowerblue);
-      InitAC(cl, 6, faNoop, cla);
-      InitAC(cl, 7, faNoop, cla);
-      InitAC(cl, 8, faClearStack, claAquamarine);
+      InitAC(cl, 6, faSelect15, cla);
+      InitAC(cl, 7, faSelect16, cla);
+      InitAC(cl, 8, faNoop, cla);
 
       cl := BottomRight;
-      InitAC(cl, 1, faSelect15, claCornflowerblue);
-      InitAC(cl, 2, faSelect16, claCornflowerblue);
-      InitAC(cl, 3, faNoop, cla);
+      InitAC(cl, 1, faSetFocusMode, claYellow);
+      InitAC(cl, 2, faSetValueMode, claYellow);
+      InitAC(cl, 3, faSetCandidateMode, claYellow);
       InitAC(cl, 4, faUnsetCandidateMode, claYellow);
       InitAC(cl, 5, faToggleGosuMode, claYellow);
-      InitAC(cl, 6, faSetCandidateMode, claYellow);
+      InitAC(cl, 6, faToggleGosu, claCoral);
     end;
 
     2:

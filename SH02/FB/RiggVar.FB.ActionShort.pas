@@ -157,6 +157,8 @@ begin
     faSudoku16D: result := '16D';
 
     { SudokuMode }
+    faSetFocusMode: result := '.SF';
+    faSetValueMode: result := '.SV';
     faSetCandidateMode: result := '.SC';
     faUnsetCandidateMode: result := '.UC';
     faToggleGosuMode: result := '.TG';

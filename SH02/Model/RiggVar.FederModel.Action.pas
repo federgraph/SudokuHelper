@@ -96,9 +96,11 @@ begin
   case fa of
     faSelect0..faSelect16: result := M.CurrentValue = fa - faSelect0;
 
-    faSetCandidateMode: result := M.SetCandidatesButtonDown;
-    faUnsetCandidateMode: result := M.UnsetCandidatesButtonDown;
-    faToggleGosuMode: result := M.ToggleGosuButtonEnabled and M.ToggleGosuButtonDown;
+    faSetFocusMode: result := M.ClickAction = TClickAction.SetFocus;
+    faSetValueMode: result := M.ClickAction = TClickAction.SetValue;
+    faSetCandidateMode: result := M.ClickAction = TClickAction.SetCandidate;
+    faUnsetCandidateMode: result := M.ClickAction = TClickAction.UnsetCandidate;
+    faToggleGosuMode: result := M.ClickAction = TClickAction.ToggleGosu;
 
     faUndo: result := M.Sudoku.CanUndo;
   end;
@@ -166,9 +168,11 @@ begin
     faSudoku16C: M.StartNew(fa);
     faSudoku16D: M.StartNew(fa);
 
-    faSetCandidateMode: M.RightClickAction := TRightClickAction.SetCandidate;
-    faUnsetCandidateMode: M.RightClickAction := TRightClickAction.UnsetCandidate;
-    faToggleGosuMode: M.RightClickAction := TRightClickAction.ToggleGosu;
+    faSetFocusMode: M.ClickAction := TClickAction.SetFocus;
+    faSetValueMode: M.ClickAction := TClickAction.SetValue;
+    faSetCandidateMode: M.ClickAction := TClickAction.SetCandidate;
+    faUnsetCandidateMode: M.ClickAction := TClickAction.UnsetCandidate;
+    faToggleGosuMode: M.ClickAction := TClickAction.ToggleGosu;
 
     faToggleGosu: M.HandleCharacter(' ');
     faUndo: M.Sudoku.Undo;

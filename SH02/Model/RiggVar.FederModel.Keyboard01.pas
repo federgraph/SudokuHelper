@@ -60,15 +60,7 @@ begin
 
   else if ssCtrl in Shift then
   begin
-    if Key = vkLeft then
-
-    else if Key = vkRight then
-
-    else if Key = vkUp then
-
-    else if Key = vkDown then
-
-    else if Key = vkZ then
+    if Key = vkZ then
       result := faUndo
   end
 
@@ -106,14 +98,14 @@ begin
     end
 
     else if Key = vkPrior then
-      result := faNavColFirst
+      result := faNavRowFirst
     else if Key = vkNext then
-      result := faNavColLast
+      result := faNavRowLast
 
     else if Key = vkHome then
-      result := faNavRowFirst
+      result := faNavColFirst
     else if Key = vkEnd then
-      result := faNavRowLast
+      result := faNavColLast
 
     else if Key = vkEscape then
     begin
@@ -150,12 +142,6 @@ begin
       result := faActionPageP
     else if KeyChar = '#' then
 
-    else if KeyChar = '=' then
-
-    else if KeyChar = '?' then
-
-    else if KeyChar = '|' then
-
     else if KeyChar = '(' then
       result := faCycleColorSchemeM
     else if KeyChar = ')' then
@@ -189,14 +175,6 @@ begin
     else if KeyChar = 'F' then
       result := faPlace15
 
-    else if KeyChar = 'g' then
-
-    else if KeyChar = 'G' then
-
-    else if KeyChar = 'h' then
-
-    else if KeyChar = 'H' then
-
     else if KeyChar = 'i' then
       result := faWheelRight
     else if KeyChar = 'I' then
@@ -207,74 +185,7 @@ begin
     else if KeyChar = 'J' then
       result := faWheelDown
 
-    else if KeyChar = 'k' then
-
-    else if KeyChar = 'K' then
-
-    else if KeyChar = 'l' then
-
-    else if KeyChar = 'L' then
-
-    else if KeyChar = 'm' then
-
-    else if KeyChar = 'M' then
-
-    else if KeyChar = 'n' then
-
-    else if KeyChar = 'N' then
-
-    else if KeyChar = 'o' then
-
-    else if KeyChar = 'O' then
-
-    else if KeyChar = 'p' then
-
-    else if KeyChar = 'P' then
-
-    else if KeyChar = 'q' then
-
-    else if KeyChar = 'Q' then
-
-    else if KeyChar = 'r' then
-
-    else if KeyChar = 'R' then
-
-    else if KeyChar = 's' then
-
-    else if KeyChar = 'S' then
-
-    else if KeyChar = 't' then
-
-    else if KeyChar = 'T' then
-
-    else if KeyChar = 'u' then
-
-    else if KeyChar = 'U' then
-
-    else if KeyChar = 'v' then
-
-    else if KeyChar = 'V' then
-
-    else if KeyChar = 'w' then
-
-    else if KeyChar = 'W' then
-
-    else if KeyChar = 'x' then
-
-    else if KeyChar = 'X' then
-
-    else if KeyChar = 'y' then
-
-    else if KeyChar = 'Y' then
-
-    else if KeyChar = 'z' then
-
-    else if KeyChar = 'Z' then
-
     else if KeyChar = ' ' then
-      result := faToggleGosu
-
-    else if Key = vkSpace then
       result := faToggleGosu
 
     else if Key = vkDelete then

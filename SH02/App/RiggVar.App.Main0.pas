@@ -50,13 +50,13 @@ type
   private
     function GetCurrentCandidate: TSudokuValue;
     function GetCurrentValue: TSudokuValue;
-    function GetRightClickAction: TRightClickAction;
+    function GetClickAction: TClickAction;
     function GetModifierkeys: TShiftstate;
   public
     property CurrentCandidate: TSudokuValue read GetCurrentCandidate;
     property CurrentValue: TSudokuValue read GetCurrentValue;
     property Modifierkeys: TShiftstate read GetModifierkeys;
-    property RightClickAction: TRightClickAction read GetRightClickAction;
+    property ClickAction: TClickAction read GetClickAction;
   end;
 
   TMain0 = class
@@ -84,6 +84,8 @@ type
     function GetSetCandidatesButtonDown: Boolean;
     function GetToggleGosuButtonDown: Boolean;
     function GetUnsetCandidatesButtonDown: Boolean;
+    procedure SetClickAction(const Value: TClickAction);
+    function GetClickAction: TClickAction;
   public
     SudokuHostForm: ISudokuHostForm;
     BackgroundLock: Boolean;
@@ -104,7 +106,7 @@ type
 
     ToggleGosuButtonEnabled: Boolean;
 
-    RightClickAction: TRightClickAction;
+    FClickAction: TClickAction;
 
     constructor Create;
     destructor Destroy; override;
@@ -130,6 +132,7 @@ type
     function IsActionChecked(fa: Integer): Boolean;
     procedure CollectShortcuts(fa: Integer; ML: TStrings);
     procedure WriteHelpText(ML: TStrings);
+    procedure RunTest01(ML: TStrings);
 
     procedure InitFirstSudoku;
     procedure CreateSudokuHelper(const aName: string);
@@ -150,11 +153,13 @@ type
     property ToggleGosuButtonDown: Boolean read GetToggleGosuButtonDown;
     property SetCandidatesButtonDown: Boolean read GetSetCandidatesButtonDown;
     property UnsetCandidatesButtonDown: Boolean read GetUnsetCandidatesButtonDown;
+    property ClickAction: TClickAction read GetClickAction write SetClickAction;
   end;
 
 implementation
 
 uses
+  System.Generics.Collections,
   FrmMain,
   RiggVar.App.Main,
   RiggVar.FederModel.ActionMapPhone,
@@ -182,24 +187,9 @@ begin
   result := MainVar.ShiftState;
 end;
 
-function TSudokuHostForm.GetRightClickAction: TRightClickAction;
-var
-  LState: TShiftstate;
+function TSudokuHostForm.GetClickAction: TClickAction;
 begin
-  LState:= MainVar.ShiftState;
-  if ssAlt in LState then
-    Result := TRightClickAction.SetCandidate
-  else if ssCtrl in LState then
-    Result := TRightClickAction.UnsetCandidate
-  else if Main.ToggleGosuButtonEnabled and Main.ToggleGosuButtonDown then
-    Result := TRightClickAction.ToggleGosu
-  else if Main.SetCandidatesButtonDown then
-     Result := TRightClickAction.SetCandidate
-  else if Main.UnsetCandidatesButtonDown then
-    Result := TRightClickAction.UnsetCandidate
-  else
-    { default action is to set a candidate }
-    Result := TRightClickAction.SetCandidate
+  Result := Main.ClickAction;
 end;
 
 { TMain0 }
@@ -209,6 +199,7 @@ begin
   Main := self;
   SudokuHostForm := TSudokuHostForm.Create;
 
+  FClickAction := TClickAction.SetValue;
   FCurrentValue := 1;
   FTouch := faTouchDesk;
 
@@ -358,7 +349,7 @@ end;
 
 function TMain0.GetIsLandscape: Boolean;
 begin
-  result := FormMain.ClientWidth > FormMain.ClientHeight;
+  result := MainVar.ClientWidth > MainVar.ClientHeight;
 end;
 
 function TMain0.GetIsPhone: Boolean;
@@ -390,9 +381,29 @@ begin
     result := 1;
 end;
 
+function TMain0.GetClickAction: TClickAction;
+begin
+  { keyboard keys have priority }
+  if ssAlt in MainVar.ShiftState then
+    Result := TClickAction.SetCandidate
+  else if ssCtrl in MainVar.ShiftState then
+    Result := TClickAction.UnsetCandidate
+  else
+    Result := FClickAction;
+end;
+
 function TMain0.GetColorScheme: Integer;
 begin
   result := MainVar.ColorScheme.CurrentScheme;
+end;
+
+procedure TMain0.SetClickAction(const Value: TClickAction);
+begin
+  FClickAction := Value;
+  if not ToggleGosuButtonEnabled and (Value = TClickAction.ToggleGosu) then
+  begin
+    FClickAction := TClickAction.SetFocus;
+  end
 end;
 
 procedure TMain0.SetColorScheme(const Value: Integer);
@@ -528,6 +539,10 @@ begin
   ToggleGosuButtonEnabled := Sudoku.IsGosu;
   AppMemory.LastSudoku := Sudoku.Displayname;
   FormMain.Caption := string.Format(SMainformCaptionMask, [Sudoku.Displayname]);
+
+  FCurrentValue := 1;
+  FederText.ST00.Caption := IntToStr(FCurrentValue);
+  FederText.ActionPage := 1;
 end;
 
 procedure TMain0.StartNew(fa: TFederAction);
@@ -549,17 +564,17 @@ end;
 
 function TMain0.GetSetCandidatesButtonDown: Boolean;
 begin
-  result := RightClickAction = TRightClickAction.SetCandidate;
+  result := ClickAction = TClickAction.SetCandidate;
 end;
 
 function TMain0.GetToggleGosuButtonDown: Boolean;
 begin
-  result := RightClickAction = TRightClickAction.ToggleGosu;
+  result := ClickAction = TClickAction.ToggleGosu;
 end;
 
 function TMain0.GetUnsetCandidatesButtonDown: Boolean;
 begin
-  result := RightClickAction = TRightClickAction.UnsetCandidate;
+  result := ClickAction = TClickAction.UnsetCandidate;
 end;
 
 procedure TMain0.DoBigWheel(Delta: single);
@@ -575,11 +590,8 @@ end;
 procedure TMain0.CollectShortcuts(fa: Integer; ML: TStrings);
 begin
   Keyboard.GetShortcuts(fa, ML);
-//  ActionMap0.CollectOne(fa, ML);
-{$ifdef WantFederText}
   ActionMapTablet.CollectOne(fa, ML);
   ActionMapPhone.CollectOne(fa, ML);
-{$endif}
 //  FederMenu.CollectOne(fa, ML);
 end;
 
@@ -612,9 +624,9 @@ begin
   ML.Add('');
   ML.Add('### Navigating the Grid with keyboard');
   ML.Add('');
-  ML.Add('The active cell is marked in yellow, or blue for a Gosu cell.');
+  ML.Add('The active cell is marked in yellow, or blue (aqua) for a Gosu cell.');
   ML.Add('');
-  ML.Add('To navigate around the grid use the cursor keys to move one cell up, down, left or right.');
+  ML.Add('To navigate the grid use the cursor keys to move one cell up, down, left or right.');
   ML.Add('');
   ML.Add('In addition:');
   ML.Add('- HOME moves to the first cell in the row.');
@@ -631,37 +643,29 @@ begin
   ML.Add('For 12x12 and 16x16 Sudokus');
   ML.Add('  the letters A to G will set the values 10 to 16.');
   ML.Add('');
-  ML.Add('### How to toggle Even-Values-Only cell state');
+  ML.Add('### How to toggle Even-Values-Only state of active cell');
   ML.Add('');
-  ML.Add('For Gosu-type Sudokus Spacebar should toggle');
-  ML.Add('  the active cells Even-Values-Only state.');
+  ML.Add('For Gosu-type Sudokus use Spacebar to toggle the state.');
   ML.Add('');
-  ML.Add('### Setting candidates with keyboard');
+//  ML.Add('### Setting candidates with keyboard');
+//  ML.Add('');
+//  ML.Add('To set a candidate, hold down the Alt key while typing.');
+//  ML.Add('To remove a candidate, use the Ctrl key instead.');
+//  ML.Add('Candidates can only be set on an empty cell.');
+//  ML.Add('');
+  ML.Add('### Setting values and candidates with mouse');
   ML.Add('');
-  ML.Add('To set a candidate, hold down the Alt key while typing.');
-  ML.Add('To remove a candidate, use the Ctrl key instead.');
-  ML.Add('Candidates can only be set on an empty cell.');
+  ML.Add('First make sure the click mode with yellow frame button,');
+  ML.Add('  then click on one of the numbered buttons to SELECT the value,');
+  ML.Add('  follow by a click on a cell in the grid to PLACE the value.');
   ML.Add('');
-  ML.Add('### Setting values with mouse');
+  ML.Add('Value 0 will clear the cell.');
   ML.Add('');
-  ML.Add('Using the left mouse button,');
-  ML.Add('  first click on one of the numbered buttons to SELECT the value,');
-  ML.Add('  then click on a cell in the grid to PLACE the value.');
+  ML.Add('To set candidates with the left mouse button switch the mode.');
   ML.Add('');
-  ML.Add('Using 0 as value should clear the cell.');
-  ML.Add('');
-  ML.Add('### Setting candidates with mouse');
-  ML.Add('');
-  ML.Add('For candidates it should go like this:');
-  ML.Add('- make sure to select the correct value,');
-  ML.Add('- make sure the appropriate mode of operation is set,');
-  ML.Add('- then click on an empty cell with the right mouse button.');
-  ML.Add('');
-  ML.Add('Right mouse button clicks should work together with the modifier keys');
-  ML.Add('  Alt (set a candidate) and');
-  ML.Add('  Ctrl (remove a candidate).');
-  ML.Add('');
-  ML.Add('The currently active mode should be reflected in the button''s down state.');
+  ML.Add('Using the right mouse button should work together with modifier keys');
+  ML.Add('  Alt (set candidate) and Ctrl (remove candidate),');
+  ML.Add('  independent of the selected click mode.');
   ML.Add('');
   ML.Add('## Sudoku commands');
   ML.Add('');
@@ -696,6 +700,41 @@ begin
   ML.Add('  Select the one you want to revert to and click OK.');
   ML.Add('  The application should then undo all changes done after the mark was set.');
   ML.Add('  This action should only be enabled if there is at least one stack mark defined.');
+end;
+
+procedure TMain0.RunTest01(ML: TStrings);
+var
+  LList: TStack<Integer>;
+  I: Integer;
+  LArray: TArray<Integer>;
+  SB: TStringbuilder;
+begin
+  SB := TStringBuilder.Create(4096);
+  try
+    LList := TStack<Integer>.Create();
+    try
+      for I := 1 to 10 do
+        LList.Push(I);
+      SB.AppendLine('Enumerator sequence:');
+      for I in LList do
+        SB.AppendFormat('%d, ',[I]);
+      SB.AppendLine;
+      SB.AppendLine('ToArray sequence:');
+      LArray:= LList.ToArray;
+      for I := Low(LArray) to High(LArray) do
+        SB.AppendFormat('%d, ',[LArray[I]]);
+      SB.AppendLine;
+      SB.AppendLine('Pop sequence:');
+      while LLIst.Count >0 do
+        SB.AppendFormat('%d, ',[LList.Pop]);
+      SB.AppendLine;
+      ML.Text := SB.ToString;
+    finally
+      LList.Free;
+    end;
+  finally
+    SB.Free;
+  end;
 end;
 
 end.

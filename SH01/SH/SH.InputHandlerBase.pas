@@ -351,8 +351,7 @@ end;
  by a set of speed buttons on that form.
  </remarks>
 }
-procedure TBaseSudokuInputHandler.HandleCellClick(aCol, aRow: Integer;
-    aRightClick: Boolean = false);
+procedure TBaseSudokuInputHandler.HandleCellClick(aCol, aRow: Integer; aRightClick: Boolean = false);
 begin
   { Convert grid to Sudoku cell index first }
   Inc(aCol);

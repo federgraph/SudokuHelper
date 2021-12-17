@@ -74,7 +74,7 @@ type
     FHost: ISudokuHostForm;
   strict protected
     function CharToValue(aChar: Char; var aValue: TSudokuValue): Boolean; virtual;
-    procedure HandleCellClick(aCol, aRow: Integer; aRightClick: Boolean = false);
+    procedure HandleCellClick(aCol, aRow: Integer; aClickAction: TClickAction = TClickAction.SetFocus);
     procedure HandleCharacter(aCol, aRow: Integer; aChar: Char);
     procedure HandleLeftClick(const aCol, aRow: TSudokuCellIndex);
     procedure HandleRightClick(const aCol, aRow: TSudokuCellIndex);
@@ -141,12 +141,12 @@ end;
  by a set of speed buttons on that form.
  </remarks>
 }
-procedure TBaseSudokuInputHandler.HandleCellClick(aCol, aRow: Integer; aRightClick: Boolean = false);
+procedure TBaseSudokuInputHandler.HandleCellClick(aCol, aRow: Integer; aClickAction: TClickAction = TClickAction.SetFocus);
 begin
   { Convert grid to Sudoku cell index first }
   Inc(aCol);
   Inc(aRow);
-  if aRightClick then
+  if aClickAction <> TClickAction.SetValue then
     HandleRightClick(aCol, aRow)
   else
     HandleLeftClick(aCol, aRow);
@@ -231,21 +231,23 @@ end;
 }
 procedure TBaseSudokuInputHandler.HandleRightClick(const aCol, aRow: TSudokuCellIndex);
 var
-  LAction: TRightClickAction;
+  LAction: TClickAction;
   LValue: TSudokuValue;
   LCell: ISudokuCell;
 begin
   LCell := Data.Cell[aCol, aRow];
   LValue := Host.CurrentCandidate;
-  LAction := Host.RightClickAction;
-  if (LValue = 0) and (LAction <> TRightClickAction.ToggleGosu)  then
+  LAction := Host.ClickAction;
+  if (LValue = 0) and (LAction <> TClickAction.ToggleGosu)  then
     Exit; // 0 is not a valid candidate value!
   case LAction of
-    TRightClickAction.SetCandidate:
+    TClickAction.SetFocus:
+      LCell.Select;
+    TClickAction.SetCandidate:
       LCell.AddCandidate(LValue);
-    TRightClickAction.UnsetCandidate:
+    TClickAction.UnsetCandidate:
       LCell.RemoveCandidate(LValue);
-    TRightClickAction.ToggleGosu:
+    TClickAction.ToggleGosu:
       LCell.ToggleEvenOnly;
   end;
 end;

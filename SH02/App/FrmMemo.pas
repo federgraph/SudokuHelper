@@ -79,6 +79,7 @@ type
     procedure WriteActionDecoder(Sender: TObject);
     procedure WriteItems(Sender: TObject);
     procedure WriteShortcuts(Sender: TObject);
+    procedure RunTest01(Sender: TObject);
   end;
 
 var
@@ -219,6 +220,7 @@ begin
   MemoActionList.AddMemoAction('Write Action Decoder', WriteActionDecoder);
   MemoActionList.AddMemoAction('Write Action Items', WriteItems);
   MemoActionList.AddMemoAction('Write Shortcuts', WriteShortcuts);
+  MemoActionList.AddMemoAction('RunTest01', RunTest01);
 end;
 
 procedure TFormMemo.InitItems;
@@ -282,6 +284,13 @@ begin
 {$ifdef MSWINDOWS}
   Memo.ContentBounds := TRectF.Empty;
 {$endif}
+end;
+
+procedure TFormMemo.RunTest01(Sender: TObject);
+begin
+  MemoBeginUpdate;
+  Main.RunTest01(Memo.Lines);
+  MemoEndUpdate;
 end;
 
 end.

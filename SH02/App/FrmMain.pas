@@ -281,7 +281,7 @@ begin
 
   SudokuGraph.Col := Floor(LCol);
   SudokuGraph.Row := Floor(LRow);
-  Main.Sudoku.InputHandler.HandleCellClick(SudokuGraph.Col, SudokuGraph.Row, Button = TMouseButton.mbRight);
+  Main.Sudoku.InputHandler.HandleCellClick(SudokuGraph.Col, SudokuGraph.Row, Main.ClickAction);
 end;
 
 procedure TFormMain.FormMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
@@ -305,7 +305,7 @@ begin
       delta := -1;
 
     if ssShift in Shift then
-      Main.DoBigWheel(delta)
+      Main.DoBigWheel(-delta)
     else
       Main.DoSmallWheel(delta);
   end;

@@ -157,6 +157,8 @@ begin
     faNavRowLast: result := 'faNavRowLast';
 
     { SudokuMode }
+    faSetFocusMode: result := 'faSetFocusMode';
+    faSetValueMode: result := 'faSetValueMode';
     faSetCandidateMode: result := 'faSetCandidateMode';
     faUnsetCandidateMode: result := 'faUnsetCandidateMode';
     faToggleGosuMode: result := 'faToggleGosuMode';

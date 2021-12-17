@@ -157,6 +157,8 @@ begin
     faSudoku16D: result := '16x16 Sudoku Gosu (heptadecimal)';
 
     { SudokuMode }
+    faSetFocusMode: result := 'Set Focus Mode';
+    faSetValueMode: result := 'Set Value Mode';
     faSetCandidateMode: result := 'Set Candidate Mode';
     faUnsetCandidateMode: result := 'Unset Candidate Mode';
     faToggleGosuMode: result := 'Toggle Gosu Mode';

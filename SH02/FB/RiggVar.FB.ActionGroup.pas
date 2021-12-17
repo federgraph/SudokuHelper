@@ -203,6 +203,8 @@ faPlace15,
 faPlace16];
 
 ActionGroupSudokuMode: TActionGroup = [
+faSetFocusMode,
+faSetValueMode,
 faSetCandidateMode,
 faUnsetCandidateMode,
 faToggleGosuMode];

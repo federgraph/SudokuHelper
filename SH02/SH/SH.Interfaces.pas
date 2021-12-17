@@ -60,7 +60,7 @@ type
      to draw the cell borders in the UI }
   TCellInBlockLocation = set of TBlockPosition;
 
-  TRightClickAction = (SetCandidate, UnsetCandidate, ToggleGosu);
+  TClickAction = (SetFocus, SetValue, SetCandidate, UnsetCandidate, ToggleGosu);
 
   TRedrawCellEvent = procedure (aCol, aRow: TSudokuCellIndex) of object;
 
@@ -74,7 +74,7 @@ type
     function GetCurrentCandidate: TSudokuValue;
     function GetCurrentValue: TSudokuValue;
     function GetModifierKeys: TShiftstate;
-    function GetRightClickAction: TRightClickAction;
+    function GetClickAction: TClickAction;
 
     {!
     <value>
@@ -96,9 +96,9 @@ type
 
     {!
     <value>
-     Action to perform on a right mouse click on the Sudoku grid.
+     Action to perform on a mouse click on the Sudoku grid.
     </value>}
-    property RightClickAction: TRightClickAction read GetRightClickAction;
+    property ClickAction: TClickAction read GetClickAction;
   end;
 
   {!
@@ -148,6 +148,11 @@ type
      A value of 0 is ignored, this is never a valid candidate.</remarks>
     }
     procedure AddCandidate(aValue: TSudokuValue);
+    {!
+    <summary>
+     Selects the cell in the grid. </summary>
+    }
+    procedure Select;
     {!
     <summary>
      Set the cell to empty and valid, clear the candidate list. </summary>
@@ -281,10 +286,9 @@ type
      Handle a mouse click (or tap) on a cell of the Sudoku grid </summary>
     <param name="aCol">is the grid column of the clicked cell</param>
     <param name="aRow">is the grid row of the clicked cell</param>
-    <param name="aRightClick">false indicates a click with the left
-     mouse button, true a click with the right one.</param>
+    <param name="aClickAction">is the currently active mode</param>
     }
-    procedure HandleCellClick(aCol, aRow: Integer; aRightClick: Boolean = False);
+    procedure HandleCellClick(aCol, aRow: Integer; aClickAction: TClickAction = TClickAction.SetFocus);
     {!
     <summary>
      Handle keyboard input from the Sudoku grid </summary>
@@ -434,8 +438,8 @@ type
     {!
     <summary>
      Undo the last change the user made to the Sudoku.</summary>
-    <exception cref="EPreconditionViolation">
-     is raised if the undo stack is empty</exception>
+    <remarks>
+     It does nothing if the undo stack is empty.</remarks>
     }
     procedure Undo;
     {!

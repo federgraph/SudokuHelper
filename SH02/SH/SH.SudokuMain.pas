@@ -31,7 +31,6 @@ type
   strict protected
     function GetButtonsContainer: TLayout;
     function GetModifierkeys: TShiftstate;
-    function GetRightClickAction: TRightClickAction;
   protected
     procedure UpdateActions;
     property CurrentCandidate: TSudokuValue read GetCurrentCandidate;
@@ -213,37 +212,6 @@ end;
 function TSudokuMain.GetModifierkeys: TShiftState;
 begin
   Result := []; //KeyboardStateToShiftState();
-end;
-
-{!
-<summary>
- Implements ISudokuHostform.GetRightClickAction</summary>
-<returns>
- The action to take on a right click or keyboard input</returns>
-<remarks>
- To set a candidate the user can hold down the Alt key and just type
- the value, or right-click with the mouse. To clear a candidate he
- can use the Ctrl key instead. The right-click action is also controlled
- with a group of speedbuttons, but the modifier keys take precedence.
- </remarks>
-}
-function TSudokuMain.GetRightClickAction: TRightClickAction;
-var
-  LState: TShiftstate;
-begin
-  LState:= GetModifierKeys; // KeyboardStateToShiftState;
-  if ssAlt in LState then
-    Result := TRightClickAction.SetCandidate
-  else if ssCtrl in LState then
-    Result := TRightClickAction.UnsetCandidate
-  else if ToggleGosuButton.Enabled and ToggleGosuButton.IsPressed then
-    Result := TRightClickAction.ToggleGosu
-  else if SetCandidatesButton.IsPressed then
-     Result := TRightClickAction.SetCandidate
-  else if UnsetCandidatesButton.IsPressed then
-    Result := TRightClickAction.UnsetCandidate
-  else  // default action is to set a candidate
-    Result := TRightClickAction.SetCandidate
 end;
 
 procedure TSudokuMain.HelpActionExecute(Sender: TObject);
