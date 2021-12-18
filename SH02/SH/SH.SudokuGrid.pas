@@ -23,6 +23,8 @@ type
     FCol: Integer;
     FRow: Integer;
 
+    DrawNeeded: Boolean;
+
     constructor Create;
 
     procedure NavCol(Delta: Integer);
@@ -72,12 +74,12 @@ end;
 
 procedure TSudokuGrid.Invalidate;
 begin
-  Draw;
+  DrawNeeded := True;
 end;
 
 procedure TSudokuGrid.InvalidateCell(ACol, ARow: Integer);
 begin
-  Draw;
+  DrawNeeded := True;
 end;
 
 procedure TSudokuGrid.NavCol(Delta: Integer);

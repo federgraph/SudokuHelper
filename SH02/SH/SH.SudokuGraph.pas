@@ -25,34 +25,31 @@ type
     Translucent = 0.8;
     NoCorners: TCorners = [];
   private var
-    procedure ClearBackground(g: TCanvas);
-  private
+    FZoom: single;
     FImage: TOriginalImage; // injected, not owned
-    procedure InitBitmap;
-    procedure SetImage(const Value: TOriginalImage);
-  private
+
     SavedMatrix: TMatrix;
     NewMatrix: TMatrix;
     TempMatrix: TMatrix;
+
+    procedure SetImage(const Value: TOriginalImage);
     procedure BeginTransform(g: TCanvas);
     procedure EndTransform(g: TCanvas);
-  private
-    procedure DrawToCanvas(g: TCanvas);
-    procedure DrawSudokuGrid(g: TCanvas);
-  private
-    DrawCounter: Integer;
-    FZoom: single;
 
     function GetSymbol(aValue: TSudokuValue): string;
-
+    procedure DrawToCanvas(g: TCanvas);
+    procedure ClearBackground(g: TCanvas);
+    procedure DrawSudokuGrid(g: TCanvas);
+    procedure DrawCell(g: TCanvas; ACell: ISudokuCell; ACol, ARow: Integer; Rect: TRectF);
     procedure DrawCellBorders(g: TCanvas; aCell: ISudokuCell; var Rect: TRectF; ASelected: Boolean);
     procedure DrawCellData(g: TCanvas; aCell: ISudokuCell; Rect: TRectF; ASelected: Boolean);
-    procedure DrawCell(g: TCanvas; ACell: ISudokuCell; ACol, ARow: Integer; Rect: TRectF);
   public
     BackgroundColor: TAlphaColor;
     ImageOpacity: single;
 
     DataStorage: ISudokuData; // injected
+
+    DrawCounter: Integer;
 
     constructor Create;
 
@@ -65,8 +62,7 @@ type
 implementation
 
 uses
-  RiggVar.App.Main,
-  FMX.Grid;
+  RiggVar.App.Main;
 
 constructor TSudokuGraph.Create;
 begin
@@ -75,16 +71,11 @@ begin
   ImageOpacity := 1.0;
 end;
 
-procedure TSudokuGraph.InitBitmap;
-begin
-  Image.Width := 16 * 64; // big enough to display largest sudoku
-  Image.Height := Image.Width;
-end;
-
 procedure TSudokuGraph.SetImage(const Value: TOriginalImage);
 begin
   FImage := Value;
-  InitBitmap;
+  FImage.Width := 16 * 64; // big enough to display largest sudoku
+  FImage.Height := FImage.Width;
 end;
 
 procedure TSudokuGraph.BeginTransform(g: TCanvas);
@@ -146,11 +137,15 @@ end;
 
 procedure TSudokuGraph.Draw;
 begin
-  if (Image <> nil) then
-  begin
-    DrawToCanvas(Image.Bitmap.Canvas);
-    Image.Repaint;
-  end;
+  if not DrawNeeded then
+    Exit;
+  if Image = nil then
+    Exit;
+
+  DrawNeeded := False;
+  DrawToCanvas(Image.Bitmap.Canvas);
+  Image.Repaint;
+  Main.FederText.SL00.Caption := IntToStr(DrawCounter);
 end;
 
 procedure TSudokuGraph.ClearBackground(g: TCanvas);

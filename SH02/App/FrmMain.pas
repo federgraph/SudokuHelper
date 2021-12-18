@@ -51,6 +51,7 @@ type
 
     procedure SudokuImageMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
     procedure HandleShowHint(Sender: TObject);
+    procedure ApplicationEventsIdle(Sender: TObject; var Done: Boolean);
 
     function GetIsUp: Boolean;
     procedure Init;
@@ -151,7 +152,19 @@ begin
   begin
     FormShown := True;
     Main.InitFirstSudoku;
+    SudokuGraph.DrawNeeded := True;
+    Application.OnIdle := ApplicationEventsIdle;
   end;
+end;
+
+procedure TFormMain.ApplicationEventsIdle(Sender: TObject; var Done: Boolean);
+begin
+  if IsUp then
+  begin
+    if SudokuGraph.DrawNeeded then
+      SudokuGraph.Draw;
+  end;
+  Done := True;
 end;
 
 procedure TFormMain.MemoBtnClick(Sender: TObject);
@@ -185,7 +198,7 @@ begin
   begin
     Main.UpdateTouch;
     Main.UpdateText;
-    SudokuGraph.Draw;
+    SudokuGraph.Invalidate;
   end;
 end;
 
@@ -228,7 +241,7 @@ procedure TFormMain.UpdateSudokuGraph;
 begin
   if IsUp and SudokuImage.Visible then
   begin
-    SudokuGraph.Draw;
+    SudokuGraph.Invalidate;
   end;
 end;
 

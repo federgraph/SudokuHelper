@@ -48,28 +48,9 @@ begin
   if not Main.IsUp then
     Exit;
 
-  if ssCtrl in Shift then
-  begin
-    if Key = 49 then
-      fa := faNavColFirst
-    else if Key = 50 then
-      fa := faNavColLast
-    else if Key = 51 then
-      fa := faNavRowFirst
-    else if Key = 52 then
-      fa := faNavRowLast
-    else if Key = 53 then
-      fa := faNoop
-  end;
-
   if (fa = faNoop) and (Main.Keyboard <> nil) then
   begin
-{$ifdef MSWINDOWS}
     fa := Main.Keyboard.KeyUpAction(Key, KeyChar, Shift);
-{$endif}
-{$ifdef MACOS}
-    fa := Main.Keyboard.KeyDownAction(Key, KeyChar, Shift);
-{$endif}
   end;
 
   if fa <> faNoop then
@@ -187,8 +168,7 @@ begin
     end;
 
   end;
-  if M.Sudoku <> nil then
-    M.Sudoku.Display.Refresh;
+  M.Sudoku.Display.Refresh;
   M.FederText.CheckState;
 end;
 

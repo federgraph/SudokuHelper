@@ -27,8 +27,8 @@ uses
 type
   TFederKeyboard01 = class(TFederKeyboard)
   private
-    function GetActionFromKey(Shift: TShiftState; Key: Word): Integer;
-    function GetActionFromKeyChar(KeyChar: char): Integer;
+    function GetActionFromKey(Shift: TShiftState; Key: Word): TFederAction;
+    function GetActionFromKeyChar(KeyChar: char): TFederAction;
   public
     constructor Create;
     function KeyUpAction(var Key: Word; var KeyChar: Char; Shift: TShiftState): TFederAction; override;
@@ -44,25 +44,35 @@ begin
   TestName := 'Keyboard01';
 end;
 
-function TFederKeyboard01.GetActionFromKey(Shift: TShiftState; Key: Word): Integer;
+function TFederKeyboard01.GetActionFromKey(Shift: TShiftState; Key: Word): TFederAction;
+var
+  fa: TFederAction;
 begin
-  result := faNoop;
+  fa := faNoop;
 
   if Key = vkC then
-    result := faCopy
+    fa := faCopy
   else if Key = vkV then
-    result := faPaste
+    fa := faPaste
   else if Key = vkL then
-    result := faLoad
+    fa := faLoad
   else if Key = vkS then
-    result := faSave
+    fa := faSave
   else if Key = vkO then
-    result := faOpen
+    fa := faOpen
 
   else if ssCtrl in Shift then
   begin
-    if Key = vkZ then
-      result := faUndo
+    if Key = 49 then
+      fa := faNavColFirst
+    else if Key = 50 then
+      fa := faNavColLast
+    else if Key = 51 then
+      fa := faNavRowFirst
+    else if Key = 52 then
+      fa := faNavRowLast
+    else if Key = vkZ then
+      fa := faUndo
   end
 
   else
@@ -71,59 +81,60 @@ begin
     if Key = vkLeft then
     begin
       if ssShift in Shift then
-        result := faWheelLeft
+        fa := faWheelLeft
       else
-        result := faNavColM
+        fa := faNavColM
     end
     else if Key = vkRight then
     begin
       if ssShift in Shift then
-        result := faWheelRight
+        fa := faWheelRight
       else
-        result := faNavColP
+        fa := faNavColP
     end
 
     else if Key = vkUp then
     begin
       if ssShift in Shift then
-        result := faWheelUp
+        fa := faWheelUp
       else
-        result := faNavRowM
+        fa := faNavRowM
     end
     else if Key = vkDown then
     begin
       if ssShift in Shift then
-        result := faWheelDown
+        fa := faWheelDown
       else
-        result := faNavRowP
+        fa := faNavRowP
     end
 
     else if Key = vkPrior then
-      result := faNavRowFirst
+      fa := faNavRowFirst
     else if Key = vkNext then
-      result := faNavRowLast
+      fa := faNavRowLast
 
     else if Key = vkHome then
-      result := faNavColFirst
+      fa := faNavColFirst
     else if Key = vkEnd then
-      result := faNavColLast
+      fa := faNavColLast
 
     else if Key = vkEscape then
     begin
       if ssShift in Shift then
-        result := faReset
+        fa := faReset
       else
-        result := faNoop;
+        fa := faNoop;
     end
 
     else if Key = vkF1 then
-      result := faShowMemo
+      fa := faShowMemo
 
   end;
 
+  result := fa;
 end;
 
-function TFederKeyboard01.GetActionFromKeyChar(KeyChar: char): Integer;
+function TFederKeyboard01.GetActionFromKeyChar(KeyChar: char): TFederAction;
 var
   fa: Integer;
 begin

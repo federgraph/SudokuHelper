@@ -33,26 +33,6 @@ type
     procedure InitActions(Layout: Integer); override;
   end;
 
-{
-[9]----[10]
-[1]--------
-[2]--------
-[3]--------
------------
---------[4]
---------[5]
---------[6]
-[7]--- -[8]
-
-[9][1][2][3]----[10]
---------------------
---------------------
---------------------
---------------------
-[7]------[4][5][6][8]
-
-}
-
 implementation
 
 uses
@@ -69,7 +49,7 @@ end;
 procedure TActionMapPhone.InitActions(Layout: Integer);
 begin
 {
-[9]----[10]
+[10]----[9]
 [1]--------
 [2]--------
 [3]--------
@@ -78,27 +58,31 @@ begin
 --------[5]
 --------[6]
 [7]--- -[8]
+
+[10][1][2][3]----[9]
+--------------------
+--------------------
+--------------------
+--------------------
+[7]-----[4][5][6][8]
 }
+
 
   cla := claWhite;
 
   case Layout of
     1:
     begin
-      IAC(9, faSelect1, claPlum);
       IAC(1, faSelect2, claPlum);
       IAC(2, faSelect3, claPlum);
       IAC(3, faSelect4, claPlum);
-
-      IAC(7, faSelect0, claAquaMarine);
-
-      IAC(10, faSelect5, claPlum);
-
       IAC(4, faSelect6, claPlum);
       IAC(5, faSelect7, claPlum);
       IAC(6, faSelect8, claPlum);
       IAC(8, faSelect9, claPlum);
-
+      IAC(7, faSelect0, claAquaMarine);
+      IAC(9, faSelect5, claPlum);
+      IAC(10, faSelect1, claPlum);
     end;
 
     else
