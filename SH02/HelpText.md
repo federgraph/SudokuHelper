@@ -1,6 +1,6 @@
 ﻿# SudokuHelper App SH02
 
-> Compare to original SudokuHelper [help text](../SH01/Helppage.htm) by Dr. Peter Below.
+> Compare to original SudokuHelper [help text](../SH01/helptext.md) by Dr. Peter Below.
 
 The text below is being adapted by *Federgraph* for the purpose of FMX application SH02.
 
@@ -22,9 +22,27 @@ The application's main features should be:
 - Then there should be a feature called *named marks*, which can be set for the current undo stack state. 
 - And it should be possible to save the Sudoku to a file, including the undo stack.
 
+<a href="../images/SH02-01.png">*Screenshot of SH02*<br>
+![SH02 screenshot](../images/SH02-01.png)</a>
+
+In the image above you can see:
+- SH02 FMX app with Classic Sudoku Gosu (9x9) template loaded
+- the button frame with page 1 (of 3) shown
+- two yellow buttons for navigating button pages
+- button 0 - 16 for selection of values (Aquamarine, Plum, CornflowerBlue)
+- the sudoku grid image in the center
+- a cell with assigned value of 1
+- a selected (focused) cell with a value of 2 already placed
+- a Gosu cell with a candidate value of 2 set
+- the .TG click mode active (top left corner of button not rounded)
+- the ^z button for undo action
+- the CS button for clearing the undo stack
+- currently selected value 2 shown on the top touch bar
+- DrawCounter 21 shown on the left touch bar (for debugging)
+
 ## Basics of operation
 
-### Navigating the Grid with keyboard
+### Navigating the Grid
 
 The active cell is marked in yellow, or blue (aqua) for a Gosu cell.
 

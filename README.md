@@ -15,6 +15,12 @@ About forked repository:
 
 ## SH01
 
+This is Peter Below's SudokuHelper app:
+
+<a href="images/SH01-01.png">*Screenshot of SH01*<br>
+![SH01 screenshot](images/SH01-01.png)</a>
+[help text for SH01](SH01/helptext.md)
+
 Original source code files have been moved into subdirectories of folder SH01 and renamed!
 
 The reason for this big unit name refactoring is that I wanted to add a second project in folder SH02,
@@ -23,6 +29,10 @@ which uses FMX framework to build the UI, instead of VCL.
 ## SH02
 
 Folder SH02 holds the experimental FMX application, which is work in progress.
+
+<a href="images/SH02-01.png">*Screenshot of SH02*<br>
+![SH02 screenshot](images/SH02-01.png)</a>
+[help text for SH02](SH02/HelpText.md)
 
 The motivation for starting an FMX alternative was to demonstrate Federgraph's *button frame component*.
 And the plan is to replace the UI wholesale, while keeping the *business logic* almost unchanged.
