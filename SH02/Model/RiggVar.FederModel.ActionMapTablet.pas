@@ -118,8 +118,8 @@ begin
       InitAC(cl, 3, faSelect12, claCornflowerblue);
       InitAC(cl, 4, faSelect13, claCornflowerblue);
       InitAC(cl, 5, faSelect14, claCornflowerblue);
-      InitAC(cl, 6, faSelect15, cla);
-      InitAC(cl, 7, faSelect16, cla);
+      InitAC(cl, 6, faSelect15, claCornflowerblue);
+      InitAC(cl, 7, faSelect16, claCornflowerblue);
       InitAC(cl, 8, faNoop, cla);
 
       cl := BottomRight;
@@ -201,8 +201,8 @@ begin
       InitAC(cl, 8, faNoop, cla);
 
       cl := BottomRight;
-      InitAC(cl, 1, faNoop, cla);
-      InitAC(cl, 2, faNoop, cla);
+      InitAC(cl, 1, faSaveSudoku, claAquamarine);
+      InitAC(cl, 2, faLoadSudoku, claAquamarine);
       InitAC(cl, 3, faNoop, cla);
       InitAC(cl, 4, faNoop, cla);
       InitAC(cl, 5, faNoop, cla);

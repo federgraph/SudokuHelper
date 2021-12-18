@@ -43,7 +43,9 @@ uses
   SH.Interfaces,
   SH.HelperBase,
   SH.SudokuGrid,
-  SH.SudokuGraph;
+  SH.SudokuGraph,
+  SH.SudokuHelper,
+  SH.SudokuMain;
 
 type
   TSudokuHostForm = class(TInterfacedObject, ISudokuHostForm)
@@ -75,7 +77,6 @@ type
     function GetColorScheme: Integer;
     procedure InitText;
     procedure InitTouch;
-    procedure InitializeSudoku;
     procedure SetIsUp(const Value: Boolean);
     procedure SetColorScheme(const Value: Integer);
     procedure SetTouch(const Value: Integer);
@@ -103,6 +104,7 @@ type
 
     SudokuGrid: TSudokuGrid;
     SudokuGraph: TSudokuGraph;
+    SudokuMain: TSudokuMain;
 
     ToggleGosuButtonEnabled: Boolean;
 
@@ -134,6 +136,7 @@ type
     procedure WriteHelpText(ML: TStrings);
     procedure RunTest01(ML: TStrings);
 
+    procedure InitializeSudoku;
     procedure InitFirstSudoku;
     procedure CreateSudokuHelper(const aName: string);
     procedure StartNew(fa: TFederAction);
@@ -163,8 +166,7 @@ uses
   FrmMain,
   RiggVar.App.Main,
   RiggVar.FederModel.ActionMapPhone,
-  RiggVar.FederModel.ActionMapTablet,
-  SH.SudokuHelper;
+  RiggVar.FederModel.ActionMapTablet;
 
 { TSudokuHostForm }
 
@@ -198,6 +200,7 @@ constructor TMain0.Create;
 begin
   Main := self;
   SudokuHostForm := TSudokuHostForm.Create;
+  SudokuMain := TSudokuMain.Create;
 
   FClickAction := TClickAction.SetValue;
   FCurrentValue := 1;
@@ -234,6 +237,7 @@ begin
 
   FSudoku := nil;
   SudokuHostForm := nil;
+  SudokuMain.Free;
 
   inherited;
 end;
@@ -599,8 +603,8 @@ procedure TMain0.WriteHelpText(ML: TStrings);
 begin
   ML.Add('# SudokuHelper Readme');
   ML.Add('');
-  ML.Add('Copyright © 2021 by Dr. Peter Below,');
-  ML.Add('adapted for SH02 by Federgraph, see forked GitHub repository.');
+  ML.Add('Copyright © 2021 by Dr. Peter Below, see GitHub repository.');
+  ML.Add('Adapted for SH02 by Federgraph, see forked GitHub repository.');
   ML.Add('');
   ML.Add('SudokuHelper is an application that acts like an electronic Sudoku grid.');
   ML.Add('');
@@ -608,16 +612,17 @@ begin
   ML.Add('  both in the classic and Gosu variant,');
   ML.Add('  where cells can be marked to only accept even numbers.');
   ML.Add('');
-  ML.Add('The application neither creates Sudokus itself nor provides a solver for them;');
-  ML.Add('  it is just a more convenient way to solve a Sudoku from a magazine');
-  ML.Add('  or other external source than doing it on paper,');
-  ML.Add('  using pencil and eraser.');
+  ML.Add('The application neither creates Sudokus itself');
+  ML.Add('  nor provides a solver for them.');
+  ML.Add('  It is just a more convenient way to solve a Sudoku');
+  ML.Add('  from a magazine or other external source,');
+  ML.Add('  than doing it on paper, using pencil and eraser.');
   ML.Add('');
   ML.Add('The application''s main features are:');
   ML.Add('- Invalid cell values are marked in red. ');
   ML.Add('- Candidate values can be added and removed from a cell.');
   ML.Add('- All actions can be undone, the undo stack is only limited by available memory. ');
-  ML.Add('- Named marks can be set for the current undo stack state.');
+//  ML.Add('- Named marks can be set for the current undo stack state.');
   ML.Add('- The Sudoku can be saved to file, including the undo stack.');
   ML.Add('');
   ML.Add('## Basics of operation');
@@ -643,31 +648,27 @@ begin
   ML.Add('For 12x12 and 16x16 Sudokus');
   ML.Add('  the letters A to G will set the values 10 to 16.');
   ML.Add('');
-  ML.Add('### How to toggle Even-Values-Only state of active cell');
-  ML.Add('');
-  ML.Add('For Gosu-type Sudokus use Spacebar to toggle the state.');
-  ML.Add('');
-//  ML.Add('### Setting candidates with keyboard');
-//  ML.Add('');
-//  ML.Add('To set a candidate, hold down the Alt key while typing.');
-//  ML.Add('To remove a candidate, use the Ctrl key instead.');
-//  ML.Add('Candidates can only be set on an empty cell.');
-//  ML.Add('');
   ML.Add('### Setting values and candidates with mouse');
   ML.Add('');
-  ML.Add('First make sure the click mode with yellow frame button,');
+  ML.Add('First make sure to set the click mode with of the yellow frame buttons,');
   ML.Add('  then click on one of the numbered buttons to SELECT the value,');
-  ML.Add('  follow by a click on a cell in the grid to PLACE the value.');
+  ML.Add('  followed by a click on a cell in the grid to PLACE the value.');
   ML.Add('');
   ML.Add('Value 0 will clear the cell.');
   ML.Add('');
-  ML.Add('To set candidates with the left mouse button switch the mode.');
+  ML.Add('Only empty cells can have candidates.');
+  ML.Add('  To set candidates with the left mouse button');
+  ML.Add('  make sure the SetCandidates click mode is selected.');
   ML.Add('');
-  ML.Add('Using the right mouse button should work together with modifier keys');
-  ML.Add('  Alt (set candidate) and Ctrl (remove candidate),');
-  ML.Add('  independent of the selected click mode.');
+  ML.Add('On the desktop you can alternatively make use of the right mouse button,');
+  ML.Add('  it should work together with modifier keys Alt (set candidate)');
+  ML.Add('  or Ctrl (remove candidate).');
+  ML.Add('  This should work independent of the selected click mode.');
   ML.Add('');
   ML.Add('## Sudoku commands');
+  ML.Add('');
+  ML.Add('These commands affect the whole Sudoku, not just a single cell.');
+  ML.Add('  Some actions have been implemented and should work already:');
   ML.Add('');
   ML.Add('[Clear stack] action should discard all items on the Undo stack,');
   ML.Add('  including all stack marks.');
@@ -676,12 +677,6 @@ begin
   ML.Add('[Undo] action should undo the last user action that changed the Sudoku''s content,');
   ML.Add('  including the candidates.');
   ML.Add('//This action should be enabled only if the stack is not empty.');
-  ML.Add('');
-  ML.Add('Not implemented yet:');
-  ML.Add('');
-  ML.Add('[New Sudoku] shows a list of the Sudoku types the application can handle.');
-  ML.Add('  Select the one you want and click OK.');
-  ML.Add('  A new empty Sudoku is created and both grid and value buttons are adjusted as needed. ');
   ML.Add('');
   ML.Add('[Save Sudoku] should bring up a File Save dialog.');
   ML.Add('  It should remember the last folder you saved a Sudoku to, or loaded one from.');
@@ -692,6 +687,12 @@ begin
   ML.Add('  It should remember the last folder you saved a Sudoku to or loaded one from.');
   ML.Add('  Pick a filename and click the dialog''s Open button to replace the current Sudoku,');
   ML.Add('  including the Undo stack, with the one saved to the file. ');
+  ML.Add('');
+  ML.Add('Not implemented yet:');
+  ML.Add('');
+  ML.Add('[New Sudoku] shows a list of the Sudoku types the application can handle.');
+  ML.Add('  Select the one you want and click OK.');
+  ML.Add('  A new empty Sudoku is created and both grid and value buttons are adjusted as needed. ');
   ML.Add('');
   ML.Add('[Set Mark] should pop up a simple dialog where you can enter a name for the mark to create.');
   ML.Add('  It then represents the current state of the undo stack. ');

@@ -24,9 +24,9 @@ The application's main features should be:
 
 ## Basics of operation
 
-### Navigating the Grid via keyboard
+### Navigating the Grid with keyboard
 
-The active cell is marked in yellow, or blue for a Gosu cell.
+The active cell is marked in yellow, or blue (aqua) for a Gosu cell.
 
 To navigate around the grid use the cursor keys to move one cell up, down, left or right.
 
@@ -45,44 +45,29 @@ To set a cell's value just type the value:
 For 12x12 and 16x16 Sudokus the letters A to G will set the values 10 to 16,
 these characters are not case-sensitive.
 
-### How to toggle the Even-Values-Only cell state with keyboard
+### Setting values and candidates with mouse
 
-For Gosu-type Sudokus **spacebar** should toggle the active cell's *even values only* state. 
+First make sure to set the click mode with of the yellow frame buttons,
+then click on one of the numbered buttons to SELECT the value,
+followed by a click on a cell in the grid to PLACE the value.
 
-### Setting candidates with keyboard
+Value 0 will clear the cell.
 
 Only empty cells can have candidates.
+To set candidates with the left mouse button
+make sure the SetCandidates click mode is selected.
 
-To set a candidate, hold down the Alt key while typing.
-To remove a candidate use the Ctrl key instead.
+On the desktop you can alternatively make use of the right mouse button,
+it should work together with modifier keys Alt (set candidate) or Ctrl (remove candidate).
+This should work independent of the selected click mode.
 
-### Setting cell values with mouse or touch
+### How to toggle Gosu cell state
 
-Use the left mouse button.
-First click on one of the numbered buttons to *select* the value,
-then click on a cell in the grid to *place* the value.
+- If keyboard is available use Spacebar to toggle the state.
+- Or use TG button on the button frame to toggle the state of the active cell.
+- Or use left mouse button, when *ToggleGosu* click mode is active.
 
-Using 0 as value should clear the cell.
-
-### Setting candidates with mouse
-
-This is a bit complicated:
-- make sure the correct value is selected,
-- make sure the appropriate *mode of operation* is set,
-- then click on an empty cell with the right mouse button.
-
-Right mouse button clicks should work together with the modifier keys Alt (set a candidate) and Ctrl (remove a candidate).
-
-The currently active mode should be reflected in the buttons visual appearance (see upper right corner of button).
-
-### Toggle Gosu cell state with mouse
-
-Right click a cell, but make sure the *ToggleGosu* mode is active.
-There should be buttons to set the mode, including this mode.
-Look for the TG button,
-the top-right corner of which should indicate that the mode is active.
-
-## Sudoku actions
+## Sudoku commands
 
 These commands affect the whole Sudoku, not just a single cell.
 
@@ -91,16 +76,11 @@ Some actions have been implemented and should work already:
 - **Undo** action should undo the last user action that changed the Sudoku's content,
 including the candidates.
 Nothing should happen if the stack is empty.
-This action used to be enabled only if the stack is not empty,
-but the button frame buttons currently cannot show the enabled state.
+(This action used to be enabled only if the stack is not empty,
+but the button frame buttons currently cannot show the enabled state.)
 - **Clear stack** action should discard all items on the Undo stack,
 including all stack marks.
 (The action should only be enabled if the stack is not empty.)
-
-Other actions are not implemented yet:
-
-- **New Sudoku** should show a list of the Sudoku types the application can handle.
-Select the one you want and click OK to create a new empty Sudoku. 
 - **Save Sudoku** should bring up a File Save dialog.
 It should remember the last folder you saved a Sudoku to, or loaded one from.
 Enter a filename and click the dialog's Save button to store the current Sudoku,
@@ -109,6 +89,11 @@ including the Undo stack, to the file.
 It should remember the last folder you saved a Sudoku to or loaded one from.
 Pick a filename and click the dialog's Open button to replace the current Sudoku,
 including the Undo stack, with the one saved to the file. 
+
+Other actions are not implemented yet:
+
+- **New Sudoku** should show a list of the Sudoku types the application can handle.
+Select the one you want and click OK to create a new empty Sudoku. 
 - **Set Mark** should pop up a simple dialog where you can enter a name for the mark to create.
 It then represents the current state of the undo stack. 
 - **Revert to Mark** should pop up a list of the defined stack marks.

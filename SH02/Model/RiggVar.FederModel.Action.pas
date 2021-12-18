@@ -178,6 +178,9 @@ begin
     faUndo: M.Sudoku.Undo;
     faClearStack: M.Sudoku.ClearUndostack;
 
+    faSaveSudoku: M.SudokuMain.SaveSudokuActionAccept;
+    faLoadSudoku: M.SudokuMain.LoadSudokuActionAccept;
+
     else
     begin
       M.HandleAction(fa);
