@@ -126,15 +126,15 @@ begin
     faPlace15: M.HandleCharacter('F');
     faPlace16: M.HandleCharacter('G');
 
-    faNavColM: M.SudokuGrid.NavCol(-1);
-    faNavColP: M.SudokuGrid.NavCol(+1);
-    faNavRowM: M.SudokuGrid.NavRow(-1);
-    faNavRowP: M.SudokuGrid.NavRow(+1);
+    faNavColM: M.SudokuGraph.NavCol(-1);
+    faNavColP: M.SudokuGraph.NavCol(+1);
+    faNavRowM: M.SudokuGraph.NavRow(-1);
+    faNavRowP: M.SudokuGraph.NavRow(+1);
 
-    faNavColFirst: M.SudokuGrid.NavCol(-99);
-    faNavColLast: M.SudokuGrid.NavCol(99);
-    faNavRowFirst: M.SudokuGrid.NavRow(-99);
-    faNavRowLast: M.SudokuGrid.NavRow(99);
+    faNavColFirst: M.SudokuGraph.NavCol(-99);
+    faNavColLast: M.SudokuGraph.NavCol(99);
+    faNavRowFirst: M.SudokuGraph.NavRow(-99);
+    faNavRowLast: M.SudokuGraph.NavRow(99);
 
     faSudoku09A: M.StartNew(fa);
     faSudoku09B: M.StartNew(fa);

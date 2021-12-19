@@ -102,8 +102,7 @@ type
     FederTextTablet: TFederTouch;
     FederTextPhone: TFederTouchPhone;
 
-    SudokuGrid: TSudokuGrid;
-    SudokuGraph: TSudokuGraph;
+    SudokuGraph: TSudokuGraph; // injected, not owned
     SudokuMain: TSudokuMain;
 
     ToggleGosuButtonEnabled: Boolean;
@@ -266,10 +265,22 @@ begin
   FIsUp := Value;
 end;
 
+procedure TMain0.InitRaster;
+begin
+  MainVar.ClientWidth := FormMain.ClientWidth;
+  MainVar.ClientHeight := FormMain.ClientHeight;
+end;
+
 procedure TMain0.Init;
 begin
-  InitRaster;
   InitText;
+end;
+
+procedure TMain0.InitText;
+begin
+  InitRaster;
+  InitFederText(FederTextTablet);
+  InitFederText(FederTextPhone);
 end;
 
 procedure TMain0.InitFederText(ft: TFederTouch0);
@@ -291,20 +302,6 @@ begin
   ft.Width := MainVar.ClientWidth;
   ft.Height := MainVar.ClientHeight;
   ft.Init;
-end;
-
-procedure TMain0.InitRaster;
-begin
-  MainVar.ClientWidth := FormMain.ClientWidth;
-  MainVar.ClientHeight := FormMain.ClientHeight;
-end;
-
-procedure TMain0.InitText;
-begin
-  InitRaster;
-  InitFederText(FederTextTablet);
-  InitFederText(FederTextPhone);
-  Touch := faTouchDesk;
 end;
 
 procedure TMain0.InitTouch;
@@ -520,7 +517,7 @@ end;
 
 procedure TMain0.HandleCharacter(AChar: Char);
 begin
-  Sudoku.InputHandler.HandleCharacter(SudokuGrid.Col, SudokuGrid.Row, AChar);
+  Sudoku.InputHandler.HandleCharacter(SudokuGraph.Col, SudokuGraph.Row, AChar);
 end;
 
 procedure TMain0.InitFirstSudoku;
@@ -559,7 +556,7 @@ end;
 
 procedure TMain0.SetCurrentValue(const Value: Integer);
 begin
-  if Value <= SudokuGrid.ColCount then
+  if Value <= SudokuGraph.ColCount then
   begin
     FCurrentValue := Value;
     FederText.ST00.Caption := IntToStr(Value);
@@ -583,12 +580,12 @@ end;
 
 procedure TMain0.DoBigWheel(Delta: single);
 begin
-  SudokuGrid.NavRow(Round(Delta));
+  SudokuGraph.NavRow(Round(Delta));
 end;
 
 procedure TMain0.DoSmallWheel(Delta: single);
 begin
-  SudokuGrid.NavCol(Round(Delta));
+  SudokuGraph.NavCol(Round(Delta));
 end;
 
 procedure TMain0.CollectShortcuts(fa: Integer; ML: TStrings);

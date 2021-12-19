@@ -219,7 +219,7 @@ procedure TFormMain.InitSudokuGraph;
 var
   t: Integer;
 begin
-  t := 1200;
+  t := 1024;
   SudokuImage := TOriginalImage.Create(Self, t, t);
   SudokuImage.Name := 'SudokuImage';
   SudokuImage.Parent := Self;
@@ -227,14 +227,12 @@ begin
   SudokuImage.Position.Y := Raster + Margin;
   SudokuImage.HitTest := False;
   SudokuImage.Visible := False;
-  SudokuImage.OnMouseUp := SudokuImageMouseUp;
 
   SudokuGraph := TSudokuGraph.Create;
   SudokuGraph.BackgroundColor := MainVar.ColorScheme.claBackground;
   SudokuGraph.ImageOpacity := 0.2;
 
   SudokuGraph.Image := SudokuImage;
-  UpdateSudokuGraph;
 end;
 
 procedure TFormMain.UpdateSudokuGraph;
@@ -259,10 +257,8 @@ begin
   Margin := 10.0;
 
   InitSudokuGraph;
-  Main.SudokuGrid := SudokuGraph;
   Main.SudokuGraph := SudokuGraph;
   SudokuImage.Visible := True;
-  UpdateSudokuGraph;
 
   ComponentsCreated := True;
 end;

@@ -290,6 +290,7 @@ procedure TFormMemo.RunTest01(Sender: TObject);
 begin
   MemoBeginUpdate;
   Main.RunTest01(Memo.Lines);
+  Main.SudokuGraph.FillDebugText(Memo.Lines);
   MemoEndUpdate;
 end;
 

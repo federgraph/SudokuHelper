@@ -88,13 +88,13 @@ This should work independent of the selected click mode.
 
 - If keyboard is available use Spacebar to toggle the state.
 - Or use TG button on the button frame to toggle the state of the active cell.
-- Or use left mouse button, when *ToggleGosu* click mode is active.
+- Or tap / click a cell, while *ToggleGosu* click mode is active.
 
 ## Sudoku commands
 
 These commands affect the whole Sudoku, not just a single cell.
 
-Some actions have been implemented and should work already:
+Some of the commands should work already:
 
 - **Undo** should undo the last user action that changed the Sudoku's content,
 including the candidates.
