@@ -53,7 +53,7 @@ type
     constructor Create;
 
     procedure Draw; override;
-    procedure FillDebugText(ML: TStrings);
+    procedure AddToDebugText(ML: TStrings);
 
     property Zoom: single read FZoom;
     property Image: TOriginalImage read FImage write SetImage;
@@ -322,13 +322,14 @@ begin
   Result := string.Parse(aValue);
 end;
 
-procedure TSudokuGraph.FillDebugText(ML: TStrings);
+procedure TSudokuGraph.AddToDebugText(ML: TStrings);
 begin
   { debug output may be shown in FormMemo }
-  ML.Add(Format('Client.WH = (%d, %d)', [MainVar.ClientWidth, MainVar.ClientHeight]));
-  ML.Add(Format('Graph.WH  = (%d, %d)', [Width, Height]));
-  ML.Add(Format('Image.WH  = (%4.0f, %4.0f)', [Image.Width, Image.Height]));
-  ML.Add(Format('Bitmap.WH = (%d, %d)', [Image.Bitmap.Width, Image.Bitmap.Height]));
+  ML.Add('TSudokuGraph.SizeInfo:');
+  ML.Add(Format('  Client.WH = (%d, %d)', [MainVar.ClientWidth, MainVar.ClientHeight]));
+  ML.Add(Format('  Graph.WH  = (%d, %d)', [Width, Height]));
+  ML.Add(Format('  Image.WH  = (%4.0f, %4.0f)', [Image.Width, Image.Height]));
+  ML.Add(Format('  Bitmap.WH = (%d, %d)', [Image.Bitmap.Width, Image.Bitmap.Height]));
 
 {
 Client.WH = (1024, 900) // ClientWidth, ClientHeight, will change

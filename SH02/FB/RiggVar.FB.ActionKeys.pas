@@ -124,12 +124,6 @@ begin
       break;
   end;
 
-  GetKey('vkC', vkC);
-  GetKey('vkD', vkD);
-  GetKey('vkL', vkL);
-  GetKey('vkS', vkS);
-  GetKey('vkO', vkO);
-
   GetKey('vkSpace', vkSpace);
   GetKey('vkDelete', vkDelete);
   GetKey('vkReturn', vkReturn);
@@ -148,6 +142,7 @@ begin
   GetKey('vkNext', vkNext);
   GetKey('vkPrior', vkPrior);
   GetKey('vkHome', vkHome);
+  GetKey('vkEnd', vkEnd);
   GetKey('vkEscape', vkEscape);
 
   KTH.Shift := [ssShift];
@@ -159,6 +154,10 @@ begin
 
   GetKey('Shift + vkEscape', vkEscape);
   GetKey('Shift + vkSpace', vkSpace);
+
+  KTH.Shift := [ssCtrl];
+
+  GetKey('Ctrl + vkZ', vkZ);
 end;
 
 procedure TFederKeyboard.GetShortcuts(fa: Integer; ML: TStrings);
@@ -174,12 +173,6 @@ begin
     KTH.KeyChar := c;
     TestKeys;
   end;
-
-  TestKey('vkC', vkC);
-  TestKey('vkD', vkD);
-  TestKey('vkL', vkL);
-  TestKey('vkS', vkS);
-  TestKey('vkO', vkO);
 
   TestKey('vkSpace', vkSpace);
   TestKey('vkDelete', vkDelete);
@@ -199,6 +192,7 @@ begin
   TestKey('vkNext', vkNext);
   TestKey('vkPrior', vkPrior);
   TestKey('vkHome', vkHome);
+  TestKey('vkEnd', vkEnd);
   TestKey('vkEscape', vkEscape);
 
   KTH.Shift := [ssShift];
@@ -210,6 +204,10 @@ begin
 
   TestKey('Shift + vkEscape', vkEscape, KTH.Shift);
   TestKey('Shift + vkSpace', vkSpace, KTH.Shift);
+
+  KTH.Shift := [ssCtrl];
+
+  TestKey('Ctrl + vkZ', vkZ, KTH.Shift);
 end;
 
 procedure TFederKeyboard.TestKeys;
@@ -221,7 +219,7 @@ begin
   if KTH.fat = fa2 then
   begin
     s := KTH.KeyChar;
-    KTH.ML.Add(TestName + ' ' + s);
+    KTH.ML.Add(Format('%s ''%s''', [TestName, s]));
   end;
 end;
 
@@ -326,6 +324,8 @@ begin
 
   Include(cs, '<');
   Include(cs, '>');
+
+  Include(cs, ' ');
 
   result := cs;
 end;

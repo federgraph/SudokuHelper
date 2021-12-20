@@ -178,8 +178,7 @@ begin
 
   ActionProc := TestProc;
   ActionColorProc := TestProcIAC;
-  { ActionMap 0 starts with 0, normal Maps start with 1 }
-  for p := 0 to PageCount do
+  for p := 1 to PageCount do
   begin
     TestPage := p;
     InitActions(p);

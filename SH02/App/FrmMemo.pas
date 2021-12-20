@@ -79,7 +79,7 @@ type
     procedure WriteActionDecoder(Sender: TObject);
     procedure WriteItems(Sender: TObject);
     procedure WriteShortcuts(Sender: TObject);
-    procedure RunTest01(Sender: TObject);
+    procedure WriteDebugText(Sender: TObject);
   end;
 
 var
@@ -104,23 +104,33 @@ begin
   Caption := 'Form Memo';
   Left := 10;
   Top := 120;
-  Width := 620;
+  Width := 1100;
   Height := 750;
   SL := TStringList.Create;
 
   ListView.Align := TAlignLayout.Left;
+  ListView.ItemAppearanceName := 'ListItem';
+  ListView.ItemAppearance.ItemHeight := 24;
+  ListView.ItemAppearanceObjects.ItemObjects.Accessory.Visible := False;
+  ListView.ItemAppearanceObjects.ItemObjects.Text.Font.Family := 'Consolas';
+  ListView.ItemAppearanceObjects.ItemObjects.Text.Font.Size := 16;
+  ListView.ItemAppearanceObjects.ItemObjects.Text.TextColor := TAlphaColors.Dodgerblue;
+  ListView.ItemAppearanceObjects.HeaderObjects.Text.Visible := False;
+  ListView.ItemAppearanceObjects.FooterObjects.Text.Visible := False;
 
   Memo.Align := TAlignLayout.Client;
   Memo.ControlType := TControlType.Styled;
   Memo.StyledSettings := [];
   Memo.ShowScrollBars := True;
   Memo.TextSettings.Font.Family := 'Consolas';
-  Memo.TextSettings.Font.Size := 14;
-  Memo.TextSettings.FontColor := claBlack;
+  Memo.TextSettings.Font.Size := 16;
+  Memo.TextSettings.FontColor := claBlue;
 
   MemoActionList := TMemoActionList.Create;
   InitList;
   InitItems;
+
+  ListView.ItemIndex := 10;
 end;
 
 procedure TFormMemo.FormDestroy(Sender: TObject);
@@ -209,7 +219,6 @@ end;
 
 procedure TFormMemo.InitList;
 begin
-  MemoActionList.AddMemoAction('Write Help Text', WriteHelpText);
   MemoActionList.AddMemoAction('Action Test', ActionTestBtnClick);
   MemoActionList.AddMemoAction('Write Action Const', WriteActionConstBtnClick);
   MemoActionList.AddMemoAction('Write New Action Const', WriteNewActionConstBtnClick);
@@ -220,7 +229,8 @@ begin
   MemoActionList.AddMemoAction('Write Action Decoder', WriteActionDecoder);
   MemoActionList.AddMemoAction('Write Action Items', WriteItems);
   MemoActionList.AddMemoAction('Write Shortcuts', WriteShortcuts);
-  MemoActionList.AddMemoAction('RunTest01', RunTest01);
+  MemoActionList.AddMemoAction('Write Help Text', WriteHelpText);
+  MemoActionList.AddMemoAction('Write Debug Text', WriteDebugText);
 end;
 
 procedure TFormMemo.InitItems;
@@ -286,11 +296,15 @@ begin
 {$endif}
 end;
 
-procedure TFormMemo.RunTest01(Sender: TObject);
+procedure TFormMemo.WriteDebugText(Sender: TObject);
+var
+  ML: TStrings;
 begin
+  ML := Memo.Lines;
   MemoBeginUpdate;
-  Main.RunTest01(Memo.Lines);
-  Main.SudokuGraph.FillDebugText(Memo.Lines);
+  Main.RunTest01(ML);
+  Main.SudokuGraph.AddToDebugText(ML);
+  FormMain.AddToDebugText(ML);
   MemoEndUpdate;
 end;
 

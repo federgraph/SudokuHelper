@@ -25,7 +25,9 @@ uses
   System.UITypes,
   System.Classes,
   System.Math,
+  FMX.Types,
   FMX.Forms,
+  FMX.Controls,
   FMX.Graphics,
   RiggVar.FB.ColorScheme,
   RiggVar.FD.Image,
@@ -49,24 +51,26 @@ type
     SudokuImage: TOriginalImage;
     SudokuGraph: TSudokuGraph;
 
-    procedure SudokuImageMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
     procedure HandleShowHint(Sender: TObject);
     procedure ApplicationEventsIdle(Sender: TObject; var Done: Boolean);
+    procedure SudokuImageMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
 
     function GetIsUp: Boolean;
-    procedure Init;
     procedure SetIsUp(const Value: Boolean);
+    procedure Init;
     procedure InitSudokuGraph;
-    procedure UpdateSudokuGraph;
     procedure CreateComponents;
-    procedure ActionsBtnClick(Sender: TObject);
     procedure DestroyForms;
+
+    procedure ActionsBtnClick(Sender: TObject);
     procedure MemoBtnClick(Sender: TObject);
+    procedure FixZOrder;
 
     property IsUp: Boolean read GetIsUp write SetIsUp;
   public
     procedure UpdateBackground;
     procedure HandleAction(fa: Integer);
+    procedure AddToDebugText(ML: TStrings);
   end;
 
 var
@@ -88,6 +92,7 @@ begin
   FormMain := self;
 
   ReportMemoryLeaksOnShutdown := True;
+  FormatSettings.DecimalSeparator := '.';
 
   Fill.Kind := TBrushKind.Solid; // because it is still TBrushKind.None
   Self.Position := TFormPosition.ScreenCenter;
@@ -95,29 +100,22 @@ begin
   ClientWidth := 1024;
   ClientHeight := 900;
 
-  Caption := UpperCase(Application.Title);
-
   Init;
 
   CreateComponents;
 
   Application.OnHint := HandleShowHint;
-
   OnShow := FormShow;
 end;
 
 procedure TFormMain.Init;
 begin
   Main := TMain.Create;
-
   Main.Init;
-
-  Main.Keyboard.KeyMapping := 1;
-
   IsUp := True;
 
+  Main.Keyboard.KeyMapping := 1;
   Main.FederText.ActionPage := 1;
-
   Main.ColorScheme := 4;
 end;
 
@@ -235,14 +233,6 @@ begin
   SudokuGraph.Image := SudokuImage;
 end;
 
-procedure TFormMain.UpdateSudokuGraph;
-begin
-  if IsUp and SudokuImage.Visible then
-  begin
-    SudokuGraph.Invalidate;
-  end;
-end;
-
 procedure TFormMain.HandleAction(fa: Integer);
 begin
   case fa of
@@ -259,6 +249,7 @@ begin
   InitSudokuGraph;
   Main.SudokuGraph := SudokuGraph;
   SudokuImage.Visible := True;
+  FixZOrder;
 
   ComponentsCreated := True;
 end;
@@ -318,6 +309,38 @@ begin
     else
       Main.DoSmallWheel(delta);
   end;
+end;
+
+procedure TFormMain.AddToDebugText(ML: TStrings);
+var
+  i: Integer;
+  o: TFMXObject;
+  c: TControl;
+begin
+  ML.Add('');
+  ML.Add(Format('FormMain.Handle.Scale = %.1f', [Handle.Scale]));
+  ML.Add('');
+  ML.Add('FormMain.ZOrderInfo:');
+  for i := 0 to Self.ChildrenCount-1 do
+  begin
+    o := Self.Children.Items[i];
+    if o is TControl then
+    begin
+      c := o as TControl;
+      ML.Add(Format('%2d - %s: %s', [i, c.Name, c.ClassName]));
+    end;
+  end;
+end;
+
+procedure TFormMain.FixZOrder;
+begin
+  SudokuImage.BringToFront;
+  Main.FederTextPhone.BringToFront;
+  Main.FederTextTablet.BringToFront;
+
+  SudokuImage.HitTest := True;
+  SudokuImage.OnMouseUp := SudokuImageMouseUp;
+  Self.OnMouseUp := nil;
 end;
 
 end.

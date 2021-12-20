@@ -214,7 +214,9 @@ begin
 
   TTouchBtn.WantHint := True;
   FederTextTablet := TFederTouch.Create(nil);
+  FederTextTablet.Name := 'FederTextTablet';
   FederTextPhone := TFederTouchPhone.Create(nil);
+  FederTextPhone.Name := 'FederTextPhone';
 
   ActionHandler := TActionHelper.Create;
   ActionGroupList := TActionGroupList.Create;

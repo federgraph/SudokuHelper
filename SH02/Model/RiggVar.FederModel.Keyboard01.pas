@@ -41,7 +41,7 @@ implementation
 constructor TFederKeyboard01.Create;
 begin
   inherited;
-  TestName := 'Keyboard01';
+  TestName := 'Keyboard';
 end;
 
 function TFederKeyboard01.GetActionFromKey(Shift: TShiftState; Key: Word): TFederAction;
@@ -50,85 +50,38 @@ var
 begin
   fa := faNoop;
 
-  if Key = vkC then
-    fa := faCopy
-  else if Key = vkV then
-    fa := faPaste
-  else if Key = vkL then
-    fa := faLoad
-  else if Key = vkS then
-    fa := faSave
-  else if Key = vkO then
-    fa := faOpen
-
-  else if ssCtrl in Shift then
+  if ssCtrl in Shift then
   begin
-    if Key = 49 then
-      fa := faNavColFirst
-    else if Key = 50 then
-      fa := faNavColLast
-    else if Key = 51 then
-      fa := faNavRowFirst
-    else if Key = 52 then
-      fa := faNavRowLast
-    else if Key = vkZ then
-      fa := faUndo
+    case Key of
+      vkZ: fa := faUndo;
+    end;
   end
 
-  else
+  else if ssShift in Shift then
   begin
+    case Key of
+      vkLeft: fa := faWheelLeft;
+      vkRight: fa := faWheelRight;
+      vkUp: fa := faWheelUp;
+      vkDown: fa := faWheelDown;
 
-    if Key = vkLeft then
-    begin
-      if ssShift in Shift then
-        fa := faWheelLeft
-      else
-        fa := faNavColM
-    end
-    else if Key = vkRight then
-    begin
-      if ssShift in Shift then
-        fa := faWheelRight
-      else
-        fa := faNavColP
-    end
+      vkEscape: fa := faReset;
+    end;
+  end
 
-    else if Key = vkUp then
-    begin
-      if ssShift in Shift then
-        fa := faWheelUp
-      else
-        fa := faNavRowM
-    end
-    else if Key = vkDown then
-    begin
-      if ssShift in Shift then
-        fa := faWheelDown
-      else
-        fa := faNavRowP
-    end
+  else case Key of
+    vkLeft: fa := faNavColM;
+    vkRight: fa := faNavColP;
+    vkUp: fa := faNavRowM;
+    vkDown: fa := faNavRowP;
 
-    else if Key = vkPrior then
-      fa := faNavRowFirst
-    else if Key = vkNext then
-      fa := faNavRowLast
+    vkPrior: fa := faNavRowFirst;
+    vkNext: fa := faNavRowLast;
+    vkHome: fa := faNavColFirst;
+    vkEnd: fa := faNavColLast;
 
-    else if Key = vkHome then
-      fa := faNavColFirst
-    else if Key = vkEnd then
-      fa := faNavColLast
-
-    else if Key = vkEscape then
-    begin
-      if ssShift in Shift then
-        fa := faReset
-      else
-        fa := faNoop;
-    end
-
-    else if Key = vkF1 then
-      fa := faShowMemo
-
+    vkF1: fa := faShowMemo;
+//    vkSpace: fa := faToggleGosu; // KeyChar ' ' is dominant
   end;
 
   result := fa;
