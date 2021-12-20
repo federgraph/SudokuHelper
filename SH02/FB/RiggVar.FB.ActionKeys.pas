@@ -19,6 +19,7 @@
 interface
 
 uses
+  RiggVar.FB.ActionConst,
   System.SysUtils,
   System.Classes,
   System.UITypes;
@@ -30,7 +31,7 @@ type
     KeyChar: Char;
     Shift: TShiftState;
     Index: Integer;
-    fat: Integer;
+    fat: TFederAction;
   end;
 
   TFederKeyboard = class
@@ -41,29 +42,26 @@ type
     procedure GetKey(Name: string; Value: Word);
     procedure TestKey(Name: string; Value: Word; Shift: TShiftState = []);
     procedure TestKeys;
-    procedure GetSC(fa: Integer; ML: TStrings);
+    procedure GetSC(fa: TFederAction; ML: TStrings);
   public
     TestName: string;
     KeyMapping: Integer;
     function KeyDownAction(
       var Key: Word;
       var KeyChar: Char;
-      Shift: TShiftState): Integer; virtual;
+      Shift: TShiftState): TFederAction; virtual;
     function KeyUpAction(
       var Key: Word;
       var KeyChar: Char;
-      Shift: TShiftState): Integer; virtual;
+      Shift: TShiftState): TFederAction; virtual;
 
     constructor Create;
     destructor Destroy; override;
-    procedure GetShortcuts(fa: Integer; ML: TStrings);
-    function GetShortcut(fa: Integer): string;
+    procedure GetShortcuts(fa: TFederAction; ML: TStrings);
+    function GetShortcut(fa: TFederAction): string;
   end;
 
 implementation
-
-uses
-  RiggVar.FB.ActionConst;
 
 type
 {$WARN WIDECHAR_REDUCED OFF}
@@ -75,12 +73,12 @@ var
 
 { TFederKeyboard }
 
-function TFederKeyboard.KeyDownAction(var Key: Word; var KeyChar: Char; Shift: TShiftState): Integer;
+function TFederKeyboard.KeyDownAction(var Key: Word; var KeyChar: Char; Shift: TShiftState): TFederAction;
 begin
   result := faNoop;
 end;
 
-function TFederKeyboard.KeyUpAction(var Key: Word; var KeyChar: Char; Shift: TShiftState): Integer;
+function TFederKeyboard.KeyUpAction(var Key: Word; var KeyChar: Char; Shift: TShiftState): TFederAction;
 begin
   result := faNoop;
 end;
@@ -97,7 +95,7 @@ begin
   inherited;
 end;
 
-function TFederKeyboard.GetShortcut(fa: Integer): string;
+function TFederKeyboard.GetShortcut(fa: TFederAction): string;
 begin
   result := '';
   if fa <> faNoop then
@@ -109,7 +107,7 @@ begin
   end;
 end;
 
-procedure TFederKeyboard.GetSC(fa: Integer; ML: TStrings);
+procedure TFederKeyboard.GetSC(fa: TFederAction; ML: TStrings);
 var
   c: Char;
 begin
@@ -160,7 +158,7 @@ begin
   GetKey('Ctrl + vkZ', vkZ);
 end;
 
-procedure TFederKeyboard.GetShortcuts(fa: Integer; ML: TStrings);
+procedure TFederKeyboard.GetShortcuts(fa: TFederAction; ML: TStrings);
 var
   c: Char;
 begin

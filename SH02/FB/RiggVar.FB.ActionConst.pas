@@ -21,11 +21,8 @@ interface
 type
   TFederAction = Integer;
 
-// --- generated code snippet ---
-// Note that some of the defined actions
-//   may not be implemented in this version of the app.
-
 const
+  // --- generated code snippet ---
 
   { EmptyAction }
   faNoop = 0;
@@ -42,134 +39,120 @@ const
   faShowMemo = 7;
   faShowActions = 8;
   faShowInfo = 9;
-  faShowData = 10;
-  faShowRepo = 11;
 
   { TouchLayout }
-  faTouchTablet = 12;
-  faTouchPhone = 13;
-  faTouchDesk = 14;
+  faTouchTablet = 10;
+  faTouchPhone = 11;
+  faTouchDesk = 12;
 
   { Wheel }
-  faPlusOne = 15;
-  faWheelLeft = 16;
-  faWheelRight = 17;
-  faWheelDown = 18;
-  faWheelUp = 19;
+  faPlusOne = 13;
+  faWheelLeft = 14;
+  faWheelRight = 15;
+  faWheelDown = 16;
+  faWheelUp = 17;
 
   { ColorScheme }
-  faCycleColorSchemeM = 20;
-  faCycleColorSchemeP = 21;
+  faCycleColorSchemeM = 18;
+  faCycleColorSchemeP = 19;
 
   { FederText }
-  faToggleTouchFrame = 22;
+  faToggleTouchFrame = 20;
 
   { Format }
-  faFormatLandscape = 23;
-  faFormatPortrait = 24;
-  faFormatIPhoneLandscape = 25;
-  faFormatIPhonePortrait = 26;
+  faFormatLandscape = 21;
+  faFormatPortrait = 22;
+  faFormatIPhoneLandscape = 23;
+  faFormatIPhonePortrait = 24;
 
   { TouchBarLegend }
-  faTouchBarTop = 27;
-  faTouchBarBottom = 28;
-  faTouchBarLeft = 29;
-  faTouchBarRight = 30;
+  faTouchBarTop = 25;
+  faTouchBarBottom = 26;
+  faTouchBarLeft = 27;
+  faTouchBarRight = 28;
 
   { Reset }
-  faReset = 31;
-
-  { DropTarget }
-  faToggleDropTarget = 32;
-
-  { CopyPaste }
-  faSave = 33;
-  faLoad = 34;
-  faOpen = 35;
-  faCopy = 36;
-  faPaste = 37;
-  faShare = 38;
+  faReset = 29;
 
   { SudokuNavigation }
-  faNavColM = 39;
-  faNavColP = 40;
-  faNavRowM = 41;
-  faNavRowP = 42;
-  faNavColFirst = 43;
-  faNavColLast = 44;
-  faNavRowFirst = 45;
-  faNavRowLast = 46;
+  faNavColM = 30;
+  faNavColP = 31;
+  faNavRowM = 32;
+  faNavRowP = 33;
+  faNavColFirst = 34;
+  faNavColLast = 35;
+  faNavRowFirst = 36;
+  faNavRowLast = 37;
 
   { SudokuSelection }
-  faSelect0 = 47;
-  faSelect1 = 48;
-  faSelect2 = 49;
-  faSelect3 = 50;
-  faSelect4 = 51;
-  faSelect5 = 52;
-  faSelect6 = 53;
-  faSelect7 = 54;
-  faSelect8 = 55;
-  faSelect9 = 56;
-  faSelect10 = 57;
-  faSelect11 = 58;
-  faSelect12 = 59;
-  faSelect13 = 60;
-  faSelect14 = 61;
-  faSelect15 = 62;
-  faSelect16 = 63;
+  faSelect0 = 38;
+  faSelect1 = 39;
+  faSelect2 = 40;
+  faSelect3 = 41;
+  faSelect4 = 42;
+  faSelect5 = 43;
+  faSelect6 = 44;
+  faSelect7 = 45;
+  faSelect8 = 46;
+  faSelect9 = 47;
+  faSelect10 = 48;
+  faSelect11 = 49;
+  faSelect12 = 50;
+  faSelect13 = 51;
+  faSelect14 = 52;
+  faSelect15 = 53;
+  faSelect16 = 54;
 
   { SudokuPlacing }
-  faPlace0 = 64;
-  faPlace1 = 65;
-  faPlace2 = 66;
-  faPlace3 = 67;
-  faPlace4 = 68;
-  faPlace5 = 69;
-  faPlace6 = 70;
-  faPlace7 = 71;
-  faPlace8 = 72;
-  faPlace9 = 73;
-  faPlace10 = 74;
-  faPlace11 = 75;
-  faPlace12 = 76;
-  faPlace13 = 77;
-  faPlace14 = 78;
-  faPlace15 = 79;
-  faPlace16 = 80;
+  faPlace0 = 55;
+  faPlace1 = 56;
+  faPlace2 = 57;
+  faPlace3 = 58;
+  faPlace4 = 59;
+  faPlace5 = 60;
+  faPlace6 = 61;
+  faPlace7 = 62;
+  faPlace8 = 63;
+  faPlace9 = 64;
+  faPlace10 = 65;
+  faPlace11 = 66;
+  faPlace12 = 67;
+  faPlace13 = 68;
+  faPlace14 = 69;
+  faPlace15 = 70;
+  faPlace16 = 71;
 
   { SudokuScene }
-  faSudoku09A = 81;
-  faSudoku09B = 82;
-  faSudoku12A = 83;
-  faSudoku12B = 84;
-  faSudoku12C = 85;
-  faSudoku12D = 86;
-  faSudoku16A = 87;
-  faSudoku16B = 88;
-  faSudoku16C = 89;
-  faSudoku16D = 90;
+  faSudoku09A = 72;
+  faSudoku09B = 73;
+  faSudoku12A = 74;
+  faSudoku12B = 75;
+  faSudoku12C = 76;
+  faSudoku12D = 77;
+  faSudoku16A = 78;
+  faSudoku16B = 79;
+  faSudoku16C = 80;
+  faSudoku16D = 81;
 
   { SudokuMode }
-  faSetFocusMode = 91;
-  faSetValueMode = 92;
-  faSetCandidateMode = 93;
-  faUnsetCandidateMode = 94;
-  faToggleGosuMode = 95;
+  faSetFocusMode = 82;
+  faSetValueMode = 83;
+  faSetCandidateMode = 84;
+  faUnsetCandidateMode = 85;
+  faToggleGosuMode = 86;
 
   { SudokuCommands }
-  faToggleGosu = 96;
-  faNewSudoku = 97;
-  faSaveSudoku = 98;
-  faLoadSudoku = 99;
-  faClearStack = 100;
-  faUndo = 101;
-  faSetMark = 102;
-  faRevertToMark = 103;
+  faToggleGosu = 87;
+  faNewSudoku = 88;
+  faSaveSudoku = 89;
+  faLoadSudoku = 90;
+  faClearStack = 91;
+  faUndo = 92;
+  faSetMark = 93;
+  faRevertToMark = 94;
 
-  faMax = 104;
+  faMax = 95;
 
 implementation
 
 end.
-

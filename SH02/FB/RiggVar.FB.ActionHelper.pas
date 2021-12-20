@@ -193,7 +193,7 @@ begin
       ShortCutString := GetShortcutString(fa);
 
     if WantCategoryColumn then
-      ML.Add(Format('<td>&nbsp;</td>', [fa]));
+      ML.Add(Format('<td>&nbsp;</td>', []));
     ML.Add(Format('<td>%d</td>', [fa]));
     ML.Add(Format('<td>%s</td>', [an]));
     ML.Add(Format('<td>%s</td>', [sc]));

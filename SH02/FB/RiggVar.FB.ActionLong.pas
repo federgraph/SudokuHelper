@@ -29,6 +29,7 @@ function GetFederActionLong(fa: TFederAction): string;
 begin
   result := '??';
   case fa of
+    // --- generated code snippet ---
 
     { EmptyAction }
     faNoop: result := 'Noop';
@@ -45,8 +46,6 @@ begin
     faShowMemo: result := 'Form Memo';
     faShowActions: result := 'Form Actions';
     faShowInfo: result := 'Form Info';
-    faShowData: result := 'Form Data';
-    faShowRepo: result := 'Form Repository';
 
     { TouchLayout }
     faTouchTablet: result := 'Touch Tablet';
@@ -57,8 +56,8 @@ begin
     faPlusOne: result := 'Plus One';
     faWheelLeft: result := 'Wheel -1';
     faWheelRight: result := 'Wheel +1';
-    faWheelUp: result := 'Wheel -10';
     faWheelDown: result := 'Wheel +10';
+    faWheelUp: result := 'Wheel -10';
 
     { ColorScheme }
     faCycleColorSchemeM: result := 'cycle color scheme -';
@@ -82,16 +81,15 @@ begin
     { Reset }
     faReset: result := 'Reset';
 
-    { DropTarget }
-    faToggleDropTarget: result := 'Drop Target';
-
-    { CopyPaste }
-    faSave: result := 'Save';
-    faLoad: result := 'Load';
-    faOpen: result := 'Open';
-    faCopy: result := 'Copy';
-    faPaste: result := 'Paste';
-    faShare: result := 'Share';
+    { SudokuNavigation }
+    faNavColM: result := 'Nav Col -';
+    faNavColP: result := 'Nav Col +';
+    faNavRowM: result := 'Nav Row -';
+    faNavRowP: result := 'Nav Row +';
+    faNavColFirst: result := 'Nav Col First';
+    faNavColLast: result := 'Nav Col Last';
+    faNavRowFirst: result := 'Nav Row First';
+    faNavRowLast: result := 'Nav Row Last';
 
     { SudokuSelection }
     faSelect0: result := 'Select 0';
@@ -131,26 +129,13 @@ begin
     faPlace15: result := 'Place 15';
     faPlace16: result := 'Place 16';
 
-    { SudokuNavigation }
-    faNavColM: result := 'Nav Col -';
-    faNavColP: result := 'Nav Col +';
-    faNavRowM: result := 'Nav Row -';
-    faNavRowP: result := 'Nav Row +';
-
-    faNavColFirst: result := 'Nav Col First';
-    faNavColLast: result := 'Nav Col Last';
-    faNavRowFirst: result := 'Nav Row First';
-    faNavRowLast: result := 'Nav Row Last';
-
     { SudokuScene }
     faSudoku09A: result := 'Classic Sudoku (9x9)';
     faSudoku09B: result := 'Classic Sudoku Gosu (9x9)';
-
     faSudoku12A: result := 'Sudoku 12x12';
     faSudoku12B: result := '12x12 Sudoku Gosu';
     faSudoku12C: result := '12x12 Sudoku (hexadecimal)';
     faSudoku12D: result := '12x12 Sudoku Gosu (hexadecimal)';
-
     faSudoku16A: result := 'Sudoku 16x16';
     faSudoku16B: result := '16x16 Sudoku Gosu';
     faSudoku16C: result := '16x16 Sudoku (heptadecimal)';
@@ -172,7 +157,6 @@ begin
     faUndo: result := 'Undo';
     faSetMark: result := 'Set Mark';
     faRevertToMark: result := 'Revert to Mark';
-
   end;
 end;
 

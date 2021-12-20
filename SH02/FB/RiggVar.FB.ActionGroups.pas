@@ -22,6 +22,7 @@ uses
   System.SysUtils,
   System.Classes,
   System.Generics.Collections,
+  RiggVar.FB.ActionConst,
   RiggVar.FB.ActionGroup;
 
 type
@@ -33,14 +34,11 @@ type
     procedure AddSpecial(const Value: TActionGroup; AName: string);
     function ActionCount: Integer;
     function GetUsage: string;
-    function GetGroup(fa: Integer): Integer;
+    function GetGroup(fa: TFederAction): Integer;
     function GetGroupName(i: Integer): string;
   end;
 
 implementation
-
-uses
-  RiggVar.FB.ActionConst;
 
 { TActionGroupList }
 
@@ -90,8 +88,6 @@ begin
   AddSpecial(ActionGroupFormat, 'Format');
   AddSpecial(ActionGroupTouchBarLegend, 'TouchBarLegend');
   AddSpecial(ActionGroupReset, 'Reset');
-  AddSpecial(ActionGroupDropTarget, 'DropTarget');
-  AddSpecial(ActionGroupCopyPaste, 'CopyPaste');
 
   AddSpecial(ActionGroupSudokuNavigation, 'SudokuNavigation');
   AddSpecial(ActionGroupSudokuSelection, 'SudokuSelection');
@@ -101,7 +97,7 @@ begin
   AddSpecial(ActionGroupSudokuCommands, 'SudokuCommands');
 end;
 
-function TActionGroupList.GetGroup(fa: Integer): Integer;
+function TActionGroupList.GetGroup(fa: TFederAction): Integer;
 var
   i: Integer;
   j: Integer;
@@ -134,6 +130,7 @@ end;
 
 function TActionGroupList.GetUsage: string;
 var
+  fa: TFederAction;
   i: Integer;
   j: Integer;
   l: Integer;
@@ -142,21 +139,21 @@ var
   s1: string;
 begin
   SL := TStringList.Create;
-  for i := 0 to faMax-1 do
-    SL.Add(Format('%d=0', [i]));
+  for fa := 0 to faMax - 1 do
+    SL.Add(Format('%d=0', [fa]));
 
   s1 := '1';
   for i := 0 to Count-1 do
   begin
     cr := Self.Items[i];
     l := Length(cr);
-    for j := 0 to l-1 do
+    for j := 0 to l - 1 do
     begin
       SL.Values[IntToStr(cr[j])] := s1;
     end;
   end;
 
-  for i := SL.Count-1 downto 0 do
+  for i := SL.Count - 1 downto 0 do
     if (SL.Values[IntToStr(i)] = '1') then
       SL.Delete(i);
 

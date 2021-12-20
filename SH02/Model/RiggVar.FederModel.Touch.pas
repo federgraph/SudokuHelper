@@ -133,7 +133,7 @@ procedure TFederTouch.InitCornerMenu;
 var
   cp: TCornerPos;
   cl: TAlphaColor;
-  fa: Integer;
+  fa: TFederAction;
 begin
   TCornerBtn.OffsetX := 0;
   TCornerBtn.OffsetY := 0;

@@ -64,7 +64,7 @@ type
   TMain0 = class
   private
     FIsUp: Boolean;
-    FTouch: Integer;
+    FTouch: TFederAction;
     FSudoku: ISudokuHelper;
     FCurrentValue: Integer;
     procedure InitFederText(ft: TFederTouch0);
@@ -79,7 +79,7 @@ type
     procedure InitTouch;
     procedure SetIsUp(const Value: Boolean);
     procedure SetColorScheme(const Value: Integer);
-    procedure SetTouch(const Value: Integer);
+    procedure SetTouch(const Value: TFederAction);
     procedure SetTouchbarLayout(const Value: Integer);
     procedure SetCurrentValue(const Value: Integer);
     function GetSetCandidatesButtonDown: Boolean;
@@ -129,9 +129,9 @@ type
     procedure UpdateTouch;
     procedure FederTextCheckState;
     procedure HandleAction(fa: TFederAction);
-    procedure ExecuteAction(fa: Integer);
-    function IsActionChecked(fa: Integer): Boolean;
-    procedure CollectShortcuts(fa: Integer; ML: TStrings);
+    procedure ExecuteAction(fa: TFederAction);
+    function IsActionChecked(fa: TFederAction): Boolean;
+    procedure CollectShortcuts(fa: TFederAction; ML: TStrings);
     procedure WriteHelpText(ML: TStrings);
     procedure RunTest01(ML: TStrings);
 
@@ -146,7 +146,7 @@ type
     property IsPhone: Boolean read GetIsPhone;
     property IsLandscape: Boolean read GetIsLandscape;
     property IsPortrait: Boolean read GetIsPortrait;
-    property Touch: Integer read FTouch write SetTouch;
+    property Touch: TFederAction read FTouch write SetTouch;
     property TouchbarLayout: Integer read GetTouchbarLayout write SetTouchbarLayout;
     property FederText: TFederTouchBase read GetFederText;
 
@@ -313,7 +313,7 @@ begin
   FederTextPhone.Visible := IsPhone;
 end;
 
-function TMain0.IsActionChecked(fa: Integer): Boolean;
+function TMain0.IsActionChecked(fa: TFederAction): Boolean;
 begin
   result := ActionHandler.GetChecked(fa);
 end;
@@ -420,7 +420,7 @@ begin
   end;
 end;
 
-procedure TMain0.SetTouch(const Value: Integer);
+procedure TMain0.SetTouch(const Value: TFederAction);
 begin
   FTouch := Value;
   if IsPhone then
@@ -590,7 +590,7 @@ begin
   SudokuGraph.NavCol(Round(Delta));
 end;
 
-procedure TMain0.CollectShortcuts(fa: Integer; ML: TStrings);
+procedure TMain0.CollectShortcuts(fa: TFederAction; ML: TStrings);
 begin
   Keyboard.GetShortcuts(fa, ML);
   ActionMapTablet.CollectOne(fa, ML);

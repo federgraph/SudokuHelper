@@ -29,6 +29,7 @@ function GetFederActionName(fa: TFederAction): string;
 begin
   result := '??';
   case fa of
+    // --- generated code snippet ---
 
     { EmptyAction }
     faNoop: result := 'faNoop';
@@ -45,8 +46,6 @@ begin
     faShowMemo: result := 'faShowMemo';
     faShowActions: result := 'faShowActions';
     faShowInfo: result := 'faShowInfo';
-    faShowData: result := 'faShowData';
-    faShowRepo: result := 'faShowRepo';
 
     { TouchLayout }
     faTouchTablet: result := 'faTouchTablet';
@@ -82,30 +81,15 @@ begin
     { Reset }
     faReset: result := 'faReset';
 
-    { DropTarget }
-    faToggleDropTarget: result := 'faToggleDropTarget';
-
-    { CopyPaste }
-    faSave: result := 'faSave';
-    faLoad: result := 'faLoad';
-    faOpen: result := 'faOpen';
-    faCopy: result := 'faCopy';
-    faPaste: result := 'faPaste';
-    faShare: result := 'faShare';
-
-    { SudokuScene }
-    faSudoku09A: result := 'faSudoku09A';
-    faSudoku09B: result := 'faSudoku09B';
-
-    faSudoku12A: result := 'faSudoku12A';
-    faSudoku12B: result := 'faSudoku12B';
-    faSudoku12C: result := 'faSudoku12C';
-    faSudoku12D: result := 'faSudoku12D';
-
-    faSudoku16A: result := 'faSudoku16A';
-    faSudoku16B: result := 'faSudoku16B';
-    faSudoku16C: result := 'faSudoku16C';
-    faSudoku16D: result := 'faSudoku16D';
+    { SudokuNavigation }
+    faNavColM: result := 'faNavColM';
+    faNavColP: result := 'faNavColP';
+    faNavRowM: result := 'faNavRowM';
+    faNavRowP: result := 'faNavRowP';
+    faNavColFirst: result := 'faNavColFirst';
+    faNavColLast: result := 'faNavColLast';
+    faNavRowFirst: result := 'faNavRowFirst';
+    faNavRowLast: result := 'faNavRowLast';
 
     { SudokuSelection }
     faSelect0: result := 'faSelect0';
@@ -145,16 +129,17 @@ begin
     faPlace15: result := 'faPlace15';
     faPlace16: result := 'faPlace16';
 
-    { SudokuNavigation }
-    faNavColM: result := 'faNavColM';
-    faNavColP: result := 'faNavColP';
-    faNavRowM: result := 'faNavRowM';
-    faNavRowP: result := 'faNavRowP';
-
-    faNavColFirst: result := 'faNavColFirst';
-    faNavColLast: result := 'faNavColLast';
-    faNavRowFirst: result := 'faNavRowFirst';
-    faNavRowLast: result := 'faNavRowLast';
+    { SudokuScene }
+    faSudoku09A: result := 'faSudoku09A';
+    faSudoku09B: result := 'faSudoku09B';
+    faSudoku12A: result := 'faSudoku12A';
+    faSudoku12B: result := 'faSudoku12B';
+    faSudoku12C: result := 'faSudoku12C';
+    faSudoku12D: result := 'faSudoku12D';
+    faSudoku16A: result := 'faSudoku16A';
+    faSudoku16B: result := 'faSudoku16B';
+    faSudoku16C: result := 'faSudoku16C';
+    faSudoku16D: result := 'faSudoku16D';
 
     { SudokuMode }
     faSetFocusMode: result := 'faSetFocusMode';
@@ -172,7 +157,6 @@ begin
     faUndo: result := 'faUndo';
     faSetMark: result := 'faSetMark';
     faRevertToMark: result := 'faRevertToMark';
-
   end;
 end;
 

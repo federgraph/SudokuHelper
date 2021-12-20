@@ -42,7 +42,7 @@ uses
 
 procedure TFederActionHandler.FormKeyUp(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
 var
-  fa: Integer;
+  fa: TFederAction;
 begin
   fa := faNoop;
   if not Main.IsUp then

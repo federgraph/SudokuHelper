@@ -89,7 +89,7 @@ end;
 
 function TFederKeyboard01.GetActionFromKeyChar(KeyChar: char): TFederAction;
 var
-  fa: Integer;
+  fa: TFederAction;
 begin
   fa := faNoop;
   case KeyChar of

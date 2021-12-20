@@ -1,4 +1,4 @@
-unit RiggVar.FB.ActionItem;
+﻿unit RiggVar.FB.ActionItem;
 
 interface
 
@@ -74,11 +74,11 @@ end;
 
 procedure TActionItem.WriteAll(ML: TStrings);
 var
-  i: Integer;
+  fa: TFederAction;
 begin
-  for i := 0 to faMax - 1 do
+  for fa := 0 to faMax - 1 do
   begin
-    Value := i;
+    Value := fa;
     WriteCode(ML);
     ML.Add('Add(ai);');
     ML.Add('');

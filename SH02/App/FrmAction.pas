@@ -19,6 +19,7 @@
 interface
 
 uses
+  RiggVar.FB.ActionConst,
   System.SysUtils,
   System.Types,
   System.UITypes,
@@ -70,7 +71,8 @@ type
   private
     Margin: Integer;
   private
-    ofa, ofg: Integer;
+    ofa: TFederAction;
+    ofg: Integer;
     osn, oln, oan, ogn: string;
     ML: TStrings;
     GroupsSorted: Boolean;
@@ -78,17 +80,16 @@ type
     procedure ListGroups;
     procedure ListGroupsSorted;
     procedure ListGroup(g: Integer);
-    procedure ListGroupForAction(fa: Integer);
+    procedure ListGroupForAction(fa: TFederAction);
     procedure DoSearch;
-    procedure ListMappings(fa: Integer);
+    procedure ListMappings(fa: TFederAction);
     procedure ListActionsLong(const t: string);
     procedure ListActionsShort(const t: string);
-    procedure Select(fa: Integer);
-    procedure UpdateDetails(fa: Integer);
-    procedure UpdateLabel(fa: Integer);
+    procedure UpdateDetails;
+    procedure UpdateLabel(fa: TFederAction);
     procedure ClearCaption;
     procedure ClearMappings;
-    procedure UpdateVars(fa: Integer);
+    procedure UpdateVars(fa: TFederAction);
     procedure UpdateCaseBtnCaption;
     procedure SetupListView(LV: TListView; Color: TAlphaColor);
   end;
@@ -105,8 +106,7 @@ uses
   RiggVar.FB.ActionGroups,
   RiggVar.FB.ActionName,
   RiggVar.FB.ActionShort,
-  RiggVar.FB.ActionLong,
-  RiggVar.FB.ActionConst;
+  RiggVar.FB.ActionLong;
 
 procedure TFormAction.EditKeyUp(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
 begin
@@ -200,7 +200,7 @@ end;
 procedure TFormAction.ListActionsShort(const t: string);
 var
   a, s, u: string;
-  fa: Integer;
+  fa: TFederAction;
   lvi: TListViewItem;
 begin
   for fa := 0 to faMax-1 do
@@ -224,7 +224,7 @@ end;
 procedure TFormAction.ListActionsLong(const t: string);
 var
   a, s: string;
-  fa: Integer;
+  fa: TFederAction;
   lvi: TListViewItem;
 begin
   for fa := 0 to faMax-1 do
@@ -273,7 +273,7 @@ begin
   ClearMappings;
 end;
 
-procedure TFormAction.ListGroupForAction(fa: Integer);
+procedure TFormAction.ListGroupForAction(fa: TFederAction);
 var
   g: Integer;
 begin
@@ -283,7 +283,8 @@ end;
 
 procedure TFormAction.ListGroup(g: Integer);
 var
-  h, i: Integer;
+  fa: TFederAction;
+  h: Integer;
   gn: string;
   lvi: TListViewItem;
 begin
@@ -291,14 +292,14 @@ begin
   TextGroup.Text := Format('Group %d = %s', [g, gn]);
 
   ListViewG.Items.Clear;
-  for i := 0 to faMax-1 do
+  for fa := faNoop to Pred(faMax) do
   begin
-    h := Main.ActionGroupList.GetGroup(i);
+    h := Main.ActionGroupList.GetGroup(fa);
     if g = h then
     begin
       lvi := ListViewG.Items.Add;
-      lvi.Text := GetFederActionName(i);
-      lvi.Tag := i;
+      lvi.Text := GetFederActionName(fa);
+      lvi.Tag := fa;
       lvi.Height := 24;
     end;
   end;
@@ -306,17 +307,16 @@ end;
 
 procedure TFormAction.ListViewGItemClick(const Sender: TObject; const AItem: TListViewItem);
 var
-  fa: Integer;
+  fa: TFederAction;
 begin
   fa := AItem.Tag;
   UpdateLabel(fa);
   ListMappings(fa);
-  Select(fa);
 end;
 
 procedure TFormAction.ListViewActionsItemClick(const Sender: TObject; const AItem: TListViewItem);
 var
-  fa: Integer;
+  fa: TFederAction;
 begin
   fa := AItem.Index;
   UpdateLabel(fa);
@@ -326,18 +326,12 @@ end;
 
 procedure TFormAction.ListViewSItemClick(const Sender: TObject; const AItem: TListViewItem);
 var
-  fa: Integer;
+  fa: TFederAction;
 begin
   fa := AItem.Tag;
   UpdateLabel(fa);
   ListGroupForAction(fa);
   ListMappings(fa);
-  Select(fa);
-end;
-
-procedure TFormAction.Select(fa: Integer);
-begin
-//  ListViewActions.ScrollTo(fa);
 end;
 
 procedure TFormAction.ClearCaption;
@@ -345,7 +339,7 @@ begin
   TextCaption.Text := '';
 end;
 
-procedure TFormAction.UpdateLabel(fa: Integer);
+procedure TFormAction.UpdateLabel(fa: TFederAction);
 var
   fg: Integer;
   an, sn, ln, gn: string;
@@ -364,7 +358,7 @@ begin
   TextDetail.Text := 'Action Details';
 end;
 
-procedure TFormAction.ListMappings(fa: Integer);
+procedure TFormAction.ListMappings(fa: TFederAction);
 begin
   ML.Clear;
   UpdateVars(fa);
@@ -378,10 +372,10 @@ begin
 
   Main.CollectShortcuts(fa, ML);
 
-  UpdateDetails(fa);
+  UpdateDetails;
 end;
 
-procedure TFormAction.UpdateDetails(fa: Integer);
+procedure TFormAction.UpdateDetails;
 var
   i: Integer;
   s: string;
@@ -402,7 +396,7 @@ begin
   end;
 end;
 
-procedure TFormAction.UpdateVars(fa: Integer);
+procedure TFormAction.UpdateVars(fa: TFederAction);
 begin
   ofa := fa;
   osn := GetFederActionShort(ofa);

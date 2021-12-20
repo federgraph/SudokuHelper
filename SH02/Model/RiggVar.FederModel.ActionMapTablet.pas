@@ -29,7 +29,7 @@ type
   private
     ForceActionPageMP: Boolean;
     procedure InitDefault;
-    procedure InitAC(cl: TCornerLocation; bi, fa: Integer; cla: TAlphaColor);
+    procedure InitAC(cl: TCornerLocation; bi: Integer; fa: TFederAction; cla: TAlphaColor);
   protected
     procedure InitActionsSH(Layout: Integer);
   public
@@ -218,8 +218,7 @@ begin
   IAC(7, faActionPageP, claYellow);
 end;
 
-procedure TActionMapTablet.InitAC(cl: TCornerLocation; bi,
-  fa: Integer; cla: TAlphaColor);
+procedure TActionMapTablet.InitAC(cl: TCornerLocation; bi: Integer; fa: TFederAction; cla: TAlphaColor);
 var
   j: Integer; // FrameLocation
 begin

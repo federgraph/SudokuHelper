@@ -19,14 +19,15 @@
 interface
 
 uses
+  RiggVar.FB.ActionConst,
   System.SysUtils,
   System.Classes,
   System.UITypes;
 
 type
   TCornerLocation = (TopLeft, TopRight, BottomRight, BottomLeft);
-  TInitActionProc = procedure (BtnID: Integer; Action: Integer) of object;
-  TInitActionColorProc = procedure (BtnID: Integer; Action: Integer; cla: TAlphaColor) of object;
+  TInitActionProc = procedure (BtnID: Integer; Action: TFederAction) of object;
+  TInitActionColorProc = procedure (BtnID: Integer; Action: TFederAction; cla: TAlphaColor) of object;
 
   TActionMapBase = class
   private
@@ -38,8 +39,8 @@ type
   protected
     TestName: string;
     FPageCount: Integer;
-    procedure InitAction(BtnID: Integer; Action: Integer);
-    procedure IAC(BtnID, Action: Integer; cla: TAlphaColor); virtual;
+    procedure InitAction(BtnID: Integer; Action: TFederAction);
+    procedure IAC(BtnID: Integer; Action: TFederAction; cla: TAlphaColor); virtual;
   public
     class var CurrentPageCaption: string;
     constructor Create;
@@ -51,19 +52,19 @@ type
 
   TCollectibleActionMap = class(TActionMapBase)
   private
-    procedure TestProcAll(BtnID, Action: Integer);
-    procedure TestProcOne(BtnID, Action: Integer);
+    procedure TestProcAll(BtnID: Integer; Action: TFederAction);
+    procedure TestProcOne(BtnID: Integer; Action: TFederAction);
     procedure DoCollectMappings;
-    procedure TestProcOneIAC(BtnID, Action: Integer; cla: TAlphaColor);
-    procedure TestProcAllIAC(BtnID, Action: Integer; cla: TAlphaColor);
+    procedure TestProcOneIAC(BtnID: Integer; Action: TFederAction; cla: TAlphaColor);
+    procedure TestProcAllIAC(BtnID: Integer; Action: TFederAction; cla: TAlphaColor);
   protected
-    TestAction: Integer;
+    TestAction: TFederAction;
     TestPage: Integer;
     TestList: TStrings;
     TestProc: TInitActionProc;
     TestProcIAC: TInitActionColorProc;
   public
-    procedure CollectOne(fa: Integer; ML: TStrings);
+    procedure CollectOne(fa: TFederAction; ML: TStrings);
     procedure CollectAll(ML: TStrings);
   end;
 
@@ -102,13 +103,13 @@ begin
   FPageCount := 1;
 end;
 
-procedure TActionMapBase.InitAction(BtnID, Action: Integer);
+procedure TActionMapBase.InitAction(BtnID: Integer; Action: TFederAction);
 begin
   if Assigned(ActionProc) then
     ActionProc(BtnID, Action);
 end;
 
-procedure TActionMapBase.IAC(BtnID, Action: Integer; cla: TAlphaColor);
+procedure TActionMapBase.IAC(BtnID: Integer; Action: TFederAction; cla: TAlphaColor);
 begin
   if Assigned(ActionColorProc) then
     ActionColorProc(BtnID, Action, cla);
@@ -196,7 +197,7 @@ begin
   DoCollectMappings;
 end;
 
-procedure TCollectibleActionMap.CollectOne(fa: Integer; ML: TStrings);
+procedure TCollectibleActionMap.CollectOne(fa: TFederAction; ML: TStrings);
 begin
   TestAction := fa;
   TestList := ML;
@@ -205,18 +206,18 @@ begin
   DoCollectMappings;
 end;
 
-procedure TCollectibleActionMap.TestProcOne(BtnID, Action: Integer);
+procedure TCollectibleActionMap.TestProcOne(BtnID: Integer; Action: TFederAction);
 begin
   if Action = TestAction then
     TestList.Add(Format('%s %d/%d', [TestName, TestPage, BtnID]));
 end;
 
-procedure TCollectibleActionMap.TestProcOneIAC(BtnID, Action: Integer; cla: TAlphaColor);
+procedure TCollectibleActionMap.TestProcOneIAC(BtnID: Integer; Action: TFederAction; cla: TAlphaColor);
 begin
   TestProcOne(BtnID, Action);
 end;
 
-procedure TCollectibleActionMap.TestProcAll(BtnID, Action: Integer);
+procedure TCollectibleActionMap.TestProcAll(BtnID: Integer; Action: TFederAction);
 begin
   TestList.Add(Format('%s %d/%d %s = %s', [
     TestName,
@@ -227,7 +228,7 @@ begin
     ]));
 end;
 
-procedure TCollectibleActionMap.TestProcAllIAC(BtnID, Action: Integer; cla: TAlphaColor);
+procedure TCollectibleActionMap.TestProcAllIAC(BtnID: Integer; Action: TFederAction; cla: TAlphaColor);
 begin
   TestProcAll(BtnID, Action);
 end;

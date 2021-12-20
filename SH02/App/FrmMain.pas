@@ -19,7 +19,6 @@
 interface
 
 uses
-  RiggVar.FB.ActionConst,
   System.SysUtils,
   System.Types,
   System.UITypes,
@@ -29,6 +28,7 @@ uses
   FMX.Forms,
   FMX.Controls,
   FMX.Graphics,
+  RiggVar.FB.ActionConst,
   RiggVar.FB.ColorScheme,
   RiggVar.FD.Image,
   SH.SudokuGraph;
@@ -69,7 +69,7 @@ type
     property IsUp: Boolean read GetIsUp write SetIsUp;
   public
     procedure UpdateBackground;
-    procedure HandleAction(fa: Integer);
+    procedure HandleAction(fa: TFederAction);
     procedure AddToDebugText(ML: TStrings);
   end;
 
@@ -233,7 +233,7 @@ begin
   SudokuGraph.Image := SudokuImage;
 end;
 
-procedure TFormMain.HandleAction(fa: Integer);
+procedure TFormMain.HandleAction(fa: TFederAction);
 begin
   case fa of
     faShowActions: ActionsBtnClick(nil);

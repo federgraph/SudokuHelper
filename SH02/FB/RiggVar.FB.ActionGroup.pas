@@ -24,7 +24,7 @@ uses
   RiggVar.FB.ActionConst;
 
 type
-  TActionGroup = array of Integer;
+  TActionGroup = array of TFederAction;
 
 const
 
@@ -64,9 +64,7 @@ faWheelUp
 ActionGroupForms: TActionGroup = [
 faShowMemo,
 faShowActions,
-faShowInfo,
-faShowData,
-faShowRepo];
+faShowInfo];
 
 ActionGroupFormat: TActionGroup = [
 faFormatLandscape,
@@ -127,20 +125,6 @@ faTouchBarTop,
 faTouchBarBottom,
 faTouchBarLeft,
 faTouchBarRight];
-
-ActionGroupDropTarget: TActionGroup = [
-faToggleDropTarget];
-
-//ActionGroupLanguage: TActionGroup = [
-//faToggleLanguage];
-
-ActionGroupCopyPaste: TActionGroup = [
-faSave,
-faLoad,
-faOpen,
-faCopy,
-faPaste,
-faShare];
 
 ActionGroupSudokuScene: TActionGroup = [
 faSudoku09A,
