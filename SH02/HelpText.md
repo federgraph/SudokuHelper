@@ -14,6 +14,8 @@ it is just a more convenient way to solve a Sudoku from a magazine
 or other external source than doing it on paper,
 using pencil and eraser.
 
+![SH02 screenshot](../images/SH02-02.png)
+
 The application's main features should be:
 - Invalid cell values marked in alternative color red. 
 - It should be possible to add and remove *candidate values* from a cell.
@@ -22,8 +24,7 @@ The application's main features should be:
 - Then there should be a feature called *named marks*, which can be set for the current undo stack state. 
 - And it should be possible to save the Sudoku to a file, including the undo stack.
 
-<a href="../images/SH02-01.png">*Screenshot of SH02*<br>
-![SH02 screenshot](../images/SH02-01.png)</a>
+![SH02 screenshot](../images/SH02-01.png)
 
 In the image above you can see:
 - SH02 FMX app with Classic Sudoku Gosu (9x9) template loaded
@@ -67,6 +68,8 @@ To set a cell's value just type the value:
 
 For 12x12 and 16x16 Sudokus the letters A to G will set the values 10 to 16,
 these characters are not case-sensitive.
+
+![SH02 screenshot](../images/SH02-02.png)
 
 ### Setting values and candidates with mouse
 
