@@ -64,8 +64,6 @@ begin
       vkRight: fa := faWheelRight;
       vkUp: fa := faWheelUp;
       vkDown: fa := faWheelDown;
-
-      vkEscape: fa := faReset;
     end;
   end
 
@@ -82,6 +80,7 @@ begin
 
     vkF1: fa := faShowMemo;
 //    vkSpace: fa := faToggleGosu; // KeyChar ' ' is dominant
+    vkEscape: fa := faActionPageE;
   end;
 
   result := fa;
@@ -131,6 +130,7 @@ begin
 
     '+': fa := faActionPageP;
     '*': fa := faActionPageM;
+    '^': fa := faActionPageE;
   end;
   result := fa;
 end;

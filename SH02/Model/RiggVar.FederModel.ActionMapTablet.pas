@@ -27,7 +27,6 @@ uses
 type
   TActionMapTablet = class(TActionMap)
   private
-    ForceActionPageMP: Boolean;
     procedure InitDefault;
     procedure InitAC(cl: TCornerLocation; bi: Integer; fa: TFederAction; cla: TAlphaColor);
   protected
@@ -73,9 +72,8 @@ uses
 constructor TActionMapTablet.Create;
 begin
   inherited;
-  FPageCount := 3;
-  FEscapeIndex := FPageCount + 1;
-  ForceActionPageMP := True;
+  FPageCount := 4;
+  FEscapeIndex := 4;
   TestName := 'Tablet Page';
 end;
 
@@ -205,8 +203,48 @@ begin
       InitAC(cl, 2, faLoadSudoku, claAquamarine);
       InitAC(cl, 3, faNoop, cla);
       InitAC(cl, 4, faNoop, cla);
-      InitAC(cl, 5, faNoop, cla);
+      InitAC(cl, 5, faActionPageE, claYellow);
       InitAC(cl, 6, faNoop, cla);
+    end;
+
+    4:
+    begin
+      cla := claWhite;
+      cl := TopLeft;
+      //InitAC(cl, 1, faActionPageM, claYellow);
+      InitAC(cl, 2, faTL02, cla);
+      InitAC(cl, 3, faTL03, cla);
+      InitAC(cl, 4, faTL04, claRed);
+      InitAC(cl, 5, faTL05, cla);
+      InitAC(cl, 6, faTL06, cla);
+
+      cl := TopRight;
+      InitAC(cl, 1, faTR01, cla);
+      InitAC(cl, 2, faTR02, cla);
+      InitAC(cl, 3, faTR03, cla);
+      InitAC(cl, 4, faTR04, cla);
+      //InitAC(cl, 5, faActionPageP, claYellow);
+      InitAC(cl, 6, faTR06, cla);
+      InitAC(cl, 7, faTR07, cla);
+      InitAC(cl, 8, faTR08, cla);
+
+      cl := BottomLeft;
+      InitAC(cl, 1, faBL01, cla);
+      InitAC(cl, 2, faBL02, cla);
+      InitAC(cl, 3, faBL03, cla);
+      InitAC(cl, 4, faBL04, cla);
+      InitAC(cl, 5, faBL05, cla);
+      InitAC(cl, 6, faBL06, cla);
+      InitAC(cl, 7, faBL07, cla);
+      InitAC(cl, 8, faBL08, cla);
+
+      cl := BottomRight;
+      InitAC(cl, 1, faBR01, cla);
+      InitAC(cl, 2, faBR02, cla);
+      InitAC(cl, 3, faBR03, cla);
+      InitAC(cl, 4, faBR04, cla);
+      InitAC(cl, 5, faBR05, cla);
+      InitAC(cl, 6, faBR06, cla);
     end;
 
   end;

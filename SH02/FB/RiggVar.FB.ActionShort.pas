@@ -53,7 +53,6 @@ begin
     faTouchDesk: result := 'dsk';
 
     { Wheel }
-    faPlusOne: result := 'one';
     faWheelLeft: result := 'wl';
     faWheelRight: result := 'wr';
     faWheelDown: result := 'wd';
@@ -63,23 +62,51 @@ begin
     faCycleColorSchemeM: result := 'c-';
     faCycleColorSchemeP: result := 'c+';
 
-    { FederText }
-    faToggleTouchFrame: result := 'fra';
+    { BtnLegendTablet }
+    faTL01: result := '#1';
+    faTL02: result := '#2';
+    faTL03: result := '#3';
+    faTL04: result := '#4';
+    faTL05: result := '#5';
+    faTL06: result := '#6';
+    faTR01: result := '1#';
+    faTR02: result := '2#';
+    faTR03: result := '3#';
+    faTR04: result := '4#';
+    faTR05: result := '5#';
+    faTR06: result := '6#';
+    faTR07: result := '7#';
+    faTR08: result := '8#';
+    faBL01: result := '1*';
+    faBL02: result := '2*';
+    faBL03: result := '3*';
+    faBL04: result := '4*';
+    faBL05: result := '5*';
+    faBL06: result := '6*';
+    faBL07: result := '7*';
+    faBL08: result := '8*';
+    faBR01: result := '*1';
+    faBR02: result := '*2';
+    faBR03: result := '*3';
+    faBR04: result := '*4';
+    faBR05: result := '*5';
+    faBR06: result := '*6';
 
-    { Format }
-    faFormatLandscape: result := '[fL]';
-    faFormatPortrait: result := '[fP]';
-    faFormatIPhoneLandscape: result := '[fLi]';
-    faFormatIPhonePortrait: result := '[fPi]';
+    { BtnLegendPhone }
+    faMB01: result := '_1';
+    faMB02: result := '_2';
+    faMB03: result := '_3';
+    faMB04: result := '_4';
+    faMB05: result := '_5';
+    faMB06: result := '_6';
+    faMB07: result := '_7';
+    faMB08: result := '_8';
 
     { TouchBarLegend }
     faTouchBarTop: result := 'tbT';
     faTouchBarBottom: result := 'tbB';
     faTouchBarLeft: result := 'tbL';
     faTouchBarRight: result := 'tbR';
-
-    { Reset }
-    faReset: result := 'res';
 
     { SudokuNavigation }
     faNavColM: result := 'nc-';

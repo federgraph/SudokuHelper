@@ -41,8 +41,8 @@ uses
 constructor TActionMapPhone.Create;
 begin
   inherited;
-  FPageCount := 1;
-  FEscapeIndex := FPageCount + 1;
+  FPageCount := 2;
+  FEscapeIndex := 2;
   TestName := 'Phone Page';
 end;
 
@@ -83,6 +83,26 @@ begin
       IAC(7, faSelect0, claAquaMarine);
       IAC(9, faSelect5, claPlum);
       IAC(10, faSelect1, claPlum);
+    end;
+
+    2:
+    begin
+      cla := claWhite;
+      IAC(1, faMB01, cla);
+      IAC(2, faMB02, cla);
+      IAC(3, faMB03, cla);
+
+      IAC(4, faMB04, cla);
+      IAC(5, faMB05, cla);
+      IAC(6, faMB06, cla);
+
+      cla := claCornflowerBlue;
+      IAC(7, faMB07, cla);
+      IAC(8, faMB08, cla);
+
+      cla := claYellow;
+      IAC(9, faNoop, claYellow);
+      IAC(10, faNoop, claAquamarine);
     end;
 
     else

@@ -84,10 +84,9 @@ begin
   AddSpecial(ActionGroupTouchLayout, 'TouchLayout');
   AddSpecial(ActionGroupWheel, 'Wheel');
   AddSpecial(ActionGroupColorScheme, 'ColorScheme');
-  AddSpecial(ActionGroupFederText, 'FederText');
-  AddSpecial(ActionGroupFormat, 'Format');
   AddSpecial(ActionGroupTouchBarLegend, 'TouchBarLegend');
-  AddSpecial(ActionGroupReset, 'Reset');
+  AddSpecial(ActionGroupBtnLegendTablet, 'BtnLegendTablet');
+  AddSpecial(ActionGroupBtnLegendPhone, 'BtnLegendPhone');
 
   AddSpecial(ActionGroupSudokuNavigation, 'SudokuNavigation');
   AddSpecial(ActionGroupSudokuSelection, 'SudokuSelection');

@@ -44,6 +44,7 @@ type
     procedure DrawCellBorders(g: TCanvas; aCell: ISudokuCell; var Rect: TRectF; ASelected: Boolean);
     procedure DrawCellData(g: TCanvas; aCell: ISudokuCell; Rect: TRectF; ASelected: Boolean);
   public
+    WantClearToRed: Boolean;
     DrawCounter: Integer;
     BackgroundColor: TAlphaColor;
     ImageOpacity: single;
@@ -159,9 +160,12 @@ begin
   else
   begin
     { clear to claRed to see real size of image,
-    notice how it might overlap frame buttons on the bottom edge of window
-    which is why HitTest on the image has been set to false
-    and clicks are handle on the form instead of image }
+      notice how it might overlap frame buttons on the bottom edge of window,
+      so that Z-Order and HitTest settings of image matter
+    }
+    if WantClearToRed then
+      g.Clear(claRed)
+    else
     g.Clear(claNull);
     R := RectF(0, 0, Width, Height);
     g.Fill.Color := BackgroundColor;

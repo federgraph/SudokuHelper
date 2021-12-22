@@ -121,6 +121,7 @@ type
     function GetMinCount: Integer;
   protected
     MaxPageIndex: Integer;
+    EscapePageIndex: Integer;
 
     OldX: single;
     OldY: single;
@@ -143,11 +144,6 @@ type
     procedure InitAction(BtnID: Integer; fa: TFederAction);
     procedure InitActionWithColor(BtnID: Integer; fa: TFederAction; ac: TAlphaColor);
   public
-    WantLED: Boolean;
-    Spruch: string;
-
-    LabelBatch2: Integer;
-
     CornerBtnList: TObjectList<TCornerBtn>;
     CornerMenu: TCornerMenu;
 
@@ -530,6 +526,7 @@ begin
   FFrameVisible := True;
 
   FActionPage := 1;
+  EscapePageIndex := FActionPage + 1;
   CornerBtnList := TObjectList<TCornerBtn>.Create;
   CornerBtnList.OwnsObjects := False;
   CornerMenu := TCornerMenu.Create;
@@ -559,12 +556,28 @@ end;
 
 procedure TFederTouchBase.SetActionPage(const Value: Integer);
 begin
-  FActionPage := Value;
+  if Value = -3 then
+  begin
+    if FActionPage = 1 then
+      FActionPage := EscapePageIndex
+    else
+      FActionPage := 1;
+  end
+  else if Value = -2 then
+    FActionPage := MaxPageIndex
+  else if Value = -1 then
+    FActionPage := EscapePageIndex
+  else if (Value = EscapePageIndex) and (FActionPage = EscapePageIndex + 1) then
+    FActionPage := EscapePageIndex
+  else if (Value = EscapePageIndex) and (FActionPage = EscapePageIndex - 1) then
+    FActionPage := 1
+  else
+    FActionPage := Value;
 
   if FActionPage > MaxPageIndex then
     FActionPage := 1;
   if FActionPage < 1 then
-      FActionPage := MaxPageIndex;
+    FActionPage := EscapePageIndex - 1;
 
   InitActions(FActionPage);
 
@@ -605,7 +618,7 @@ begin
   begin
     if (Round(Abs(X - OldX)) div 8) > 0 then
     begin
-      Main.DoTouchbarBottom(OldX-X);
+      Main.DoTouchbarBottom(OldX - X);
       OldX := X;
       OldY := Y;
     end;
@@ -614,7 +627,7 @@ begin
   begin
     if Abs(X - OldX) > 0 then
     begin
-      Main.DoTouchbarTop(X-OldX);
+      Main.DoTouchbarTop(X - OldX);
       OldX := X;
       OldY := Y;
     end;

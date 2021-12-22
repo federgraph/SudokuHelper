@@ -102,6 +102,10 @@ begin
   case fa of
     faActionPageM: M.CycleToolSet(-1);
     faActionPageP: M.CycleToolSet(1);
+    faActionPage1: M.FederText.ActionPage := 1;
+    faActionPage2: M.FederText.ActionPage := 2;
+    faActionPageE: M.FederText.ActionPage := -1;
+    faActionPageS: M.FederText.ActionPage := -3;
 
     faCycleColorSchemeM: M.CycleColorSchemeM;
     faCycleColorSchemeP: M.CycleColorSchemeP;

@@ -53,7 +53,6 @@ begin
     faTouchDesk: result := 'Touch Desk';
 
     { Wheel }
-    faPlusOne: result := 'Plus One';
     faWheelLeft: result := 'Wheel -1';
     faWheelRight: result := 'Wheel +1';
     faWheelDown: result := 'Wheel +10';
@@ -63,23 +62,51 @@ begin
     faCycleColorSchemeM: result := 'cycle color scheme -';
     faCycleColorSchemeP: result := 'cycle color scheme +';
 
-    { FederText }
-    faToggleTouchFrame: result := 'Toggle Touch Frame';
+    { BtnLegendTablet }
+    faTL01: result := 'Top Left 1';
+    faTL02: result := 'Top Left 2';
+    faTL03: result := 'Top Left 3';
+    faTL04: result := 'Top Left 4';
+    faTL05: result := 'Top Left 5';
+    faTL06: result := 'Top Left 6';
+    faTR01: result := 'Top Right 1';
+    faTR02: result := 'Top Right 2';
+    faTR03: result := 'Top Right 3';
+    faTR04: result := 'Top Right 4';
+    faTR05: result := 'Top Right 5';
+    faTR06: result := 'Top Right 6';
+    faTR07: result := 'Top Right 7';
+    faTR08: result := 'Top Right 8';
+    faBL01: result := 'Bottom Left 1';
+    faBL02: result := 'Bottom Left 2';
+    faBL03: result := 'Bottom Left 3';
+    faBL04: result := 'Bottom Left 4';
+    faBL05: result := 'Bottom Left 5';
+    faBL06: result := 'Bottom Left 6';
+    faBL07: result := 'Bottom Left 7';
+    faBL08: result := 'Bottom Left 8';
+    faBR01: result := 'Bottom Right 1';
+    faBR02: result := 'Bottom Right 2';
+    faBR03: result := 'Bottom Right 3';
+    faBR04: result := 'Bottom Right 4';
+    faBR05: result := 'Bottom Right 5';
+    faBR06: result := 'Bottom Right 6';
 
-    { Format }
-    faFormatLandscape: result := '[Landscape]';
-    faFormatPortrait: result := '[Portrait]';
-    faFormatIPhoneLandscape: result := '[IPhone Landscape]';
-    faFormatIPhonePortrait: result := '[IPhone Portrait]';
+    { BtnLegendPhone }
+    faMB01: result := 'Mobile Btn 1';
+    faMB02: result := 'Mobile Btn 2';
+    faMB03: result := 'Mobile Btn 3';
+    faMB04: result := 'Mobile Btn 4';
+    faMB05: result := 'Mobile Btn 5';
+    faMB06: result := 'Mobile Btn 6';
+    faMB07: result := 'Mobile Btn 7';
+    faMB08: result := 'Mobile Btn 8';
 
     { TouchBarLegend }
     faTouchBarTop: result := 'TouchBar Top';
     faTouchBarBottom: result := 'TouchBar Bottom';
     faTouchBarLeft: result := 'TouchBar Left';
     faTouchBarRight: result := 'TouchBar Right';
-
-    { Reset }
-    faReset: result := 'Reset';
 
     { SudokuNavigation }
     faNavColM: result := 'Nav Col -';

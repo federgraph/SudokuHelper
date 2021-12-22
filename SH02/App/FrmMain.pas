@@ -65,6 +65,7 @@ type
     procedure ActionsBtnClick(Sender: TObject);
     procedure MemoBtnClick(Sender: TObject);
     procedure FixZOrder;
+    procedure OriginalZOrder;
 
     property IsUp: Boolean read GetIsUp write SetIsUp;
   public
@@ -238,6 +239,10 @@ begin
   case fa of
     faShowActions: ActionsBtnClick(nil);
     faShowMemo: MemoBtnClick(nil);
+
+    faTL02: FixZOrder;
+    faTL03: OriginalZOrder;
+    faTL04: SudokuGraph.WantClearToRed := not SudokuGraph.WantClearToRed;
   end;
 end;
 
@@ -341,6 +346,17 @@ begin
   SudokuImage.HitTest := True;
   SudokuImage.OnMouseUp := SudokuImageMouseUp;
   Self.OnMouseUp := nil;
+end;
+
+procedure TFormMain.OriginalZOrder;
+begin
+  Main.FederTextPhone.BringToFront;
+  Main.FederTextTablet.BringToFront;
+  SudokuImage.BringToFront;
+
+  SudokuImage.HitTest := True;
+  SudokuImage.OnMouseUp := nil;
+  Self.OnMouseUp := FormMouseUp;
 end;
 
 end.

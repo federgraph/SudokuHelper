@@ -53,7 +53,6 @@ begin
     faTouchDesk: result := 'faTouchDesk';
 
     { Wheel }
-    faPlusOne: result := 'faPlusOne';
     faWheelLeft: result := 'faWheelLeft';
     faWheelRight: result := 'faWheelRight';
     faWheelDown: result := 'faWheelDown';
@@ -63,23 +62,51 @@ begin
     faCycleColorSchemeM: result := 'faCycleColorSchemeM';
     faCycleColorSchemeP: result := 'faCycleColorSchemeP';
 
-    { FederText }
-    faToggleTouchFrame: result := 'faToggleTouchFrame';
+    { BtnLegendTablet }
+    faTL01: result := 'faTL01';
+    faTL02: result := 'faTL02';
+    faTL03: result := 'faTL03';
+    faTL04: result := 'faTL04';
+    faTL05: result := 'faTL05';
+    faTL06: result := 'faTL06';
+    faTR01: result := 'faTR01';
+    faTR02: result := 'faTR02';
+    faTR03: result := 'faTR03';
+    faTR04: result := 'faTR04';
+    faTR05: result := 'faTR05';
+    faTR06: result := 'faTR06';
+    faTR07: result := 'faTR07';
+    faTR08: result := 'faTR08';
+    faBL01: result := 'faBL01';
+    faBL02: result := 'faBL02';
+    faBL03: result := 'faBL03';
+    faBL04: result := 'faBL04';
+    faBL05: result := 'faBL05';
+    faBL06: result := 'faBL06';
+    faBL07: result := 'faBL07';
+    faBL08: result := 'faBL08';
+    faBR01: result := 'faBR01';
+    faBR02: result := 'faBR02';
+    faBR03: result := 'faBR03';
+    faBR04: result := 'faBR04';
+    faBR05: result := 'faBR05';
+    faBR06: result := 'faBR06';
 
-    { Format }
-    faFormatLandscape: result := 'faFormatLandscape';
-    faFormatPortrait: result := 'faFormatPortrait';
-    faFormatIPhoneLandscape: result := 'faFormatIPhoneLandscape';
-    faFormatIPhonePortrait: result := 'faFormatIPhonePortrait';
+    { BtnLegendPhone }
+    faMB01: result := 'faMB01';
+    faMB02: result := 'faMB02';
+    faMB03: result := 'faMB03';
+    faMB04: result := 'faMB04';
+    faMB05: result := 'faMB05';
+    faMB06: result := 'faMB06';
+    faMB07: result := 'faMB07';
+    faMB08: result := 'faMB08';
 
     { TouchBarLegend }
     faTouchBarTop: result := 'faTouchBarTop';
     faTouchBarBottom: result := 'faTouchBarBottom';
     faTouchBarLeft: result := 'faTouchBarLeft';
     faTouchBarRight: result := 'faTouchBarRight';
-
-    { Reset }
-    faReset: result := 'faReset';
 
     { SudokuNavigation }
     faNavColM: result := 'faNavColM';

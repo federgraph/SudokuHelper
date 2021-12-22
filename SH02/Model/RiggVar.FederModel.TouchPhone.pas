@@ -136,7 +136,12 @@ end;
 
 procedure TFederTouchPhone.UpdateText;
 begin
-
+  {
+    overwritten to do nothing
+    NOT calling inherited here
+    buttons 9 and 10 not used for pageing
+    can use keyboard to switch between pages
+  }
 end;
 
 procedure TFederTouchPhone.InitCornerMenu;
@@ -212,6 +217,7 @@ procedure TFederTouchPhone.SetActionMap(const Value: Integer);
 begin
   inherited;
   MaxPageIndex := Main.ActionMapPhone.PageCount;
+  EscapePageIndex := Main.ActionMapPhone.EscapeIndex;
 end;
 
 end.

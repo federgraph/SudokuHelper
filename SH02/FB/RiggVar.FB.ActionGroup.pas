@@ -49,16 +49,10 @@ faCycleColorSchemeM,
 faCycleColorSchemeP];
 
 ActionGroupWheel: TActionGroup = [
-faPlusOne,
-//faPlusTen,
 faWheelLeft,
 faWheelRight,
 faWheelDown,
 faWheelUp
-//faParamValuePlus1,
-//faParamValueMinus1,
-//faParamValuePlus10,
-//faParamValueMinus10
 ];
 
 ActionGroupForms: TActionGroup = [
@@ -66,59 +60,45 @@ faShowMemo,
 faShowActions,
 faShowInfo];
 
-ActionGroupFormat: TActionGroup = [
-faFormatLandscape,
-faFormatPortrait,
-//faFormatSquare,
-faFormatIPhoneLandscape,
-faFormatIPhonePortrait];
+ActionGroupBtnLegendTablet: TActionGroup = [
+faTL01,
+faTL02,
+faTL03,
+faTL04,
+faTL05,
+faTL06,
+faTR01,
+faTR02,
+faTR03,
+faTR04,
+faTR05,
+faTR06,
+faTR07,
+faTR08,
+faBL01,
+faBL02,
+faBL03,
+faBL04,
+faBL05,
+faBL06,
+faBL07,
+faBL08,
+faBR01,
+faBR02,
+faBR03,
+faBR04,
+faBR05,
+faBR06];
 
-ActionGroupReset: TActionGroup = [
-faReset];
-
-ActionGroupFederText: TActionGroup = [
-//faToggleAllText,
-faToggleTouchFrame];
-
-//ActionGroupBtnLegendTablet: TActionGroup = [
-//faTL01,
-//faTL02,
-//faTL03,
-//faTL04,
-//faTL05,
-//faTL06,
-//faTR01,
-//faTR02,
-//faTR03,
-//faTR04,
-//faTR05,
-//faTR06,
-//faTR07,
-//faTR08,
-//faBL01,
-//faBL02,
-//faBL03,
-//faBL04,
-//faBL05,
-//faBL06,
-//faBL07,
-//faBL08,
-//faBR01,
-//faBR02,
-//faBR03,
-//faBR04,
-//faBR05,
-//faBR06];
-
-//ActionGroupBtnLegendPhone: TActionGroup = [
-//faMB01,
-//faMB02,
-//faMB03,
-//faMB04,
-//faMB05,
-//faMB06,
-//faMB07,
-//faMB08];
+ActionGroupBtnLegendPhone: TActionGroup = [
+faMB01,
+faMB02,
+faMB03,
+faMB04,
+faMB05,
+faMB06,
+faMB07,
+faMB08];
 
 ActionGroupTouchBarLegend: TActionGroup = [
 faTouchBarTop,
