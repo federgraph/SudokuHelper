@@ -45,7 +45,6 @@ type
     ColorScheme: TColorScheme;
 
     Raster: Integer;
-    WheelFrequency: single;
     ShiftState: TShiftState;
 
     ClientWidth: Integer;
@@ -61,7 +60,6 @@ implementation
 class constructor MainVar.Create;
 begin
   Raster := 70;
-  WheelFrequency := 1;
   ShiftState := [];
 
   ColorScheme := TColorScheme.Create(5);

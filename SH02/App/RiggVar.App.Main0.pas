@@ -105,6 +105,7 @@ type
     SudokuGraph: TSudokuGraph; // injected, not owned
     SudokuMain: TSudokuMain;
 
+    FixedZOrder: Boolean;
     ToggleGosuButtonEnabled: Boolean;
 
     FClickAction: TClickAction;
@@ -209,6 +210,7 @@ begin
   ActionMapPhone := TActionMapPhone.Create;
 
   Keyboard := TFederKeyboard01.Create;
+  Keyboard.TestName := 'Keyboard';
 
   InitRaster;
 
@@ -386,13 +388,7 @@ end;
 
 function TMain0.GetClickAction: TClickAction;
 begin
-  { keyboard keys have priority }
-  if ssAlt in MainVar.ShiftState then
-    Result := TClickAction.SetCandidate
-  else if ssCtrl in MainVar.ShiftState then
-    Result := TClickAction.UnsetCandidate
-  else
-    Result := FClickAction;
+  Result := FClickAction;
 end;
 
 function TMain0.GetColorScheme: Integer;
@@ -665,11 +661,6 @@ begin
   ML.Add('  To set candidates with the left mouse button');
   ML.Add('  make sure the SetCandidates click mode is active.');
   ML.Add('');
-  ML.Add('On the desktop you can alternatively make use of the right mouse button,');
-  ML.Add('  it should work together with modifier keys Alt (set candidate)');
-  ML.Add('  or Ctrl (remove candidate).');
-  ML.Add('  This should work independent of the selected click mode.');
-  ML.Add('');
   ML.Add('## Sudoku commands');
   ML.Add('');
   ML.Add('These commands affect the whole Sudoku, not just a single cell.');
@@ -677,11 +668,11 @@ begin
   ML.Add('');
   ML.Add('[Clear stack] should discard all items on the Undo stack,');
   ML.Add('  including all stack marks.');
-  ML.Add('//The action should only be enabled if the stack is not empty.');
+  ML.Add('  This action should be enabled if the stack is not empty.');
   ML.Add('');
   ML.Add('[Undo] should undo the last user action that changed the Sudoku''s content,');
   ML.Add('  including the candidates.');
-  ML.Add('//This action should be enabled only if the stack is not empty.');
+  ML.Add('  This action should be enabled if the stack is not empty.');
   ML.Add('');
   ML.Add('[Save Sudoku] should bring up a File Save dialog.');
   ML.Add('  It should remember the last folder you saved a Sudoku to, or loaded one from.');
@@ -705,7 +696,7 @@ begin
   ML.Add('[Revert to Mark] should pop up a list of the defined stack marks.');
   ML.Add('  Select the one you want to revert to and click OK.');
   ML.Add('  The application should then undo all changes done after the mark was set.');
-  ML.Add('  This action should only be enabled if there is at least one stack mark defined.');
+  ML.Add('  This action should be enabled if there is at least one stack mark defined.');
 end;
 
 procedure TMain0.RunTest01(ML: TStrings);

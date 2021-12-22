@@ -111,13 +111,13 @@ begin
       InitAC(cl, 8, faUndo, claAquamarine);
 
       cl := BottomLeft;
-      InitAC(cl, 1, faSelect10, claCornflowerblue);
-      InitAC(cl, 2, faSelect11, claCornflowerblue);
-      InitAC(cl, 3, faSelect12, claCornflowerblue);
-      InitAC(cl, 4, faSelect13, claCornflowerblue);
-      InitAC(cl, 5, faSelect14, claCornflowerblue);
-      InitAC(cl, 6, faSelect15, claCornflowerblue);
-      InitAC(cl, 7, faSelect16, claCornflowerblue);
+      InitAC(cl, 1, faSelect12, claCornflowerblue);
+      InitAC(cl, 2, faSelect13, claCornflowerblue);
+      InitAC(cl, 3, faSelect14, claCornflowerblue);
+      InitAC(cl, 4, faSelect15, claCornflowerblue);
+      InitAC(cl, 5, faSelect16, claCornflowerblue);
+      InitAC(cl, 6, faSelect11, claCornflowerblue);
+      InitAC(cl, 7, faSelect10, claCornflowerblue);
       InitAC(cl, 8, faNoop, cla);
 
       cl := BottomRight;
@@ -212,8 +212,8 @@ begin
       cla := claWhite;
       cl := TopLeft;
       //InitAC(cl, 1, faActionPageM, claYellow);
-      InitAC(cl, 2, faTL02, cla);
-      InitAC(cl, 3, faTL03, cla);
+      InitAC(cl, 2, faTL02, claPink);
+      InitAC(cl, 3, faTL03, claPink);
       InitAC(cl, 4, faTL04, claRed);
       InitAC(cl, 5, faTL05, cla);
       InitAC(cl, 6, faTL06, cla);

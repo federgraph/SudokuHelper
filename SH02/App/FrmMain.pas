@@ -269,6 +269,7 @@ begin
   MainVar.ShiftState := Shift;
   if IsUp then
     Main.ActionHandler.FormKeyUp(Sender, Key, KeyChar, Shift);
+  Main.FederTextCheckState;
 end;
 
 procedure TFormMain.SudokuImageMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
@@ -287,6 +288,7 @@ begin
   SudokuGraph.Col := Floor(LCol);
   SudokuGraph.Row := Floor(LRow);
   Main.Sudoku.InputHandler.HandleCellClick(SudokuGraph.Col, SudokuGraph.Row, Main.ClickAction);
+  Main.FederTextCheckState;
 end;
 
 procedure TFormMain.FormMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
@@ -342,6 +344,7 @@ begin
   SudokuImage.BringToFront;
   Main.FederTextPhone.BringToFront;
   Main.FederTextTablet.BringToFront;
+  Main.FixedZOrder := True;
 
   SudokuImage.HitTest := True;
   SudokuImage.OnMouseUp := SudokuImageMouseUp;
@@ -353,6 +356,7 @@ begin
   Main.FederTextPhone.BringToFront;
   Main.FederTextTablet.BringToFront;
   SudokuImage.BringToFront;
+  Main.FixedZOrder := False;
 
   SudokuImage.HitTest := True;
   SudokuImage.OnMouseUp := nil;

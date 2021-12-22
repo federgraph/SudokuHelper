@@ -83,10 +83,6 @@ Only empty cells can have candidates.
 To set candidates with the left mouse button
 make sure the SetCandidates click mode is active.
 
-On the desktop you can alternatively make use of the right mouse button,
-it should work together with modifier keys Alt (set candidate) or Ctrl (remove candidate).
-This should work independent of the selected click mode.
-
 ### How to toggle Gosu cell state
 
 - If keyboard is available use Spacebar to toggle the state.
@@ -102,11 +98,10 @@ Some of the commands should work already:
 - **Undo** should undo the last user action that changed the Sudoku's content,
 including the candidates.
 Nothing should happen if the stack is empty.
-(This action used to be enabled only if the stack is not empty,
-but the button frame buttons currently cannot show the enabled state.)
+This action should be enabled if the stack is not empty.
 - **Clear stack** should discard all items on the Undo stack,
 including all stack marks.
-(The action should only be enabled if the stack is not empty.)
+This action should be enabled if the stack is not empty.
 - **Save Sudoku** should bring up a File Save dialog.
 It should remember the last folder you saved a Sudoku to, or loaded one from.
 Enter a filename and click the dialog's Save button to store the current Sudoku,
@@ -125,4 +120,4 @@ It then represents the current state of the undo stack.
 - **Revert to Mark** should pop up a list of the defined stack marks.
 Select the one you want to revert to and click OK.
 The application should then undo all changes done after the mark was set.
-(This action should only be enabled if there is at least one stack mark defined.)
+This action should be enabled if there is at least one stack mark defined.

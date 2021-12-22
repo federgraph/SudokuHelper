@@ -31,6 +31,7 @@ type
 
     procedure Execute(fa: TFederAction); override;
     function GetChecked(fa: TFederAction): Boolean; override;
+    function GetEnabled(fa: TFederAction): Boolean; override;
   end;
 
 implementation
@@ -60,6 +61,32 @@ begin
   end;
 end;
 
+function TFederActionHandler.GetEnabled(fa: TFederAction): Boolean;
+var
+  M: TMain;
+begin
+  result := True;
+
+  M := Main;
+  if M = nil then
+    Exit;
+  if not M.IsUp then
+    Exit;
+  if M.Sudoku = nil then
+    Exit;
+
+  case fa of
+    faSelect10..faSelect12: result := M.Sudoku.Data.Bounds.MaxValue > 9;
+    faSelect13..faSelect16: result := M.Sudoku.Data.Bounds.MaxValue > 12;
+
+    faToggleGosu: result := M.Sudoku.IsGosu;
+    faToggleGosuMode: result := M.Sudoku.IsGosu;
+
+    faUndo: result := M.Sudoku.CanUndo;
+    faClearStack: result := M.Sudoku.CanUndo;
+  end;
+end;
+
 function TFederActionHandler.GetChecked(fa: TFederAction): Boolean;
 var
   M: TMain;
@@ -84,6 +111,10 @@ begin
     faToggleGosuMode: result := M.ClickAction = TClickAction.ToggleGosu;
 
     faUndo: result := M.Sudoku.CanUndo;
+
+    faTL02: result := M.FixedZOrder;
+    faTL03: result := not M.FixedZOrder;
+    faTL04: result := M.SudokuGraph.WantClearToRed;
   end;
 end;
 

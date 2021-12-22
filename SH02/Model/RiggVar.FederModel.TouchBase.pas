@@ -36,6 +36,7 @@ type
   private
     FID: Integer;
     FCaption: string;
+    FColor: TAlphaColor;
     FText: TText;
     FShape: TShape;
     FFederAction: TFederAction;
@@ -213,20 +214,26 @@ end;
 
 procedure TTouchBtn.HandleClick(Sender: TObject);
 begin
-  Main.ActionHandler.Execute(FederAction);
+  if Enabled then
+  begin
+    Main.ActionHandler.Execute(FederAction);
 //  Main.FederTextCheckState; // if not done in Execute
+  end;
 end;
 
 procedure TTouchBtn.CheckState;
 var
   r: TRectangle;
-  b: Boolean;
+  e: Boolean;
+  c: Boolean;
 begin
   if FShape is TRectangle then
   begin
-    b := Main.ActionHandler.GetChecked(FederAction);
     r := FShape as TRectangle;
-    if not b then
+
+    c := Main.ActionHandler.GetChecked(FederAction);
+    e := Main.ActionHandler.GetEnabled(FederAction);
+    if not c then
       r.Corners := [TCorner.TopLeft, TCorner.TopRight, TCorner.BottomLeft, TCorner.BottomRight]
     else
       r.Corners := [
@@ -235,6 +242,13 @@ begin
         TCorner.BottomLeft,
         TCorner.BottomRight
         ];
+
+     if not e then
+      r.Fill.Color := claSilver
+     else
+      r.Fill.Color := FColor;
+
+     Enabled := e;
   end;
 end;
 
@@ -268,6 +282,7 @@ end;
 
 procedure TTouchBtn.SetColor(const Value: TAlphaColor);
 begin
+  FColor := Value;
   if Assigned(FShape) then
   begin
     FShape.Fill.Color := Value;

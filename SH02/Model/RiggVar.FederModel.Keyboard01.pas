@@ -41,7 +41,7 @@ implementation
 constructor TFederKeyboard01.Create;
 begin
   inherited;
-  TestName := 'Keyboard';
+  TestName := 'Keyboard01';
 end;
 
 function TFederKeyboard01.GetActionFromKey(Shift: TShiftState; Key: Word): TFederAction;

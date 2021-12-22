@@ -63,10 +63,10 @@ begin
     faCycleColorSchemeP: result := 'cycle color scheme +';
 
     { BtnLegendTablet }
-    faTL01: result := 'Top Left 1';
-    faTL02: result := 'Top Left 2';
-    faTL03: result := 'Top Left 3';
-    faTL04: result := 'Top Left 4';
+    faTL01: result := 'Top Left 1 ';
+    faTL02: result := 'Top Left 2 (Fixed Z-Order)';
+    faTL03: result := 'Top Left 3 (Original Z-Order)';
+    faTL04: result := 'Top Left 4 (ClearToRed)';
     faTL05: result := 'Top Left 5';
     faTL06: result := 'Top Left 6';
     faTR01: result := 'Top Right 1';
