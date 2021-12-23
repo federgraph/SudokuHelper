@@ -57,7 +57,7 @@ type
 
     function GetIsUp: Boolean;
     procedure SetIsUp(const Value: Boolean);
-    procedure Init;
+    procedure InitMain;
     procedure InitSudokuGraph;
     procedure CreateComponents;
     procedure DestroyForms;
@@ -101,19 +101,19 @@ begin
   ClientWidth := 1024;
   ClientHeight := 900;
 
-  Init;
-
+  InitMain;
   CreateComponents;
+
+  IsUp := True;
 
   Application.OnHint := HandleShowHint;
   OnShow := FormShow;
 end;
 
-procedure TFormMain.Init;
+procedure TFormMain.InitMain;
 begin
   Main := TMain.Create;
   Main.Init;
-  IsUp := True;
 
   Main.Keyboard.KeyMapping := 1;
   Main.FederText.ActionPage := 1;
@@ -267,9 +267,12 @@ end;
 procedure TFormMain.FormKeyUp(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
 begin
   MainVar.ShiftState := Shift;
+  { condition should always be true, but this is a 'pattern' }
   if IsUp then
+  begin
     Main.ActionHandler.FormKeyUp(Sender, Key, KeyChar, Shift);
-  Main.FederTextCheckState;
+    Main.FederTextCheckState;
+  end;
 end;
 
 procedure TFormMain.SudokuImageMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);

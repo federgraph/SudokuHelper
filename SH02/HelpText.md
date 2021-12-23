@@ -9,10 +9,6 @@ The text below is being adapted by *Federgraph* for the purpose of FMX applicati
 **SudokuHelper** is an application that acts like an electronic Sudoku grid.
 It supports 9x9, 12x12, and 16x16 Sudokus, both in the classic and Gosu variant,
 where cells can be marked to only accept even numbers.
-The application neither creates Sudokus itself nor provides a solver for them;
-it is just a more convenient way to solve a Sudoku from a magazine
-or other external source than doing it on paper,
-using pencil and eraser.
 
 ![SH02 screenshot](../images/SH02-02.png)
 
@@ -62,12 +58,15 @@ or simply tap a cell when in click mode SetFocus.
 
 ### Setting cell values with keyboard
 
-To set a cell's value just type the value:
-- 0 to clear a cell,
-- 1 to 9 to set the cell value.
+Just type the number when the cell is active (selected / focused).
 
-For 12x12 and 16x16 Sudokus the letters A to G will set the values 10 to 16,
-these characters are not case-sensitive.
+For bigger Sudokus (12x12 and 16x16) letters A to G can be used to set values 10 to 16.
+
+Summary:
+- type 0 to clear a cell
+- type 1 to 9 to set the cell value
+- type letters A to G for values 10 to 16. (for bigger Sudokus)
+- lower case letters should work as well
 
 ![SH02 screenshot](../images/SH02-02.png)
 
@@ -121,3 +120,21 @@ It then represents the current state of the undo stack.
 Select the one you want to revert to and click OK.
 The application should then undo all changes done after the mark was set.
 This action should be enabled if there is at least one stack mark defined.
+
+## Notes
+
+Right clicking the mouse is now deprecated.
+Also deprecated are Alt and Ctrl keyboard modifiers when clicking with the mouse or entering numbers via keyboard.
+This is because we have touchscreen only devices in mind going forward.
+
+I think managing marks for the sudoku undo stack state should be a deprecated feature as well. For the app that I have in mind it would be too complicated.
+
+The button frame buttons can show hints in form of updates to the caption of the bottom touch bar.
+This should explain the purpose of a button easily on the desktop.
+
+The checked state of a frame button can be shown, if this is appropriate for that button.
+Then the top right corner of the button will be sharp instead of round.
+Watch out for that sharp corner on the top right!
+
+The enabled state for a frame button is new.
+When not enabled the color of the button will be set to silver.
