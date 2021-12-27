@@ -885,8 +885,9 @@ end;
 procedure TBaseSudokuDatastorage.TSudokuStack.AddMark(const aName: string);
 begin
   if MarkExists(aName) then
-    raise EPreconditionViolation.Create(Classname+'.AddMark',
-        SAMarkAlreadyExists, [aName]);
+  begin
+    Marks.Pop;
+  end;
   Marks.Push(TStackMark.Create(Count, aName));
 end;
 
@@ -944,7 +945,7 @@ begin
     Result := LList.IndexOf(aName) >= 0;
   finally
     LList.Free;
-  end;  
+  end;
 end;
 
 procedure TBaseSudokuDatastorage.TSudokuStack.RevertToMark(const aName: string);
@@ -953,13 +954,13 @@ var
 begin
   if not MarkExists(aName) then
     raise EPreconditionViolation.Create(Classname + '.RevertToMark',
-        SAMarkDoesNotExist, [aName]);
+      SAMarkDoesNotExist, [aName]);
   while Marks.Count > 0 do
   begin
     LMark := Marks.Pop;
     if LMark.Name.Equals(aName) then
     begin
-      while Count > LMark.Count do
+      while Count - 1 > LMark.Count do
         Pop;
       Break;
     end;

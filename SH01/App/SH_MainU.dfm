@@ -1,4 +1,4 @@
-object FormMain: TFormMain
+﻿object FormMain: TFormMain
   Left = 0
   Top = 0
   ActiveControl = SudokuGrid
@@ -159,7 +159,6 @@ object FormMain: TFormMain
       ImageMargins.Left = 4
       Images = Images
       TabOrder = 2
-      ExplicitLeft = 3
     end
     object TestButton: TButton
       AlignWithMargins = True

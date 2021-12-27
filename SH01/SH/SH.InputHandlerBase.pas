@@ -154,7 +154,7 @@ function TBaseSudokuInputHandler.CharToValue(aChar: Char; var aValue: TSudokuVal
 begin
   Result := true;
   case aChar.ToUpper of
-    '1'..'9': aValue := String.ToInteger(aChar);
+    '1'..'9': aValue := StrToInt(aChar);
     'A'..'G': aValue := Ord(aChar) - Ord('A') + 10;
   else
     Result := false;
@@ -522,7 +522,7 @@ end;
 }
 procedure TBaseSudokuInputHandler.SetButtonSymbol(aButton: TSpeedButton; aValue: TSudokuValue);
 begin
-  aButton.Caption := string.Parse(aValue);
+  aButton.Caption := IntToStr(aValue);
 end;
 
 end.

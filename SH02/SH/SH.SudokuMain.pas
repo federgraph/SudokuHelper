@@ -1,4 +1,4 @@
-unit SH.SudokuMain;
+﻿unit SH.SudokuMain;
 
 interface
 
@@ -15,7 +15,6 @@ type
   strict private const
     DefaultSudokuFileName = 'MySudoku.sudoku';
   strict private
-    FLastMarkNum: Integer;
     OpenDialog: TOpenDialog;
     SaveDialog: TSaveDialog;
     function GetOpenFileName(dn, fn: string): string;
@@ -30,9 +29,7 @@ type
 
     procedure StartNewActionExecute(Sender: TObject);
 
-    procedure RevertToMarkActionExecute(MarkName: string);
     procedure RevertToMarkActionUpdate(Sender: TObject);
-    procedure SetMarkActionExecute(Sender: TObject);
 
     procedure Display(const S: string; Timed: Boolean = false); overload;
     procedure Display(const Fmt: string; const A: array of const; Timed: Boolean = false); overload;
@@ -40,6 +37,8 @@ type
     constructor Create;
     procedure LoadSudokuActionAccept(fn: string = DefaultSudokuFileName);
     procedure SaveSudokuActionAccept(fn: string = DefaultSudokuFileName);
+    procedure SetMarkActionExecute(Sender: TObject);
+    procedure RevertToMarkActionExecute(MarkName: string);
   end;
 
 implementation
@@ -142,19 +141,8 @@ begin
 end;
 
 procedure TSudokuMain.SetMarkActionExecute(Sender: TObject);
-var
-  LMark: string;
 begin
-  { Generate a proposed name }
-  repeat
-    Inc(FLastMarkNum);
-    LMark := String.Format(SNewMarkMask, [FLastMarkNum]);
-  until not Main.Sudoku.MarkExists(LMark) ;
-
-//  if InputQuery(SNewStackMarkCaption, SNewStackMarkPrompt, LMark) then
-//  begin
-    Main.Sudoku.AddMark(LMark);
-//  end;
+  Main.Sudoku.AddMark('M0');
 end;
 
 procedure TSudokuMain.StartNewActionExecute(Sender: TObject);

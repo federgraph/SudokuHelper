@@ -861,7 +861,7 @@ begin
       LFaultValue := aRow;
     end
     else begin
-      LFault := String.Empty;
+      LFault := '';
       LFaultValue := 1; // not used, to remove a warning
     end;
   if not LFault.IsEmpty then
@@ -887,7 +887,7 @@ end;
 procedure TBaseSudokuDatastorage.TSudokuStack.AddMark(const aName: string);
 begin
   if MarkExists(aName) then
-    raise EPreconditionViolation.Create(Classname+'.AddMark',
+    raise EPreconditionViolation.Create(Classname + '.AddMark',
         SAMarkAlreadyExists, [aName]);
   Marks.Push(TStackMark.Create(Count, aName));
 end;
@@ -961,7 +961,7 @@ begin
     LMark := Marks.Pop;
     if LMark.Name.Equals(aName) then
     begin
-      while Count > LMark.Count do
+      while Count - 1 > LMark.Count do
         Pop;
       Break;
     end;

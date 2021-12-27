@@ -177,7 +177,7 @@ end;
 {! Get the string to draw in a cell for the cell value }
 function TBaseSudokuDisplayhandler.GetSymbol(aValue: TSudokuValue): string;
 begin
-  Result := string.Parse(aValue);
+  Result := IntToStr(aValue);
 end;
 
 {!

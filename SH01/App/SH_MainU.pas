@@ -449,7 +449,7 @@ begin
   { Generate a proposed name }
   repeat
     Inc(FLastMarkNum);
-    LMark := String.Format(SNewMarkMask, [FLastMarkNum]);
+    LMark := Format(SNewMarkMask, [FLastMarkNum]);
   until not Sudoku.MarkExists(LMark) ;
 
   if InputQuery(SNewStackMarkCaption, SNewStackMarkPrompt, LMark) then

@@ -84,6 +84,8 @@ begin
 
     faUndo: result := M.Sudoku.CanUndo;
     faClearStack: result := M.Sudoku.CanUndo;
+
+    faRevertToMark: result := M.Sudoku.HasMarks;
   end;
 end;
 
@@ -196,6 +198,9 @@ begin
 
     faSaveSudoku: M.SudokuMain.SaveSudokuActionAccept;
     faLoadSudoku: M.SudokuMain.LoadSudokuActionAccept;
+
+    faSetMark: M.SudokuMain.SetMarkActionExecute(nil);
+    faRevertToMark: M.SudokuMain.RevertToMarkActionExecute('M0');
 
     else
     begin

@@ -123,6 +123,9 @@ begin
     'j': fa := faWheelLeft;
     'J': fa := faWheelDown;
 
+    'M': fa := faSetMark;
+    'R': fa := faRevertToMark;
+
     's': fa := faCycleColorSchemeP;
     'S': fa := faCycleColorSchemeM;
 

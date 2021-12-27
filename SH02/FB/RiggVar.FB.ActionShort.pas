@@ -182,8 +182,8 @@ begin
     faLoadSudoku: result := 'LS';
     faClearStack: result := 'CS';
     faUndo: result := '^z';
-    faSetMark: result := 'SM';
-    faRevertToMark: result := 'RtM';
+    faSetMark: result := 'M';
+    faRevertToMark: result := 'MR';
   end;
 end;
 

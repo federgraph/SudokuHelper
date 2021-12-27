@@ -15,9 +15,9 @@ where cells can be marked to only accept even numbers.
 The application's main features should be:
 - Invalid cell values marked in alternative color red. 
 - It should be possible to add and remove *candidate values* from a cell.
-- Setting a cell's value should automatically remove candidates no longer possible in other cells. 
+- Setting a cell's value should automatically remove candidates no longer possible in other cells.
 - There should be an *undo stack* feature, so that all actions can be undone. 
-- Then there should be a feature called *named marks*, which can be set for the current undo stack state. 
+- It should be possible to set a mark for the current undo stack state, and rewind to that state later.
 - And it should be possible to save the Sudoku to a file, including the undo stack.
 
 ![SH02 screenshot](../images/SH02-01.png)
@@ -109,17 +109,9 @@ including the Undo stack, to the file.
 It should remember the last folder you saved a Sudoku to or loaded one from.
 Pick a filename and click the dialog's Open button to replace the current Sudoku,
 including the Undo stack, with the one saved to the file. 
-
-Other actions are not implemented yet:
-
-- **New Sudoku** should show a list of the Sudoku types the application can handle.
-Select the one you want and click OK to create a new empty Sudoku. 
-- **Set Mark** should pop up a simple dialog where you can enter a name for the mark to create.
-It then represents the current state of the undo stack. 
-- **Revert to Mark** should pop up a list of the defined stack marks.
-Select the one you want to revert to and click OK.
-The application should then undo all changes done after the mark was set.
-This action should be enabled if there is at least one stack mark defined.
+- **Set Mark** should set a mark to remember the current state of the undo stack. 
+- **Revert to Mark** should undo all changes done after the mark was set.
+This action should be enabled if the stack mark was set.
 
 ## Notes
 
@@ -127,7 +119,8 @@ Right clicking the mouse is now deprecated.
 Also deprecated are Alt and Ctrl keyboard modifiers when clicking with the mouse or entering numbers via keyboard.
 This is because we have touchscreen only devices in mind going forward.
 
-I think managing marks for the sudoku undo stack state should be a deprecated feature as well. For the app that I have in mind it would be too complicated.
+I have implemented the feature to set one stack Mark, with a fixed name.
+Button M will set the mark, and button MR (memory recall) will rewind to the mark.
 
 The button frame buttons can show hints in form of updates to the caption of the bottom touch bar.
 This should explain the purpose of a button easily on the desktop.

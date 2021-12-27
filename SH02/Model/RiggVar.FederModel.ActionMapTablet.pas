@@ -146,12 +146,12 @@ begin
       InitAC(cl, 4, faSudoku12D, claPlum);
       //InitAC(cl, 5, faActionPageP, claYellow);
       InitAC(cl, 6, faNoop, cla);
-      InitAC(cl, 7, faNoop, cla);
-      InitAC(cl, 8, faNoop, cla);
+      InitAC(cl, 7, faClearStack, claAquamarine);
+      InitAC(cl, 8, faUndo, claAquamarine);
 
       cl := BottomLeft;
-      InitAC(cl, 1, faNoop, cla);
-      InitAC(cl, 2, faNoop, cla);
+      InitAC(cl, 1, faSetMark, claCornflowerblue);
+      InitAC(cl, 2, faRevertToMark, claCornflowerblue);
       InitAC(cl, 3, faNoop, cla);
       InitAC(cl, 4, faNoop, cla);
       InitAC(cl, 5, faNoop, cla);
