@@ -169,7 +169,7 @@ implementation
 uses
   Generics.Collections,
   SysUtils,
-  PB.CommonTypesU,
+  SH.Exceptions,
   SH.Strings;
 
 type

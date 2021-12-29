@@ -104,7 +104,7 @@ type
 implementation
 
 uses
-  PB.CommonTypesU,
+  SH.Exceptions,
   Generics.Collections,
   Math;
 

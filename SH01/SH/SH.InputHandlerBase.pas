@@ -38,7 +38,6 @@ own risk!</licence>
 </remarks>
 }
 unit SH.InputHandlerBase;
-{$INCLUDE PBDEFINES.INC}
 
 interface
 

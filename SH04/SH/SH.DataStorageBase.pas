@@ -230,7 +230,7 @@ type
 implementation
 
 uses
-  PB.CommonTypesU,
+  SH.Exceptions,
   SH.Strings,
   Math,
   SysUtils;
