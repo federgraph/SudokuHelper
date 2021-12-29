@@ -67,13 +67,17 @@ type
 implementation
 
 uses
-  System.SysUtils,
-  FMX.StdCtrls,
-  RiggVar.FB.ActionConst,
-  RiggVar.FB.ActionLong,
+  SysUtils,
+  Buttons,
   SH.DataStorageBase,
   SH.DisplayHandlerBase,
   SH.InputHandlerBase;
+
+resourcestring
+  CSudoku12x12 = '12x12 Sudoku';
+  CSudoku12x12Gosu = '12x12 Sudoku Gosu';
+  CHexSudoku12x12 = '12x12 Sudoku (hexadecimal)';
+  CHexSudoku12x12Gosu = '12x12 Sudoku Gosu (hexadecimal)';
 
 const
   CMaxValue = 12;
@@ -108,6 +112,8 @@ type
   end;
 
   T12x12HexSudokuInputhandler = class(T12x12SudokuInputhandler)
+  strict protected
+    procedure SetButtonSymbol(aButton: TSpeedButton; aValue: TSudokuValue); override;
   end;
 
 {== T12x12SudokuHelper ================================================}
@@ -129,7 +135,7 @@ end;
 
 class function T12x12SudokuHelper.GetDisplayname: string;
 begin
-  result := GetFederActionLong(faSudoku12A);
+  Result := CSudoku12x12;
 end;
 
 {== T12x12SudokuGosuHelper ============================================}
@@ -141,7 +147,7 @@ end;
 
 class function T12x12SudokuGosuHelper.GetDisplayname: string;
 begin
-  result := GetFederActionLong(faSudoku12B);
+  Result := CSudoku12x12Gosu;
 end;
 
 {== T12x12SudokuInputhandler ==========================================}
@@ -165,7 +171,7 @@ end;
 
 class function T12x12HexSudokuHelper.GetDisplayname: string;
 begin
-  result := GetFederActionLong(faSudoku12C);
+  Result := CHexSudoku12x12;
 end;
 
 {== T12x12HexSudokuGosuHelper =========================================}
@@ -177,7 +183,14 @@ end;
 
 class function T12x12HexSudokuGosuHelper.GetDisplayname: string;
 begin
-  result := GetFederActionLong(faSudoku12D);
+  Result := CHexSudoku12x12Gosu;
+end;
+
+{== T12x12HexSudokuInputhandler =======================================}
+
+procedure T12x12HexSudokuInputhandler.SetButtonSymbol(aButton: TSpeedButton; aValue: TSudokuValue);
+begin
+  aButton.Caption := CSymbols[aValue];
 end;
 
 {== T12x12HexSudokuDisplayhandler =====================================}

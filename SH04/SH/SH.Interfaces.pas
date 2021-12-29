@@ -28,13 +28,17 @@ have to provide.
 }
 unit SH.Interfaces;
 
+{$IFDEF FPC}
+  {$MODE Delphi}
+{$ENDIF}
+
 interface
 
 uses
-  System.Classes,
+  Classes,
   PB.CommonTypesU,
-  Vcl.Controls,
-  Vcl.Grids;
+  Controls,
+  Grids;
 
 {
  Sudokus are square but they differ in the number of allowed values, the

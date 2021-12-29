@@ -90,7 +90,7 @@ type
       FOwner: TBaseSudokuDatastorage;
       FRow: TSudokuCellIndex;
     strict protected type
-      TCellOp = reference to procedure (var aCell: TSudokuCell);
+      TCellOp = reference to procedure(var aCell: TSudokuCell);
       procedure AddCandidate(aValue: TSudokuValue);
       procedure Select;
       procedure Clear;
@@ -189,7 +189,7 @@ type
     FUndoStack: TSudokuStack;
     procedure CalculateBlocks;
     procedure Clear;
-    procedure FindBlockEntry(aCol, aRow: TSudokuCellIndex; var aEntry: TSudokuBlockEntry);
+    procedure FindBlockEntry(aCol, aRow: TSudokuCellIndex; out aEntry: TSudokuBlockEntry);
     function GetBlockLocation(aBlockCol, aBlockRow: Integer): TCellInBlockLocation;
     function GetCellInBlockLocation(aCol, aRow: TSudokuCellIndex): TCellInBlockLocation;
     function IsValidBlockValue(aCol, aRow: TSudokuCellIndex; aValue: TSudokuValue): Boolean;
@@ -378,7 +378,7 @@ end;
  This method should never fail if the blocks array has been set up
  correctly!</remarks>
 }
-procedure TBaseSudokuDatastorage.FindBlockEntry(aCol, aRow: TSudokuCellIndex; var aEntry: TSudokuBlockEntry);
+procedure TBaseSudokuDatastorage.FindBlockEntry(aCol, aRow: TSudokuCellIndex; out aEntry: TSudokuBlockEntry);
 const
   CProcname = 'TBaseSudokuDatastorage.FindBlockEntry';
 var
@@ -859,7 +859,7 @@ begin
       LFaultValue := aRow;
     end
     else begin
-      LFault := String.Empty;
+      LFault := '';
       LFaultValue := 1;   // not used, to remove a warning
     end;
   if not LFault.IsEmpty then
@@ -960,7 +960,7 @@ begin
     LMark := Marks.Pop;
     if LMark.Name.Equals(aName) then
     begin
-      while Count - 1 > LMark.Count do
+      while Count > LMark.Count + 1 do
         Pop;
       Break;
     end;
@@ -1027,8 +1027,7 @@ begin
 end;
 
 {! Implements ISudokuCell.AddCandidate }
-procedure TBaseSudokuDatastorage.TSudokuCellHelper.AddCandidate(aValue:
-    TSudokuValue);
+procedure TBaseSudokuDatastorage.TSudokuCellHelper.AddCandidate(aValue: TSudokuValue);
 begin
   if IsEmpty and not (aValue in FCellRef.Candidates) and (aValue > 0) then
     DoCellOp(
@@ -1079,8 +1078,7 @@ begin
 end;
 
 {! Implements ISudokuCell.GetBlockLocation }
-function TBaseSudokuDatastorage.TSudokuCellHelper.GetBlockLocation:
-    TCellInBlockLocation;
+function TBaseSudokuDatastorage.TSudokuCellHelper.GetBlockLocation: TCellInBlockLocation;
 begin
   Result := Owner.GetCellInBlockLocation(Col, Row);
 end;
@@ -1150,7 +1148,7 @@ begin
       begin
         aCell.Valid := Owner.IsValueValid(Col, Row, aValue)
           and not (aCell.EvenOnly and Odd(aValue));
-        // We allow a bad value to be set, that just is displayed in red.
+        { We allow a bad value to be set, that just is displayed in red. }
         aCell.Value := aValue;
         aCell.Candidates := [];
       end);
@@ -1166,8 +1164,7 @@ begin
     procedure (var aCell: TSudokuCell)
     begin
       aCell.EvenOnly := not aCell.EvenOnly;
-      aCell.Valid := aCell.Valid
-        and not (aCell.EvenOnly and Odd(aCell.Value));
+      aCell.Valid := aCell.Valid and not (aCell.EvenOnly and Odd(aCell.Value));
     end);
 end;
 

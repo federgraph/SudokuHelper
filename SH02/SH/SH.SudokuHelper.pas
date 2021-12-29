@@ -23,14 +23,7 @@ unit SH.SudokuHelper;
 interface
 
 uses
-  SH.HelperBase,
-  SH.Interfaces;
-
-{ The classic 9x9 Sudoku is the default,
-  so its name has to be accesible from other units. }
-//resourcestring
-//  CClassicSudoku9x9 = 'Classic Sudoku (9x9)';
-//  CClassicSudokuGosu9x9 = 'Classic Sudoku Gosu (9x9)';
+  SH.HelperBase;
 
 type
   {! Helper for the classic 9x9 Sudoku }
@@ -100,7 +93,6 @@ end;
 
 class function TClassicSudokuHelper.GetDisplayname: string;
 begin
-//  Result := CClassicSudoku9x9;
   result := GetFederActionLong(faSudoku09A);
 end;
 
@@ -113,7 +105,6 @@ end;
 
 class function TClassicSudokuGosuHelper.GetDisplayname: string;
 begin
-//  Result := CClassicSudokuGosu9x9;
   result := GetFederActionLong(faSudoku09B);
 end;
 

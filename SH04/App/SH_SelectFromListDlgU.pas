@@ -16,20 +16,23 @@ own risk!</licence>
 }
 unit SH_SelectFromListDlgU;
 
+{$IFDEF FPC}
+  {$MODE Delphi}
+{$ENDIF}
+
 interface
 
 uses
-  Winapi.Windows,
-  Winapi.Messages,
-  System.SysUtils,
-  System.Classes,
-  Vcl.Graphics,
-  Vcl.Controls,
-  Vcl.Forms,
-  Vcl.Dialogs,
-  Vcl.StdCtrls,
-  Vcl.Buttons,
-  Vcl.ExtCtrls;
+  ExtCtrls,
+  Buttons,
+  StdCtrls,
+  Dialogs,
+  Controls,
+  Graphics,
+  Classes,
+  SysUtils,
+  Windows,
+  Forms;
 
 type
   TSelectFromListDlg = class(TForm)
@@ -48,7 +51,7 @@ type
 
 implementation
 
-{$R *.dfm}
+{$R *.lfm}
 
 function TSelectFromListDlg.GetSelectedValue: string;
 begin

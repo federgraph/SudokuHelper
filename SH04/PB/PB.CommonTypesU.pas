@@ -23,10 +23,14 @@ own risk!</licence>
 }
 unit PB.CommonTypesU;
 
+{$IFDEF FPC}
+  {$MODE Delphi}
+{$ENDIF}
+
 interface
 
 uses
-  System.Sysutils;
+  Sysutils;
 
 type
   {!

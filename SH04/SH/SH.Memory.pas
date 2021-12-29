@@ -17,11 +17,15 @@ own risk!</licence>
 }
 unit SH.Memory;
 
+{$IFDEF FPC}
+  {$MODE Delphi}
+{$ENDIF}
+
 interface
 
 uses
-  System.Sysutils,
-  Vcl.Forms;
+  Sysutils,
+  Forms;
 
 type
   IAppMemory = interface(IInterface)
@@ -41,9 +45,10 @@ function AppMemory: IAppMemory;
 implementation
 
 uses
-  System.Inifiles,
-  System.IOUtils,
-  System.Win.Registry,
+  FileUtil,
+  LazFileUtils,
+  Inifiles,
+  Registry,
   SH.SudokuHelper;
 
 const
@@ -93,7 +98,7 @@ var
   LAppname: string;
 begin
   inherited;
-  LAppname:= TPath.GetFileNameWithoutExtension(Paramstr(0));
+  LAppname:= ExtractFileNameWithoutExt(ParamStr(0));
   FMemory := TRegistryIniFile.Create(CAppRegKey + LAppname)
 end;
 
@@ -107,8 +112,8 @@ function TAppMemory.GetLastFolder: string;
 var
   dd: string;
 begin
-  dd := TPath.GetDocumentsPath;
-  Result := Memory.ReadString(CSettings, CLastFolder, TPath.Combine(dd, CDataFolder));
+  dd := AppendPathDelim(GetUserDir + 'Documents');
+  Result := Memory.ReadString(CSettings, CLastFolder,  Concat(dd, CDataFolder));
 end;
 
 function TAppMemory.GetLastSudoku: string;

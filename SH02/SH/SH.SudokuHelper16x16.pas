@@ -72,12 +72,6 @@ uses
   SH.DisplayhandlerBase,
   SH.InputhandlerBase;
 
-//resourcestring
-//  CSudoku16x16 = '16x16 Sudoku';
-//  CSudoku16x16Gosu = '16x16 Sudoku Gosu';
-//  CHeptSudoku16x16 = '16x16 Sudoku (heptadecimal)';
-//  CHeptSudoku16x16Gosu = '16x16 Sudoku Gosu (heptadecimal)';
-
 const
   CMaxValue = 16;
   CBlockWidth = 4;
@@ -123,7 +117,6 @@ end;
 
 class function T16x16SudokuHelper.GetDisplayname: string;
 begin
-//  Result := CSudoku16x16;
   result := GetFederActionLong(faSudoku16A);
 end;
 
@@ -134,7 +127,6 @@ end;
 
 class function T16x16SudokuGosuHelper.GetDisplayname: string;
 begin
-//  Result := CSudoku16x16Gosu;
   result := GetFederActionLong(faSudoku16B);
 end;
 
@@ -162,7 +154,6 @@ end;
 
 class function T16x16HeptSudokuHelper.GetDisplayname: string;
 begin
-//  Result := CHeptSudoku16x16;
   result := GetFederActionLong(faSudoku16C);
 end;
 
@@ -175,7 +166,6 @@ end;
 
 class function T16x16HeptSudokuGosuHelper.GetDisplayname: string;
 begin
-//  Result := CHeptSudoku16x16Gosu;
   result := GetFederActionLong(faSudoku16D);
 end;
 

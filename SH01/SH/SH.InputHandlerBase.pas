@@ -105,12 +105,9 @@ type
 implementation
 
 uses
-  System.Generics.Collections,
-  System.Math,
-  System.Character,
   PB.CommonTypesU,
-  PB.CharactersU,
-  SH.DataStorageBase;
+  System.Generics.Collections,
+  System.Math;
 
 constructor TBaseSudokuInputHandler.Create(const ADataStorage: ISudokuData);
 begin
@@ -153,9 +150,10 @@ end;
 function TBaseSudokuInputHandler.CharToValue(aChar: Char; var aValue: TSudokuValue): Boolean;
 begin
   Result := true;
-  case aChar.ToUpper of
+  case aChar of
     '1'..'9': aValue := StrToInt(aChar);
     'A'..'G': aValue := Ord(aChar) - Ord('A') + 10;
+    'a'..'g': aValue := Ord(aChar) - Ord('a') + 10;
   else
     Result := false;
   end;
@@ -200,6 +198,7 @@ var
   I: TSudokuValue;
 begin
   LNumButtons := Data.Bounds.MaxValue;
+  LNextButtonPos := Point(0, 0);
   FindFirstButtonPos(LNextButtonPos);
   for I := 1 to LNumButtons do
   begin
@@ -394,7 +393,7 @@ begin
   LCell := Data.Cell[aCol, aRow];
 
   case aChar of
-    Space: if Data.IsGosu then
+    ' ': if Data.IsGosu then
              LCell.ToggleEvenOnly;
     '0': LCell.Clear;
   else
@@ -465,7 +464,9 @@ var
   LModifierKeys: TShiftstate;
   LValue: TSudokuValue;
 begin
-   if CharToValue(aChar, LValue) then begin
+  LValue := 0;
+  if CharToValue(aChar, LValue) then
+  begin
      LModifierKeys := Host.Modifierkeys;
      if ssAlt in LModifierKeys then
        LCell.AddCandidate(LValue)

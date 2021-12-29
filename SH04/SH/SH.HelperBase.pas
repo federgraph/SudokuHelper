@@ -19,10 +19,14 @@ own risk!</licence>
 }
 unit SH.HelperBase;
 
+{$IFDEF FPC}
+  {$MODE Delphi}
+{$ENDIF}
+
 interface
 
 uses
-  System.Classes,
+  Classes,
   SH.Interfaces;
 
 type
@@ -64,13 +68,13 @@ type
     function CanUndo: Boolean;
     procedure ClearUndostack;
     {! Descendants must override this method to create a data storage
-      appropriate for the Sudoku type they support. }
+     appropriate for the Sudoku type they support. }
     procedure CreateDataStorage; virtual; abstract;
     {! Descendants must override this method to create a display handler
-      appropriate for the Sudoku type they support. }
+     appropriate for the Sudoku type they support. }
     procedure CreateDisplayHandler; virtual; abstract;
     {! Descendants must override this method to create an input handler
-      appropriate for the Sudoku type they support. }
+     appropriate for the Sudoku type they support. }
     procedure CreateInputHandler; virtual; abstract;
     function GetData: ISudokuData;
     function GetDisplay: ISudokuDisplay;
@@ -163,9 +167,8 @@ function HelperRegistry: IHelperRegistry;
 implementation
 
 uses
-  System.Generics.Collections,
-  System.SysUtils,
-//  PB.InterlockedOpsU,
+  Generics.Collections,
+  SysUtils,
   PB.CommonTypesU,
   SH.Strings;
 
@@ -188,8 +191,6 @@ var
   InternalShutDownInProgress: Boolean = false;
 
 function HelperRegistry: IHelperRegistry;
-//var
-//  P: TObject;
 begin
   if InternalShutDownInProgress then
   begin
@@ -203,16 +204,6 @@ begin
     begin
       Result := THelperRegistry.Create;
       InternalHelperRegistry := Result;
-
-//      Result._AddRef;
-//      { the call below does not increment the refcount! }
-//      P:= InterlockedCompareExchangeObject(InternalHelperRegistry, TObject(Pointer(Result)), nil);
-//      if P <> nil then
-//      begin
-//        Result._Release;
-//        Result := InternalHelperRegistry;
-//      end;
-
     end;
 end;
 

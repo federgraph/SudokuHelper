@@ -21,8 +21,8 @@ unit SH.DataStorageBase;
 interface
 
 uses
-  System.Classes,
-  System.Generics.Collections,
+  Classes,
+  Generics.Collections,
   SH.Interfaces;
 
 type
@@ -76,13 +76,13 @@ type
    I decided to go with a fixed-size cell data approach, supporting at
    max a 16x16 Sudoku, which is about the largest practical. This wastes
    some memory space for smaller Sudokus, but I deemed that to be acceptable.
-  </remarks>
-  }
+    </remarks>
+    }
   TBaseSudokuDatastorage = class abstract(TInterfacedObject, ISudokuData, ISudokuDataEvents, ISudokuProperties)
   strict protected type
 
     {! This class wraps a cell in the Sudoku and gives access to it via its
-       ISudokuCell interface. }
+     ISudokuCell interface. }
     TSudokuCellHelper = class(TInterfacedObject, ISudokuCell)
     strict private
       FCellRef: PSudokuCell;
@@ -90,10 +90,8 @@ type
       FOwner: TBaseSudokuDatastorage;
       FRow: TSudokuCellIndex;
     strict protected type
-      TCellOp = reference to procedure(var aCell: TSudokuCell);
       procedure AddCandidate(aValue: TSudokuValue);
       procedure Clear;
-      procedure DoCellOp(aProc: TCellOp);
       function GetBlockLocation: TCellInBlockLocation;
       function GetCandidates: TSudokuValues;
       function GetCol: TSudokuCellIndex;
@@ -234,8 +232,8 @@ implementation
 uses
   PB.CommonTypesU,
   SH.Strings,
-  System.Math,
-  System.SysUtils;
+  Math,
+  SysUtils;
 
 {!
 <summary>
@@ -1028,22 +1026,22 @@ end;
 procedure TBaseSudokuDatastorage.TSudokuCellHelper.AddCandidate(aValue: TSudokuValue);
 begin
   if IsEmpty and not (aValue in FCellRef.Candidates) and (aValue > 0) then
-    DoCellOp(
-      procedure (var aCell: TSudokuCell)
-      begin
-        Include(aCell.Candidates, aValue);
-      end);
+  begin
+    Owner.SaveState;
+    Include(FCellRef^.Candidates, aValue);
+    Owner.RedrawCell(Col, Row);
+  end;
 end;
 
 {! Implements ISudokuCell.Clear }
 procedure TBaseSudokuDatastorage.TSudokuCellHelper.Clear;
 begin
   if not IsEmpty then
-    DoCellOp(
-      procedure (var aCell: TSudokuCell)
-      begin
-        aCell.Clear;
-      end);
+  begin
+    Owner.SaveState;
+    FCellRef^.Clear;
+    Owner.RedrawCell(Col, Row);
+  end;
 end;
 
 {!
@@ -1054,16 +1052,16 @@ end;
 <exception cref="EParameterCannotBeNil">
  is raised if aProc is nil</exception>
 }
-procedure TBaseSudokuDatastorage.TSudokuCellHelper.DoCellOp(aProc: TCellOp);
-const
-  CProcname = 'TBaseSudokuDatastorage.TSudokuCellHelper.DoCellOp';
-begin
-  if not Assigned(aProc) then
-    raise EParameterCannotBeNil.Create(CProcname,'aProc');
-  Owner.SaveState;
-  aProc(FCellRef^);
-  Owner.RedrawCell(Col, Row);
-end;
+//procedure TBaseSudokuDatastorage.TSudokuCellHelper.DoCellOp(aProc: TCellOp);
+//const
+//  CProcname = 'TBaseSudokuDatastorage.TSudokuCellHelper.DoCellOp';
+//begin
+//  if not Assigned(aProc) then
+//    raise EParameterCannotBeNil.Create(CProcname,'aProc');
+//  Owner.SaveState;
+//  aProc(FCellRef^);
+//  Owner.RedrawCell(Col, Row);
+//end;
 
 {! Implements ISudokuCell.GetBlockLocation }
 function TBaseSudokuDatastorage.TSudokuCellHelper.GetBlockLocation: TCellInBlockLocation;
@@ -1118,11 +1116,11 @@ procedure TBaseSudokuDatastorage.TSudokuCellHelper.RemoveCandidate(aValue:
     TSudokuValue);
 begin
   if IsEmpty and (aValue in FCellRef.Candidates) then
-    DoCellOp(
-      procedure (var aCell: TSudokuCell)
-      begin
-        Exclude(aCell.Candidates, aValue);
-      end);
+  begin
+    Owner.SaveState;
+    Exclude(FCellRef^.Candidates, aValue);
+    Owner.RedrawCell(Col, Row);
+  end;
 end;
 
 {! Implements ISudokuCell.SetValue }
@@ -1131,15 +1129,14 @@ procedure TBaseSudokuDatastorage.TSudokuCellHelper.SetValue(const aValue:
 begin
   if aValue > 0 then
   begin
-    DoCellOp(
-      procedure (var aCell: TSudokuCell)
-      begin
-        aCell.Valid := Owner.IsValueValid(Col, Row, aValue)
-          and not (aCell.EvenOnly and Odd(aValue));
-        { We allow a bad value to be set, that just is displayed in red. }
-        aCell.Value := aValue;
-        aCell.Candidates := [];
-      end);
+    Owner.SaveState;
+    FCellRef^.Valid := Owner.IsValueValid(Col, Row, aValue)
+      and not (FCellRef^.EvenOnly and Odd(aValue));
+    { We allow a bad value to be set, that just is displayed in red. }
+    FCellRef^.Value := aValue;
+    FCellRef^.Candidates := [];
+    Owner.RedrawCell(Col, Row);
+
     Owner.UpdateCandidates(Col, Row);
     Owner.CheckInvalidCells;
   end; {if}
@@ -1148,12 +1145,10 @@ end;
 {! Implements ISudokuCell.ToggleEvenOnly }
 procedure TBaseSudokuDatastorage.TSudokuCellHelper.ToggleEvenOnly;
 begin
-  DoCellOp(
-    procedure (var aCell: TSudokuCell)
-    begin
-      aCell.EvenOnly := not aCell.EvenOnly;
-      aCell.Valid := aCell.Valid and not (aCell.EvenOnly and Odd(aCell.Value));
-    end);
+  Owner.SaveState;
+  FCellRef^.EvenOnly := not FCellRef^.EvenOnly;
+  FCellRef^.Valid := FCellRef^.Valid and not (FCellRef^.EvenOnly and Odd(FCellRef^.Value));
+  Owner.RedrawCell(Col, Row);
 end;
 
 {== TSudokuCell =======================================================}

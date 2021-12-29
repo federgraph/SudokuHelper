@@ -39,13 +39,15 @@ own risk!</licence>
 }
 unit SH.InputHandlerBase;
 
-
 interface
 
 uses
-  System.SysUtils,
-  System.Classes,
-  System.Types,
+  Messages,
+  SysUtils,
+  Classes,
+  Types,
+  Controls,
+  Buttons,
   SH.Interfaces;
 
 type
@@ -72,17 +74,29 @@ type
   strict private
     FDataStorage: ISudokuData;
     FHost: ISudokuHostForm;
+    FReferenceButton: TSpeedButton;
   strict protected
-    function CharToValue(aChar: Char; var aValue: TSudokuValue): Boolean; virtual;
-    procedure HandleCellClick(aCol, aRow: Integer; aClickAction: TClickAction = TClickAction.SetFocus);
+    procedure CalculateNextButtonpos(var aNextButtonPos: TPoint);
+    function CharToValue(aChar: Char; var aValue: TSudokuValue): boolean; virtual;
+    function CreateAndPlaceButton(aValue: TSudokuValue; const aButtonPos: TPoint): TSpeedButton; virtual;
+    procedure CreateNewButtons; virtual;
+    procedure CreateValueButtons;
+    procedure DeleteOldButtons;
+    procedure FindFirstButtonPos(var aNextButtonPos: TPoint); virtual;
+    function GetButtonOnClickHandler: TNotifyEvent; virtual;
+    function GetButtonSize: Integer; virtual;
+    procedure HandleCellClick(aCol, aRow: Integer; aRightClick: Boolean = false);
     procedure HandleCharacter(aCol, aRow: Integer; aChar: Char);
     procedure HandleLeftClick(const aCol, aRow: TSudokuCellIndex);
     procedure HandleRightClick(const aCol, aRow: TSudokuCellIndex);
     procedure HandleValueOrCandidate(const LCell: ISudokuCell; aChar: Char); virtual;
     procedure Initialize(aHost: ISudokuHostForm);
     function IsAllowedValue(aChar: Char): Boolean; virtual;
+    procedure SetButtonSymbol(aButton: TSpeedButton; aValue: TSudokuValue); virtual;
+    property ButtonSize: Integer read GetButtonSize;
     property Data: ISudokuData read FDataStorage;
     property Host: ISudokuHostForm read FHost;
+    property ReferenceButton: TSpeedButton read FReferenceButton;
   public
     constructor Create(const ADataStorage: ISudokuData); virtual;
   end;
@@ -91,13 +105,33 @@ implementation
 
 uses
   PB.CommonTypesU,
-  System.Math,
-  System.Character;
+  Generics.Collections,
+  Math;
 
 constructor TBaseSudokuInputHandler.Create(const ADataStorage: ISudokuData);
 begin
   inherited Create;
   FDataStorage := ADataStorage;
+end;
+
+{!
+<summary>
+ Calculate the position of the next button to create </summary>
+<param name="aNextButtonPos"> has the last position on entry and
+  the new position on exit</param>
+<remarks>
+ We try to move one button width to the right first. If a button on
+ that position would overflow the container's client area we start
+ a new button row one button height higher on the container.</remarks>
+}
+procedure TBaseSudokuInputHandler.CalculateNextButtonpos(var aNextButtonPos: TPoint);
+begin
+  aNextButtonPos.Offset(ButtonSize, 0);
+  if (aNextButtonPos.X + ButtonSize) > Host.ButtonsContainer.ClientWidth then
+  begin
+    aNextButtonPos.X := ReferenceButton.Left;
+    aNextButtonPos.Offset(0, - ButtonSize);
+  end; {if}
 end;
 
 {!
@@ -127,6 +161,181 @@ end;
 
 {!
 <summary>
+ Create a speedbutton to represent a Sudoku cell value and place it. </summary>
+<returns>
+ the reference to the created button</returns>
+<param name="aValue">is the cell value the button is to represent</param>
+<param name="aButtonPos">is the position to use for the button's top left
+ corner.</param>
+<remarks>
+ All value buttons are part of the same button group, which also contains
+ the reference button. We copy a number of properties from that
+ button.
+ </remarks>
+}
+function TBaseSudokuInputHandler.CreateAndPlaceButton(aValue: TSudokuValue; const aButtonPos: TPoint): TSpeedButton;
+begin
+  Result := TSpeedButton.Create(Host.ButtonsContainer.Owner);
+  Result.Parent := Host.ButtonsContainer;
+  Result.SetBounds(aButtonPos.X, aButtonPos.Y, ButtonSize, ButtonSize);
+  Result.GroupIndex := ReferenceButton.GroupIndex;
+  Result.Down := aValue = 1;
+  Result.AllowAllUp := ReferenceButton.AllowAllUp;
+  Result.OnClick := GetButtonOnClickHandler();
+  Result.Tag := aValue;
+  SetButtonSymbol(Result, aValue);
+end;
+
+{!
+<summary>
+ Create the value buttons </summary>
+}
+procedure TBaseSudokuInputHandler.CreateNewButtons;
+var
+  LNextButtonPos: TPoint;
+  LNumButtons: TSudokuValue;
+  I: TSudokuValue;
+begin
+  LNumButtons := Data.Bounds.MaxValue;
+  LNextButtonPos := Point(0, 0);
+  FindFirstButtonPos(LNextButtonPos);
+  for I := 1 to LNumButtons do
+  begin
+    CreateAndPlaceButton(I, LNextButtonPos);
+    CalculateNextButtonpos(LNextButtonPos);
+  end;
+end;
+
+{!
+<summary>Create the buttons for the Sudoku values.</summary>
+<remarks>
+ The buttons are used to select the value to put into the clicked cell (mouse interface).
+ Their number and the preferred layout depend on the Sudoku's maximum value.
+</remarks>
+}
+procedure TBaseSudokuInputHandler.CreateValueButtons;
+var
+  LParent: TWincontrol;
+begin
+  LParent := Host.ButtonsContainer;
+  if not Assigned(LParent) then
+    raise EParameterCannotBeNil.Create(Classname+'.CreateValueButtons','LParent');
+{$IFDEF SUPPORTS_LOCKDRAWING}
+  LParent.LockDrawing;
+{$ELSE}
+  LParent.Perform(WM_SETREDRAW, 0, 0);
+{$ENDIF}
+  try
+    DeleteOldButtons;
+    CreateNewButtons;
+  finally
+{$IFDEF SUPPORTS_LOCKDRAWING}
+    LParent.UnlockDrawing;
+{$ELSE}
+    LParent.Perform(WM_SETREDRAW, 1, 0);
+{$ENDIF}
+    LParent.Update;
+  end;
+end;
+
+
+{!
+<summary>
+ Delete any speedbuttons with Tags &gt; 0. </summary>
+<exception cref="EPostconditionViolated">
+ is raised if the expected "Clear value" button is not found.</exception>
+<remarks>
+ The buttons represent the possible values for a Sudoku cell, the Tag
+ property encodes that value. There is one button with Tag = 0, which
+ is used to clear a cell; we leave that alone. Layout and number of
+ the other value buttons depend on the Sudoku type.
+ </remarks>
+}
+procedure TBaseSudokuInputHandler.DeleteOldButtons;
+const
+  CProcname = 'TBaseSudokuInputHandler.DeleteOldButtons';
+var
+  LControl: TControl;
+  LParent: TWinControl;
+  LList: TList<TControl>;
+  I: Integer;
+begin
+  LParent := Host.ButtonsContainer;
+  LList := TList<TControl>.Create();
+  try
+    for I := 0 to LParent.ControlCount - 1 do
+    begin
+      LControl := LParent.Controls[I];
+      if (LControl Is TSpeedButton) and (LControl.Tag > 0) then
+        LList.Add(LControl);
+    end;
+    for LControl in LList do
+      LControl.Free;
+  finally
+    LList.Free;
+  end;
+  {We now expect one control left, a speedbutton with Tag = 0, created
+   in the designer.}
+  if not ((LParent.ControlCount = 1) and
+          (LParent.Controls[0] is TSpeedButton) and
+          (LParent.Controls[0].Tag = 0)
+         )
+  then
+    raise EPostconditionViolated.Create(CProcname,'Clear value button not present!');
+
+  FReferenceButton := TSpeedButton(LParent.Controls[0]);
+end;
+
+{!
+<summary>
+ Calculate the position of the first value button.</summary>
+<param name="aParent">is the container to find the buttons in</param>
+<param name="aNextButtonPos">returns the calculated position of
+ the first button's top left corner.</param>
+<remarks>
+ The first button is placed above the reference button, so that needs
+ to be set already. The DeleteOldButtons method does that.
+ </remarks>
+}
+procedure TBaseSudokuInputHandler.FindFirstButtonPos(var aNextButtonPos: TPoint);
+begin
+  Assert(Assigned(ReferenceButton), 'Reference button not set!');
+  aNextButtonPos := ReferenceButton.BoundsRect.TopLeft;
+  aNextButtonPos.Offset(0, - ButtonSize);
+end;
+
+{!
+<summary>
+ Get the handler for the OnClick event of the value buttons. </summary>
+<remarks>
+ By default we just use the handler from the reference button. That
+ is set in the designer and just sets the button's down state to true.
+ That defines which of the buttons in the group represents the value
+ a mouse click on a cell will set. For the reference button that is 0,
+ which clears a cell.
+ Descendants can override this method to use their own handler.
+ </remarks>
+}
+function TBaseSudokuInputHandler.GetButtonOnClickHandler: TNotifyEvent;
+begin
+  Result := ReferenceButton.OnClick;
+end;
+
+{!
+<summary>
+ Return the height of a value button. </summary>
+<remarks>
+ Descendants can override this method to return a different size. The
+ value buttons are supposed to be square, so the returned value is used
+ both for the width and height of a value button.</remarks>
+}
+function TBaseSudokuInputHandler.GetButtonSize: Integer;
+begin
+  Result := Host.ButtonsContainer.ClientWidth div 3; // default for a 9x9 Sudoku.
+end;
+
+{!
+<summary>
  Implements ISudokuInputHandler.HandleCellClick </summary>
 <param name="aCol">is the grid column of the clicked cell</param>
 <param name="aRow">is the grid row of the clicked cell</param>
@@ -140,12 +349,12 @@ end;
  by a set of speed buttons on that form.
  </remarks>
 }
-procedure TBaseSudokuInputHandler.HandleCellClick(aCol, aRow: Integer; aClickAction: TClickAction = TClickAction.SetFocus);
+procedure TBaseSudokuInputHandler.HandleCellClick(aCol, aRow: Integer; aRightClick: Boolean = false);
 begin
   { Convert grid to Sudoku cell index first }
   Inc(aCol);
   Inc(aRow);
-  if aClickAction <> TClickAction.SetValue then
+  if aRightClick then
     HandleRightClick(aCol, aRow)
   else
     HandleLeftClick(aCol, aRow);
@@ -230,23 +439,21 @@ end;
 }
 procedure TBaseSudokuInputHandler.HandleRightClick(const aCol, aRow: TSudokuCellIndex);
 var
-  LAction: TClickAction;
+  LAction: TRightClickAction;
   LValue: TSudokuValue;
   LCell: ISudokuCell;
 begin
   LCell := Data.Cell[aCol, aRow];
   LValue := Host.CurrentCandidate;
-  LAction := Host.ClickAction;
-  if (LValue = 0) and (LAction <> TClickAction.ToggleGosu)  then
-    Exit; // 0 is not a valid candidate value!
+  LAction := Host.RightClickAction;
+  if (LValue = 0) and (LAction <> TRightClickAction.ToggleGosu)  then
+    Exit;  // 0 is not a valid candidate value!
   case LAction of
-    TClickAction.SetFocus:
-      LCell.Select;
-    TClickAction.SetCandidate:
+    TRightClickAction.SetCandidate:
       LCell.AddCandidate(LValue);
-    TClickAction.UnsetCandidate:
+    TRightClickAction.UnsetCandidate:
       LCell.RemoveCandidate(LValue);
-    TClickAction.ToggleGosu:
+    TRightClickAction.ToggleGosu:
       LCell.ToggleEvenOnly;
   end;
 end;
@@ -257,29 +464,36 @@ var
   LValue: TSudokuValue;
 begin
   LValue := 0;
-   if CharToValue(aChar, LValue) then
-   begin
-     LModifierKeys := Host.Modifierkeys;
-     if ssAlt in LModifierKeys then
-       LCell.AddCandidate(LValue)
-     else
-       if ssCtrl in LModifierKeys then
-         LCell.RemoveCandidate(LValue)
-       else
-         LCell.Value := LValue
-   end;
+  if CharToValue(aChar, LValue) then
+  begin
+    LModifierKeys := Host.Modifierkeys;
+    if ssAlt in LModifierKeys then
+      LCell.AddCandidate(LValue)
+    else
+      if ssCtrl in LModifierKeys then
+        LCell.RemoveCandidate(LValue)
+      else
+        LCell.Value := LValue
+  end;
 end;
 
 {!
 <summary>Implements ISudokuInputHandler.Initialize. </summary>
 <param name="aHost">represents the main form, required</param>
-<exception cref="EParameterCannotBeNil">is raised if aHost is nil </exception>
+<exception cref="EParameterCannotBeNil">is raised if  aHost is nil </exception>
+<remarks>
+ The input handler creates a set of speedbutttons on a container
+ the host provides.
+ The buttons are used to select the value to put into the clicked
+ cell (mouse interface). Their number and the preferred layout
+ depend on the Sudoku's maximum value.</remarks>
 }
 procedure TBaseSudokuInputHandler.Initialize(aHost: ISudokuHostForm);
 begin
   if not Assigned(aHost) then
     raise EParameterCannotBeNil.Create(Classname + '.Initialize', 'aHost');
   FHost := aHost;
+  CreateValueButtons;
 end;
 
 {!
@@ -295,6 +509,20 @@ end;
 function TBaseSudokuInputHandler.IsAllowedValue(aChar: Char): Boolean;
 begin
   Result := CharInSet(aChar, ['0'..'9']);
+end;
+
+{!
+<summary>
+ Set a button's caption or glyph to represent the passed value </summary>
+<param name="aButton">is the button to work on, required</param>
+<param name="aValue">is the value the button should represent</param>
+<remarks>
+ By default the button's caption is set to the value. Descendants may
+ override this method to use a different way to label the button. </remarks>
+}
+procedure TBaseSudokuInputHandler.SetButtonSymbol(aButton: TSpeedButton; aValue: TSudokuValue);
+begin
+  aButton.Caption := IntToStr(aValue);
 end;
 
 end.

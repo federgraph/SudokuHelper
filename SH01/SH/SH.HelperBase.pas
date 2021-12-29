@@ -6,7 +6,8 @@
 <author>Dr. Peter Below</author>
 <history>
  Version 1.0 created 2021-10-02<p>
- Last modified       2021-11-19<p>
+ Last modified by PB 2021-11-19<p>
+ Then modified by GS 2021-12<p>
 </history>
 <remarks>
 <copyright>Copyright 2021 by Dr. Peter Below</copyright>
@@ -164,7 +165,7 @@ implementation
 uses
   System.Generics.Collections,
   System.SysUtils,
-  PB.InterlockedOpsU,
+//  PB.InterlockedOpsU,
   PB.CommonTypesU,
   SH.Strings;
 
@@ -187,8 +188,8 @@ var
   InternalShutDownInProgress: Boolean = false;
 
 function HelperRegistry: IHelperRegistry;
-var
-  P: TObject;
+//var
+//  P: TObject;
 begin
   if InternalShutDownInProgress then
   begin
@@ -201,14 +202,17 @@ begin
     else
     begin
       Result := THelperRegistry.Create;
-      Result._AddRef;
-      { the call below does not increment the refcount! }
-      P:= InterlockedCompareExchangeObject(InternalHelperRegistry, TObject(Pointer(Result)), nil);
-      if P <> nil then
-      begin
-        Result._Release;
-        Result := InternalHelperRegistry;
-      end;
+      InternalHelperRegistry := Result;
+
+//      Result._AddRef;
+//      { the call below does not increment the refcount! }
+//      P:= InterlockedCompareExchangeObject(InternalHelperRegistry, TObject(Pointer(Result)), nil);
+//      if P <> nil then
+//      begin
+//        Result._Release;
+//        Result := InternalHelperRegistry;
+//      end;
+
     end;
 end;
 

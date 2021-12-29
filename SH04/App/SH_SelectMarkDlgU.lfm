@@ -1,0 +1,8 @@
+object SelectMarkDlg: TSelectMarkDlg
+  Left = 0
+  Height = 240
+  Top = 0
+  Width = 320
+  Caption = 'Defined undo stack marks'
+  LCLVersion = '2.0.8.0'
+end

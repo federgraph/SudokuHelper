@@ -1,14 +1,16 @@
-﻿program SH01;
+program SH04;
 
-{$R 'helptext.res' 'helptext.rc'}
+{$IFDEF FPC}
+  {$MODE Delphi}
+{$ENDIF}
 
 uses
+  Interfaces,
   Forms,
   SH_MainU in 'App\SH_MainU.pas' {FormMain},
   SH_SelectFromListDlgU in 'App\SH_SelectFromListDlgU.pas' {SelectFromListDlg},
   SH_SelectMarkDlgU in 'App\SH_SelectMarkDlgU.pas' {SelectMarkDlg},
   SH_SelectSudokuDlgU in 'App\SH_SelectSudokuDlgU.pas' {SelectSudokuDlg},
-  SH_HelpviewerU in 'App\SH_HelpviewerU.pas' {HelpViewerForm},
   PB.CommonTypesU in 'PB\PB.CommonTypesU.pas',
   SH.Memory in 'SH\SH.Memory.pas',
   SH.Strings in 'SH\SH.Strings.pas',
@@ -26,7 +28,6 @@ uses
 
 begin
   Application.Initialize;
-  Application.MainFormOnTaskbar := True;
   Application.Title := 'Sudoku Helper';
   Application.CreateForm(TFormMain, FormMain);
   Application.Run;

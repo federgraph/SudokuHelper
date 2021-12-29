@@ -21,11 +21,11 @@ unit SH.DisplayHandlerBase;
 interface
 
 uses
-  System.Types,
-  System.Classes,
-  System.SysUtils,
-  Vcl.Graphics,
-  Vcl.Grids,
+  Types,
+  Classes,
+  SysUtils,
+  Graphics,
+  Grids,
   SH.Interfaces;
 
 type
@@ -66,8 +66,7 @@ implementation
 
 uses
   PB.CommonTypesU,
-  System.Math,
-  Vcl.Controls;
+  Controls;
 
 type
   { Gives access to protected methods of TDrawGrid }
@@ -132,25 +131,31 @@ var
   N: TSudokuValue;
   R: TRect;
   S: string;
+  ts: TTextStyle;
 begin
+  ts.Alignment := taCenter;
+  ts.Layout := tlCenter;
+  ts.SingleLine := True;
+  ts.WordBreak := False;
+
   g := Grid.Canvas;
   N := aCell.Value;
   if N > 0 then
   begin
     g.Font.Height := - Rect.Height * 75 div 100;
     if aCell.IsValid then
-      g.Font.Color  := clBlack
+      g.Font.Color := clBlack
     else
       g.Font.Color := clRed;
-    g.Font.Style  := [fsBold];
+    g.Font.Style := [fsBold];
     S := GetSymbol(N);
-    g.TextRect(Rect, S, [tfCenter, tfVerticalCenter, tfSingleLine]);
+    g.TextRect(Rect, 0, 0, S, ts);
   end
   else
   begin
     g.Font.Height := - Rect.Height * 20 div 100;
-    g.Font.Color  := clBlue;
-    g.Font.Style  := [];
+    g.Font.Color := clBlue;
+    g.Font.Style := [];
     Candidates := aCell.Candidates;
     R := Rect;
     R.Right := R.Left + Rect.Width div 3;
@@ -160,7 +165,7 @@ begin
       if N in Candidates then
       begin
         S := GetSymbol(N);
-        g.TextRect(R, S, [tfCenter, tfVerticalCenter, tfSingleLine]);
+        g.TextRect(R, 0, 0, S, ts);
         OffsetRect(R, R.Width, 0);
         if R.Right > Rect.Right then
           OffsetRect(R, -R.Width * 3, R.Height);

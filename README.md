@@ -53,7 +53,10 @@ How to explore:
 1. Notice that the button frame solution is platform independent already.
 1. Think briefly about how and where data should be stored in the future.
 
----
+## SH03
 
-SH01 is the original and finished SudokuHelper application,
-SH02 is the experimental FMX version being developed.
+For internal experiments.
+
+## SH04
+
+Lazarus version of the same.

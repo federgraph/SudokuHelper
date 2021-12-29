@@ -21,14 +21,10 @@ interface
 
 uses
   Winapi.Windows,
-  Winapi.Messages,
   System.SysUtils,
-  System.Variants,
   System.Classes,
-  Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
-  Vcl.Dialogs,
   Vcl.OleCtrls,
   SHDocVw;
 
@@ -37,8 +33,7 @@ type
     Browser: TWebBrowser;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
-    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-  strict private
+  private
     class procedure CreateInstance; static;
     class function FindAndShowExisting: Boolean; static;
     procedure ShowHelp;
@@ -51,7 +46,6 @@ type
 implementation
 
 uses
-  SH.Memory,
   System.IOUtils;
 
 {$R *.dfm}
@@ -106,13 +100,7 @@ end;
 
 procedure THelpViewerForm.FormCreate(Sender: TObject);
 begin
-  AppMemory.RestoreFormState(self);
   ShowHelp;
-end;
-
-procedure THelpViewerForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-begin
-  AppMemory.SaveFormState(self);
 end;
 
 procedure THelpViewerForm.ShowHelp;

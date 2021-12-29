@@ -31,37 +31,35 @@
 }
 unit SH_MainU;
 
+{$IFDEF FPC}
+  {$MODE Delphi}
+{$ENDIF}
+
 interface
 
 uses
-  System.Actions,
-  System.Classes,
-  System.ImageList,
-  System.SysUtils,
-  System.Types,
-  System.Variants,
-  Winapi.Messages,
-  Winapi.Windows,
-  Vcl.ActnList,
-  Vcl.Buttons,
-  Vcl.ComCtrls,
-  Vcl.Controls,
-  Vcl.Dialogs,
-  Vcl.ExtCtrls,
-  Vcl.Graphics,
-  Vcl.Grids,
-  Vcl.ImgList,
-  Vcl.StdActns,
-  Vcl.StdCtrls,
+  LMessages, LCLIntf, LCLType,
+  SysUtils,
+  Classes,
+  Types,
   Forms,
+  ComCtrls,
+  ExtCtrls,
+  Grids,
+  StdCtrls,
+  Buttons,
+  ActnList,
+  StdActns,
+  Controls,
   SH.Interfaces;
 
 const
   UM_FOCUSGRID = WM_USER + 111;
 
 type
-  {! The application's main form, autocreated.
-    The form "remembers" the  of Sudoku used in the last program run. }
+
+  { TFormMain }
+
   TFormMain = class(TForm, ISudokuHostform)
     UndoButton: TButton;
     MessageTimer: TTimer;
@@ -93,6 +91,7 @@ type
     LoadSudokuButton: TButton;
     SaveSudokuButton: TButton;
     HelpAction: TAction;
+    procedure FormShow(Sender: TObject);
     procedure SpeedButtonClick(Sender: TObject);
     procedure ClearStackActionExecute(Sender: TObject);
     procedure FormPaint(Sender: TObject);
@@ -128,11 +127,11 @@ type
     procedure RunTest;
     procedure ShowHelpPrompt;
   protected
+    FormShown: Boolean;
     function GetButtonsContainer: TWincontrol;
     function GetModifierkeys: TShiftstate;
     function GetRightClickAction: TRightClickAction;
     procedure UpdateActions; override;
-    procedure UMFocusGrid(var Message: TMessage); message UM_FOCUSGRID;
     property CurrentCandidate: TSudokuValue read GetCurrentCandidate;
     property CurrentValue: TSudokuValue read GetCurrentValue;
     property Sudoku: ISudokuHelper read FSudoku;
@@ -148,18 +147,16 @@ var
 implementation
 
 uses
-  System.Character,
-  System.Generics.Collections,
-  System.IOUtils,
+  Character,
   SH.HelperBase,
+  SH.SudokuHelper,
   SH.SudokuFiler,
   SH.Memory,
   SH.Strings,
   SH_SelectSudokuDlgU,
-  SH_SelectMarkDlgU,
-  SH_HelpviewerU;
+  SH_SelectMarkDlgU;
 
-{$R *.dfm}
+{$R *.lfm}
 
 const
   MessageTimeout = 30000; // 30 seconds
@@ -178,6 +175,15 @@ end;
 procedure TFormMain.SpeedButtonClick(Sender: TObject);
 begin
   (Sender as TSpeedbutton).Down := true;
+end;
+
+procedure TFormMain.FormShow(Sender: TObject);
+begin
+  if not FormShown then
+  begin
+    FormShown := True;
+    CreateSudokuHelper(CClassicSudoku9x9);
+  end;
 end;
 
 procedure TFormMain.ClearStackActionExecute(Sender: TObject);
@@ -314,7 +320,7 @@ end;
 
 procedure TFormMain.HelpActionExecute(Sender: TObject);
 begin
-  THelpViewerForm.Execute;
+  //
 end;
 
 procedure TFormMain.InitializeSudoku;
@@ -345,7 +351,7 @@ begin
     FSudoku := LSudoku;
     InitializeSudoku;
     Sudoku.Display.Refresh;
-    AppMemory.LastFolder := TPath.GetDirectoryName(LFilename);
+    AppMemory.LastFolder := ExtractFileDir(LFilename);
   end;
   FocusGrid;
 end;
@@ -365,6 +371,7 @@ procedure TFormMain.RevertToMarkActionExecute(Sender: TObject);
 var
   LMark: string;
 begin
+  LMark := 'M0';
   if TSelectMarkDlg.Execute(LMark, Sudoku, RevertToMarkButton) then
     Sudoku.RevertToMark(LMark);
   FocusGrid;
@@ -372,42 +379,42 @@ end;
 
 procedure TFormMain.RevertToMarkActionUpdate(Sender: TObject);
 begin
-  (Sender as TAction).Enabled := Sudoku.HasMarks;
+//  (Sender as TAction).Enabled := Sudoku.HasMarks;
 end;
 
 procedure TFormMain.RunTest;
-var
-  LList: TStack<Integer>;
-  I: Integer;
-  LArray: TArray<Integer>;
-  SB: TStringbuilder;
+//var
+//  LList: TStack<Integer>;
+//  I: Integer;
+//  LArray: TArray<Integer>;
+//  SB: TStringbuilder;
 begin
-  SB := TStringBuilder.Create(4096);
-  try
-    LList := TStack<Integer>.Create();
-    try
-      for I := 1 to 10 do
-        LList.Push(I);
-      SB.AppendLine('Enumerator sequence:');
-      for I in LList do
-        SB.AppendFormat('%d, ',[I]);
-      SB.AppendLine;
-      SB.AppendLine('ToArray sequence:');
-      LArray:= LList.ToArray;
-      for I := Low(LArray) to High(LArray) do
-        SB.AppendFormat('%d, ',[LArray[I]]);
-      SB.AppendLine;
-      SB.AppendLine('Pop sequence:');
-      while LLIst.Count >0 do
-        SB.AppendFormat('%d, ',[LList.Pop]);
-      SB.AppendLine;
-      ShowMessage(SB.ToString);
-    finally
-      LList.Free;
-    end;
-  finally
-    SB.Free;
-  end;
+  //SB := TStringBuilder.Create(4096);
+  //try
+  //  LList := TStack<Integer>.Create();
+  //  try
+  //    for I := 1 to 10 do
+  //      LList.Push(I);
+  //    SB.AppendLine('Enumerator sequence:');
+  //    for I in LList do
+  //      SB.AppendFormat('%d, ',[I]);
+  //    SB.AppendLine;
+  //    SB.AppendLine('ToArray sequence:');
+  //    LArray:= LList.ToArray;
+  //    for I := Low(LArray) to High(LArray) do
+  //      SB.AppendFormat('%d, ',[LArray[I]]);
+  //    SB.AppendLine;
+  //    SB.AppendLine('Pop sequence:');
+  //    while LLIst.Count >0 do
+  //      SB.AppendFormat('%d, ',[LList.Pop]);
+  //    SB.AppendLine;
+  //    ShowMessage(SB.ToString);
+  //  finally
+  //    LList.Free;
+  //  end;
+  //finally
+  //  SB.Free;
+  //end;
 end;
 
 procedure TFormMain.SaveSudokuActionAccept(Sender: TObject);
@@ -416,7 +423,7 @@ var
 begin
   LFilename := SaveSudokuAction.Dialog.FileName;
   TSudokuFiler.SaveToFile(Sudoku, LFilename);
-  AppMemory.LastFolder := TPath.GetDirectoryName(LFilename);
+  AppMemory.LastFolder := ExtractFileDir(LFilename);
   FocusGrid;
   Display(SSaveFileMessageMask, [LFilename], true);
 end;
@@ -436,10 +443,10 @@ begin
     LMark := Format(SNewMarkMask, [FLastMarkNum]);
   until not Sudoku.MarkExists(LMark) ;
 
-  if InputQuery(SNewStackMarkCaption, SNewStackMarkPrompt, LMark) then
-  begin
+  //if InputQuery(SNewStackMarkCaption, SNewStackMarkPrompt, LMark) then
+  //begin
     Sudoku.AddMark(LMark);
-  end;
+  //end;
   FocusGrid;
 end;
 
@@ -452,6 +459,8 @@ procedure TFormMain.StartNewActionExecute(Sender: TObject);
 var
   LSudokuName: string;
 begin
+  LSudokuName := CClassicSudoku9x9;
+
   if TSelectSudokuDlg.Execute(LSudokuName, StartNewButton) then
     CreateSudokuHelper(LSudokuName);
   FocusGrid;
@@ -498,7 +507,7 @@ procedure TFormMain.SudokuGridKeyPress(Sender: TObject; var Key: Char);
 begin
   if (SudokuGrid.Col >= 0) and (SudokuGrid.Row >= 0) then
   begin
-    Sudoku.InputHandler.HandleCharacter(SudokuGrid.Col, SudokuGrid.Row, Key.ToUpper);
+    Sudoku.InputHandler.HandleCharacter(SudokuGrid.Col, SudokuGrid.Row, ToUpper(Key));
     Key := #0;
   end;
 end;
@@ -535,12 +544,6 @@ begin
   RunTest;
 end;
 
-procedure TFormMain.UMFocusGrid(var Message: TMessage);
-begin
-  Message.Result := 1;
-  SudokuGrid.SetFocus;
-end;
-
 procedure TFormMain.UndoActionExecute(Sender: TObject);
 begin
   Sudoku.Undo;
@@ -549,7 +552,7 @@ end;
 
 procedure TFormMain.UndoActionUpdate(Sender: TObject);
 begin
-  (Sender as TAction).Enabled := Sudoku.CanUndo;
+//  (Sender as TAction).Enabled := Sudoku.CanUndo;
 end;
 
 procedure TFormMain.UpdateActions;
@@ -557,11 +560,11 @@ begin
   inherited;
   StatusBar.Panels[1].Text := Format(SLeftMask,[CurrentValue]);
   StatusBar.Panels[2].Text := Format(SRightMask,[CurrentCandidate]);
-  if GetAsyncKeyState(VK_MENU) < 0 then
-    SetCandidatesButton.Down := true
-  else
-    if GetAsyncKeyState(VK_CONTROL) < 0 then
-      UnsetCandidatesButton.Down := true;
+  //if GetAsyncKeyState(VK_MENU) < 0 then
+  //  SetCandidatesButton.Down := true
+  //else
+  //  if GetAsyncKeyState(VK_CONTROL) < 0 then
+  //    UnsetCandidatesButton.Down := true;
 end;
 
 end.

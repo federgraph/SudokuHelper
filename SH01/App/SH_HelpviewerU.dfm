@@ -1,4 +1,4 @@
-object HelpViewerForm: THelpViewerForm
+﻿object HelpViewerForm: THelpViewerForm
   Left = 0
   Top = 0
   ActiveControl = Browser
@@ -14,7 +14,6 @@ object HelpViewerForm: THelpViewerForm
   Font.Style = []
   OldCreateOrder = True
   OnClose = FormClose
-  OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 15

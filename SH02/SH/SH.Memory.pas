@@ -26,25 +26,14 @@ uses
 type
   IAppMemory = interface(IInterface)
   ['{4F4D7EB1-A25E-4D76-BC0A-D03BEC95E751}']
-    {! Getter for  the LastFolder property  }
     function GetLastFolder: string;
-    {! Getter for the LastSudoku property  }
     function GetLastSudoku: string;
-    {! Getter for  the LastFolder property  }
-    procedure SetLastFolder(const Value: string);
-    {! Setter for  the LastSudoku property  }
-    procedure SetLastSudoku(const Value: string);
-    {!
-    <value>
-     Last folder used to save a Sudoku to or load it from
-    </value>}
-    property LastFolder: string read GetLastFolder write SetLastFolder;
-    {!
-    <value>
-     Display name of the last Sudoku type used
-    </value>}
-    property LastSudoku: string read GetLastSudoku write SetLastSudoku;
 
+    procedure SetLastFolder(const Value: string);
+    procedure SetLastSudoku(const Value: string);
+
+    property LastFolder: string read GetLastFolder write SetLastFolder;
+    property LastSudoku: string read GetLastSudoku write SetLastSudoku;
   end;
 
 function AppMemory: IAppMemory;
@@ -54,13 +43,9 @@ implementation
 uses
   System.Inifiles,
   System.IOUtils,
-  System.RegularExpressions,
   System.Win.Registry,
   RiggVar.FB.ActionConst,
   RiggVar.FB.ActionLong,
-  PB.CharactersU,
-  PB.CommonTypesU,
-  PB.InterlockedOpsU,
   SH.SudokuHelper;
 
 const
@@ -89,8 +74,6 @@ var
   InternalShutDownInProgress: Boolean = false;
 
 function AppMemory: IAppMemory;
-var
-  P: TObject;
 begin
   if InternalShutDownInProgress then
   begin
@@ -103,14 +86,7 @@ begin
   else
   begin
     Result := TAppMemory.Create;
-    Result._AddRef;
-    { the call below does not increment the refcount! }
-    P := InterlockedCompareExchangeObject(InternalAppMemory, TObject(Pointer(Result)), nil);
-    if P <> nil then
-    begin
-      Result._Release;
-      Result := InternalAppMemory;
-    end;
+    InternalAppMemory := Result;
   end;
 end;
 
@@ -156,7 +132,7 @@ end;
 
 initialization
 finalization
-  InternalShutDownInProgress := true;
+  InternalShutDownInProgress := True;
   InternalAppMemory := nil;
 
 end.

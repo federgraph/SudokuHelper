@@ -64,7 +64,7 @@ type
 implementation
 
 uses
-  System.SysUtils,
+  SysUtils,
   Buttons,
   SH.DataStorageBase,
   SH.DisplayhandlerBase,
@@ -183,14 +183,14 @@ begin
   Result := CHeptSudoku16x16Gosu;
 end;
 
-{== T16x16HeptSudokuInputHandler =======================================}
+{== T16x16HeptSudokuInputhandler =======================================}
 
 procedure T16x16HeptSudokuInputhandler.SetButtonSymbol(aButton: TSpeedButton; aValue: TSudokuValue);
 begin
   aButton.Caption := CSymbols[aValue];
 end;
 
-{== T16x16HeptSudokuDisplayHandler =====================================}
+{== T16x16HeptSudokuDisplayhandler =====================================}
 
 {! Get the string to draw in a cell for cell value }
 function T16x16HeptSudokuDisplayhandler.GetSymbol(aValue: TSudokuValue): string;

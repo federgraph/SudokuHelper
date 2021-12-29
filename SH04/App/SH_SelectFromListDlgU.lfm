@@ -1,0 +1,82 @@
+object SelectFromListDlg: TSelectFromListDlg
+  Left = 118
+  Height = 349
+  Top = 119
+  Width = 351
+  ActiveControl = ValueList
+  BorderIcons = []
+  BorderStyle = bsNone
+  Caption = 'Select Sudoku'
+  ClientHeight = 349
+  ClientWidth = 351
+  Color = clBtnFace
+  DefaultMonitor = dmMainForm
+  Font.Color = clWindowText
+  Font.Height = -16
+  Font.Name = 'Segoe UI'
+  PopupMode = pmAuto
+  LCLVersion = '2.0.8.0'
+  object Panel1: TPanel
+    Left = 0
+    Height = 303
+    Top = 0
+    Width = 351
+    Align = alClient
+    Caption = 'Panel1'
+    ClientHeight = 303
+    ClientWidth = 351
+    TabOrder = 0
+    object Label1: TLabel
+      Left = 1
+      Height = 21
+      Top = 1
+      Width = 349
+      Align = alTop
+      Caption = '&Known Sudokus'
+      FocusControl = ValueList
+      ParentColor = False
+    end
+    object ValueList: TListBox
+      Left = 1
+      Height = 280
+      Top = 22
+      Width = 349
+      Align = alClient
+      ItemHeight = 0
+      TabOrder = 0
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Height = 46
+    Top = 303
+    Width = 351
+    Align = alBottom
+    Caption = 'Panel2'
+    ClientHeight = 46
+    ClientWidth = 351
+    TabOrder = 1
+    object Cancelbutton: TBitBtn
+      Left = 222
+      Height = 44
+      Top = 1
+      Width = 128
+      Align = alRight
+      Caption = 'Cancel'
+      Kind = bkCancel
+      NumGlyphs = 2
+      TabOrder = 0
+    end
+    object OKButton: TBitBtn
+      Left = 132
+      Height = 44
+      Top = 1
+      Width = 90
+      Align = alRight
+      Caption = 'OK'
+      Kind = bkOK
+      NumGlyphs = 2
+      TabOrder = 1
+    end
+  end
+end
