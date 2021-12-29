@@ -232,7 +232,7 @@ type
 implementation
 
 uses
-  PB.CommonTypesU,
+  SH.Exceptions,
   SH.Strings,
   System.Math,
   System.SysUtils;

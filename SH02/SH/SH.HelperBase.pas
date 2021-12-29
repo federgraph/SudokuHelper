@@ -165,8 +165,7 @@ implementation
 uses
   System.Generics.Collections,
   System.SysUtils,
-//  PB.InterlockedOpsU,
-  PB.CommonTypesU,
+  SH.Exceptions,
   SH.Strings;
 
 type
@@ -188,8 +187,6 @@ var
   InternalShutDownInProgress: Boolean = false;
 
 function HelperRegistry: IHelperRegistry;
-//var
-//  P: TObject;
 begin
   if InternalShutDownInProgress then
   begin
@@ -203,16 +200,6 @@ begin
     begin
       Result := THelperRegistry.Create;
       InternalHelperRegistry := Result;
-
-//      Result._AddRef;
-//      { the call below does not increment the refcount! }
-//      P:= InterlockedCompareExchangeObject(InternalHelperRegistry, TObject(Pointer(Result)), nil);
-//      if P <> nil then
-//      begin
-//        Result._Release;
-//        Result := InternalHelperRegistry;
-//      end;
-
     end;
 end;
 

@@ -773,8 +773,8 @@ end;
 {! Implements ISudokuData.Undo }
 procedure TBaseSudokuDatastorage.Undo;
 begin
-  if not CanUndo then
-    raise EPreconditionViolation.Create(Classname + '.Undo',STheUndoStackIsEmpty);
+  //if not CanUndo then
+  //  raise EPreconditionViolation.Create(Classname + '.Undo',STheUndoStackIsEmpty);
   if CanUndo then
   begin
     FCurrentState := Undostack.Pop;

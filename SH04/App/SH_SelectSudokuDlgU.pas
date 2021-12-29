@@ -23,18 +23,32 @@ unit SH_SelectSudokuDlgU;
 interface
 
 uses
+  SysUtils,
+  Classes,
   ExtCtrls,
   Buttons,
   StdCtrls,
   Forms,
   Controls,
-  Graphics,
-  Classes,
-  SysUtils,
-  SH_SelectFromListDlgU;
+  Graphics;
 
 type
-  TSelectSudokuDlg = class(TSelectFromListDlg)
+
+  { TSelectSudokuDlg }
+
+  TSelectSudokuDlg = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Cancelbutton: TBitBtn;
+    OKButton: TBitBtn;
+    Label1: TLabel;
+    ValueList: TListBox;
+    procedure CancelbuttonClick(Sender: TObject);
+    procedure OKButtonClick(Sender: TObject);
+  protected
+    function GetSelectedValue: string;
+    procedure PositionBelow(aControl: TControl);
+    procedure UpdateActions; override;
   public
     procedure AfterConstruction; override;
     class function Execute(var aSudoku: string; aControl: TControl): Boolean;
@@ -49,6 +63,16 @@ uses
 
 {$R *.lfm}
 
+procedure TSelectSudokuDlg.CancelbuttonClick(Sender: TObject);
+begin
+  ModalResult := mrCancel;
+end;
+
+procedure TSelectSudokuDlg.OKButtonClick(Sender: TObject);
+begin
+  ModalResult := mrOK;
+end;
+
 procedure TSelectSudokuDlg.AfterConstruction;
 begin
   inherited;
@@ -56,8 +80,7 @@ begin
   ValueList.Itemindex := 0;
 end;
 
-class function TSelectSudokuDlg.Execute(var aSudoku: string; aControl:
-    TControl): Boolean;
+class function TSelectSudokuDlg.Execute(var aSudoku: string; aControl: TControl): Boolean;
 var
   Dlg: TSelectSudokuDlg;
 begin
@@ -73,5 +96,26 @@ begin
   end;
 end;
 
+function TSelectSudokuDlg.GetSelectedValue: string;
+begin
+  Result := ValueList.Items[ValueList.ItemIndex];
+end;
+
+procedure TSelectSudokuDlg.PositionBelow(aControl: TControl);
+var
+  P: TPoint;
+begin
+  P:= aControl.BoundsRect.TopLeft;
+  P.Offset(0, aControl.Height);
+  P := aControl.Parent.ClientToScreen(P);
+  Left := P.X - 2;
+  Top := P.Y;
+end;
+
+procedure TSelectSudokuDlg.UpdateActions;
+begin
+  inherited;
+  OKButton.Enabled := ValueList.ItemIndex >= 0;
+end;
 
 end.

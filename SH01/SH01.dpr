@@ -9,7 +9,7 @@ uses
   SH_SelectMarkDlgU in 'App\SH_SelectMarkDlgU.pas' {SelectMarkDlg},
   SH_SelectSudokuDlgU in 'App\SH_SelectSudokuDlgU.pas' {SelectSudokuDlg},
   SH_HelpviewerU in 'App\SH_HelpviewerU.pas' {HelpViewerForm},
-  PB.CommonTypesU in 'PB\PB.CommonTypesU.pas',
+  SH.Exceptions in 'SH\SH.Exceptions.pas',
   SH.Memory in 'SH\SH.Memory.pas',
   SH.Strings in 'SH\SH.Strings.pas',
   SH.Interfaces in 'SH\SH.Interfaces.pas',

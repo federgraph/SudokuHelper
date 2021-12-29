@@ -1,4 +1,4 @@
-{!
+﻿{!
 <summary>
  This unit implements a simple modal dialog to select one of the defined
  stack marks from.
@@ -31,14 +31,25 @@ uses
   Graphics,
   Classes,
   SysUtils,
-  SH_SelectFromListDlgU,
   SH.Interfaces;
 
 type
-  TSelectMarkDlg = class(TSelectFromListDlg)
+
+  { TSelectMarkDlg }
+
+  TSelectMarkDlg = class(TForm)
+    Cancelbutton: TBitBtn;
+    Label1: TLabel;
+    OKButton: TBitBtn;
+    ValueList: TListBox;
+    procedure CancelbuttonClick(Sender: TObject);
+    procedure OKButtonClick(Sender: TObject);
+  protected
+    function GetSelectedValue: string;
+    procedure PositionBelow(aControl: TControl);
+    procedure UpdateActions; override;
   public
-    class function Execute(var aMark: string; const aSudoku: ISudokuHelper;
-        aControl: TControl): Boolean;
+    class function Execute(var aMark: string; const aSudoku: ISudokuHelper; aControl: TControl): Boolean;
     property SelectedMark: string read GetSelectedValue;
   end;
 
@@ -48,6 +59,16 @@ uses
   SH.Strings;
 
 {$R *.lfm}
+
+procedure TSelectMarkDlg.CancelbuttonClick(Sender: TObject);
+begin
+  ModalResult := mrCancel;
+end;
+
+procedure TSelectMarkDlg.OKButtonClick(Sender: TObject);
+begin
+  ModalResult := mrOK;
+end;
 
 class function TSelectMarkDlg.Execute(var aMark: string; const aSudoku: ISudokuHelper; aControl: TControl): Boolean;
 var
@@ -64,6 +85,28 @@ begin
   finally
     Dlg.Free;
   end;
+end;
+
+function TSelectMarkDlg.GetSelectedValue: string;
+begin
+  Result := ValueList.Items[ValueList.ItemIndex];
+end;
+
+procedure TSelectMarkDlg.PositionBelow(aControl: TControl);
+var
+  P: TPoint;
+begin
+  P:= aControl.BoundsRect.TopLeft;
+  P.Offset(0, aControl.Height);
+  P := aControl.Parent.ClientToScreen(P);
+  Left := P.X - 2;
+  Top := P.Y;
+end;
+
+procedure TSelectMarkDlg.UpdateActions;
+begin
+  inherited;
+  OKButton.Enabled := ValueList.ItemIndex >= 0;
 end;
 
 end.

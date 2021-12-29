@@ -21,16 +21,12 @@ restrictions for use or redistribution. Just leave the copyright note
 above intact. The code carries no warranties whatsoever, use at your
 own risk!</licence>
 }
-unit PB.CommonTypesU;
-
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
+unit SH.Exceptions;
 
 interface
 
 uses
-  Sysutils;
+  System.Sysutils;
 
 type
   {!

@@ -32,7 +32,7 @@ interface
 
 uses
   System.Classes,
-  PB.CommonTypesU,
+  SH.Exceptions,
   SH.SudokuGrid;
 
 {
