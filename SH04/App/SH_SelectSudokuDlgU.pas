@@ -1,8 +1,8 @@
-{!
+﻿{!
 <summary>
  This unit implements a simple modal dialog to select one of the registered
  Sudoku helpers from.
- </summary>
+</summary>
 <author>Dr. Peter Below</author>
 <history>
  Version 1.0 created 2021-11-07<p>
@@ -84,9 +84,9 @@ class function TSelectSudokuDlg.Execute(var aSudoku: string; aControl: TControl)
 var
   Dlg: TSelectSudokuDlg;
 begin
-  Dlg:= TSelectSudokuDlg.Create(nil);
+  Dlg := TSelectSudokuDlg.Create(nil);
   try
-    Dlg.Caption :=SSelectSudokuCaption;
+    Dlg.Caption := SSelectSudokuCaption;
     Dlg.PositionBelow(aControl);
     Result := Dlg.ShowModal = mrOK;
     if Result then

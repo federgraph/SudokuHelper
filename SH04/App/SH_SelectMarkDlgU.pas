@@ -2,7 +2,7 @@
 <summary>
  This unit implements a simple modal dialog to select one of the defined
  stack marks from.
- </summary>
+</summary>
 <author>Dr. Peter Below</author>
 <history>
  Version 1.0 created 2021-11-07<p>

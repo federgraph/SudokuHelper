@@ -1,8 +1,7 @@
 ﻿{!
 <summary>
- This unit implements a simple modal dialog to select one value from
- a list.
- </summary>
+ This unit implements a simple modal dialog to select one value from a list.
+</summary>
 <author>Dr. Peter Below</author>
 <history>
  Version 1.0 created 2021-11-07<p>
@@ -26,7 +25,6 @@ uses
   Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
-  Vcl.Dialogs,
   Vcl.StdCtrls,
   Vcl.Buttons,
   Vcl.ExtCtrls;

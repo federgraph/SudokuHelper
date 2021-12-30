@@ -1,7 +1,7 @@
 ﻿{!
 <summary>
  SH_MainU
- </summary>
+</summary>
 <author>Dr. Peter Below</author>
 <history>
  Version 1.0 created 2015-09-26<p>
@@ -47,6 +47,7 @@ uses
   ExtCtrls,
   Grids,
   StdCtrls,
+  Dialogs,
   Buttons,
   ActnList,
   StdActns,
@@ -68,7 +69,6 @@ type
     StatusBar: TStatusBar;
     SudokuGrid: TDrawGrid;
     ActionList: TActionList;
-    Images: TImageList;
     UndoAction: TAction;
     ClearStackButton: TButton;
     ClearStackAction: TAction;
@@ -132,6 +132,7 @@ type
     function GetModifierkeys: TShiftstate;
     function GetRightClickAction: TRightClickAction;
     procedure UpdateActions; override;
+    procedure UMFocusGrid(var Message: TLMessage); message UM_FOCUSGRID;
     property CurrentCandidate: TSudokuValue read GetCurrentCandidate;
     property CurrentValue: TSudokuValue read GetCurrentValue;
     property Sudoku: ISudokuHelper read FSudoku;
@@ -148,6 +149,7 @@ implementation
 
 uses
   Character,
+  Generics.Collections,
   SH.HelperBase,
   SH.SudokuHelper,
   SH.SudokuFiler,
@@ -379,42 +381,42 @@ end;
 
 procedure TFormMain.RevertToMarkActionUpdate(Sender: TObject);
 begin
-//  (Sender as TAction).Enabled := Sudoku.HasMarks;
+  (Sender as TAction).Enabled := Sudoku.HasMarks;
 end;
 
 procedure TFormMain.RunTest;
-//var
-//  LList: TStack<Integer>;
-//  I: Integer;
-//  LArray: TArray<Integer>;
-//  SB: TStringbuilder;
+var
+  LList: TStack<Integer>;
+  I: Integer;
+  LArray: TArray<Integer>;
+  SB: TStringList;
 begin
-  //SB := TStringBuilder.Create(4096);
-  //try
-  //  LList := TStack<Integer>.Create();
-  //  try
-  //    for I := 1 to 10 do
-  //      LList.Push(I);
-  //    SB.AppendLine('Enumerator sequence:');
-  //    for I in LList do
-  //      SB.AppendFormat('%d, ',[I]);
-  //    SB.AppendLine;
-  //    SB.AppendLine('ToArray sequence:');
-  //    LArray:= LList.ToArray;
-  //    for I := Low(LArray) to High(LArray) do
-  //      SB.AppendFormat('%d, ',[LArray[I]]);
-  //    SB.AppendLine;
-  //    SB.AppendLine('Pop sequence:');
-  //    while LLIst.Count >0 do
-  //      SB.AppendFormat('%d, ',[LList.Pop]);
-  //    SB.AppendLine;
-  //    ShowMessage(SB.ToString);
-  //  finally
-  //    LList.Free;
-  //  end;
-  //finally
-  //  SB.Free;
-  //end;
+  SB := TStringList.Create;
+  try
+    LList := TStack<Integer>.Create();
+    try
+      for I := 1 to 10 do
+        LList.Push(I);
+      SB.Add('Enumerator sequence:');
+      for I in LList do
+        SB.Add(Format('%d, ', [I]));
+      SB.Add('');
+      SB.Add('ToArray sequence:');
+      LArray := LList.ToArray;
+      for I := Low(LArray) to High(LArray) do
+        SB.Add(Format('%d, ', [LArray[I]]));
+      SB.Add('');
+      SB.Add('Pop sequence:');
+      while LLIst.Count >0 do
+        SB.Add(Format('%d, ',[LList.Pop]));
+      SB.Add('');
+      ShowMessage(SB.ToString);
+    finally
+      LList.Free;
+    end;
+  finally
+    SB.Free;
+  end;
 end;
 
 procedure TFormMain.SaveSudokuActionAccept(Sender: TObject);
@@ -443,10 +445,10 @@ begin
     LMark := Format(SNewMarkMask, [FLastMarkNum]);
   until not Sudoku.MarkExists(LMark) ;
 
-  //if InputQuery(SNewStackMarkCaption, SNewStackMarkPrompt, LMark) then
-  //begin
+  if InputQuery(SNewStackMarkCaption, SNewStackMarkPrompt, LMark) then
+  begin
     Sudoku.AddMark(LMark);
-  //end;
+  end;
   FocusGrid;
 end;
 
@@ -544,6 +546,12 @@ begin
   RunTest;
 end;
 
+procedure TFormMain.UMFocusGrid(var Message: TLMessage);
+begin
+  Message.Result := 1;
+  SudokuGrid.SetFocus;
+end;
+
 procedure TFormMain.UndoActionExecute(Sender: TObject);
 begin
   Sudoku.Undo;
@@ -552,19 +560,18 @@ end;
 
 procedure TFormMain.UndoActionUpdate(Sender: TObject);
 begin
-//  (Sender as TAction).Enabled := Sudoku.CanUndo;
+  (Sender as TAction).Enabled := Sudoku.CanUndo;
 end;
 
 procedure TFormMain.UpdateActions;
 begin
   inherited;
-  StatusBar.Panels[1].Text := Format(SLeftMask,[CurrentValue]);
-  StatusBar.Panels[2].Text := Format(SRightMask,[CurrentCandidate]);
-  //if GetAsyncKeyState(VK_MENU) < 0 then
-  //  SetCandidatesButton.Down := true
-  //else
-  //  if GetAsyncKeyState(VK_CONTROL) < 0 then
-  //    UnsetCandidatesButton.Down := true;
+  StatusBar.Panels[1].Text := Format(SLeftMask, [CurrentValue]);
+  StatusBar.Panels[2].Text := Format(SRightMask, [CurrentCandidate]);
+  if GetKeyState(VK_MENU) < 0 then
+    SetCandidatesButton.Down := true
+  else if GetKeyState(VK_CONTROL) < 0 then
+    UnsetCandidatesButton.Down := true;
 end;
 
 end.

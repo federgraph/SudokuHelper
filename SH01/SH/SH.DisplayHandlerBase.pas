@@ -66,7 +66,6 @@ implementation
 
 uses
   SH.Exceptions,
-  System.Math,
   Vcl.Controls;
 
 type

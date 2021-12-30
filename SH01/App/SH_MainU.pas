@@ -1,7 +1,7 @@
 ﻿{!
 <summary>
  SH_MainU
- </summary>
+</summary>
 <author>Dr. Peter Below</author>
 <history>
  Version 1.0 created 2015-09-26<p>
@@ -34,14 +34,13 @@ unit SH_MainU;
 interface
 
 uses
-  System.Actions,
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
   System.Classes,
   System.ImageList,
-  System.SysUtils,
   System.Types,
-  System.Variants,
-  Winapi.Messages,
-  Winapi.Windows,
+  System.Actions,
   Vcl.ActnList,
   Vcl.Buttons,
   Vcl.ComCtrls,
@@ -155,9 +154,9 @@ uses
   SH.SudokuFiler,
   SH.Memory,
   SH.Strings,
+  SH_HelpviewerU,
   SH_SelectSudokuDlgU,
-  SH_SelectMarkDlgU,
-  SH_HelpviewerU;
+  SH_SelectMarkDlgU;
 
 {$R *.dfm}
 

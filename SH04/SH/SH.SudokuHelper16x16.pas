@@ -183,14 +183,14 @@ begin
   Result := CHeptSudoku16x16Gosu;
 end;
 
-{== T16x16HeptSudokuInputhandler =======================================}
+{== T16x16HeptSudokuInputHandler =======================================}
 
 procedure T16x16HeptSudokuInputhandler.SetButtonSymbol(aButton: TSpeedButton; aValue: TSudokuValue);
 begin
   aButton.Caption := CSymbols[aValue];
 end;
 
-{== T16x16HeptSudokuDisplayhandler =====================================}
+{== T16x16HeptSudokuDisplayHandler =====================================}
 
 {! Get the string to draw in a cell for cell value }
 function T16x16HeptSudokuDisplayhandler.GetSymbol(aValue: TSudokuValue): string;
