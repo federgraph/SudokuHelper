@@ -776,6 +776,7 @@ begin
   { Precondition test assumes that action is disabled if stack is empty, which may not be the case }
   //if not CanUndo then
   //  raise EPreconditionViolation.Create(Classname + '.Undo',STheUndoStackIsEmpty);
+
   { do nothing if stack is empty }
   if CanUndo then
   begin

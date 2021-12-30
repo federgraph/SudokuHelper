@@ -155,13 +155,13 @@ begin
     faPlace7: M.HandleCharacter('7');
     faPlace8: M.HandleCharacter('8');
     faPlace9: M.HandleCharacter('9');
-    faPlace10: M.HandleCharacter('A');
-    faPlace11: M.HandleCharacter('B');
-    faPlace12: M.HandleCharacter('C');
-    faPlace13: M.HandleCharacter('D');
-    faPlace14: M.HandleCharacter('E');
-    faPlace15: M.HandleCharacter('F');
-    faPlace16: M.HandleCharacter('G');
+    faPlace10: M.HandleCharacter('a');
+    faPlace11: M.HandleCharacter('b');
+    faPlace12: M.HandleCharacter('c');
+    faPlace13: M.HandleCharacter('d');
+    faPlace14: M.HandleCharacter('e');
+    faPlace15: M.HandleCharacter('f');
+    faPlace16: M.HandleCharacter('g');
 
     faNavColM: M.SudokuGraph.NavCol(-1);
     faNavColP: M.SudokuGraph.NavCol(+1);

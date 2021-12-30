@@ -5,7 +5,8 @@
 <author>Dr. Peter Below</author>
 <history>
  Version 1.0 created 2021-10-27<p>
- Last modified       2021-10-27<p>
+ Last modified by PB 2021-10-27<p>
+ Last modified by GS 2021-12-xx<p>
 </history>
 <copyright>Copyright 2021 by Dr. Peter Below</copyright>
 <licence> The code in this unit is released to the public domain without
@@ -25,7 +26,7 @@ own risk!</licence>
 
  * Set or clear candidate values for a cell
    * via keyboard by typing the value while holding down Ctrl to clear
-     a candidate and Alt to set it for the currently selected cell of the
+     a candidate and Shift to set it for the currently selected cell of the
      display grid..
    * via mouse/touch by first selecting the value from a group of
      speedbuttons, the action to perform (set/unset) from a second set
@@ -33,8 +34,8 @@ own risk!</licence>
 
  Setting values or candidates that would require two keystrokes is a bit
  of a problem. To make this a bit easier we accept heptadecimal input
- for values above 9, with A=10, B=11 etc. and G=16 to allow
- input with a single keystroke. Input is not case-sensitive.
+ for values above 9, with a=10, b=11 etc. and g=16 to allow
+ input with a single keystroke.
 </remarks>
 }
 unit SH.InputHandlerBase;
@@ -151,7 +152,6 @@ begin
   Result := true;
   case aChar of
     '1'..'9': aValue := StrToInt(aChar);
-    'A'..'G': aValue := Ord(aChar) - Ord('A') + 10;
     'a'..'g': aValue := Ord(aChar) - Ord('a') + 10;
   else
     Result := false;
@@ -373,10 +373,10 @@ end;
    values (1..MaxValue) and neither Alt nor Ctrl are held down. If
    aChar is '1' and MaxValue is 10 or higher a delay mechanism is
    used to allow a second call to complete a two character sequence.
-   Alternatively letters A to G can be used to input the values 10
+   Alternatively letters a to g can be used to input the values 10
    to 16.
  * clear the cell if aChar is '0'.
- * set a candidate if the cell is empty and Alt is down.
+ * set a candidate if the cell is empty and Shift is down.
  * remove a candidate if the cell is empty and Ctrl is down.
  * toggle the Gosu state of the cell if aChar is a space.
 
@@ -467,13 +467,12 @@ begin
   if CharToValue(aChar, LValue) then
   begin
      LModifierKeys := Host.Modifierkeys;
-     if ssAlt in LModifierKeys then
+    if ssShift in LModifierKeys then
        LCell.AddCandidate(LValue)
-     else
-       if ssCtrl in LModifierKeys then
-         LCell.RemoveCandidate(LValue)
-       else
-         LCell.Value := LValue
+    else if ssCtrl in LModifierKeys then
+      LCell.RemoveCandidate(LValue)
+    else
+      LCell.Value := LValue
    end;
 end;
 

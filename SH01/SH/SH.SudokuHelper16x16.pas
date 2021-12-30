@@ -151,7 +151,7 @@ end;
 
 function T16x16SudokuInputhandler.IsAllowedValue(aChar: Char): boolean;
 begin
-  Result := CharInSet(aChar, ['0'..'9', 'A'..'G', 'a'..'g']);
+  Result := CharInSet(aChar, ['0'..'9', 'a'..'g']);
 end;
 
 {== T16x16HeptSudokuHelper =============================================}

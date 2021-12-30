@@ -60,13 +60,12 @@ or simply tap a cell when in click mode SetFocus.
 
 Just type the number when the cell is active (selected / focused).
 
-For bigger Sudokus (12x12 and 16x16) letters A to G can be used to set values 10 to 16.
+For bigger Sudokus (12x12 and 16x16) letters a to g can be used to set values 10 to 16.
 
 Summary:
 - type 0 to clear a cell
 - type 1 to 9 to set the cell value
-- type letters A to G for values 10 to 16. (for bigger Sudokus)
-- lower case letters should work as well
+- type letters a to g for values 10 to 16. (for bigger Sudokus)
 
 ![SH02 screenshot](../images/SH02-02.png)
 

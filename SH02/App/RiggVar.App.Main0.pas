@@ -641,7 +641,7 @@ begin
   ML.Add('- 1 to 9 to set the cell value.');
   ML.Add('');
   ML.Add('For 12x12 and 16x16 Sudokus');
-  ML.Add('  the letters A to G will set the values 10 to 16.');
+  ML.Add('  the letters a to g will set the values 10 to 16.');
   ML.Add('');
   ML.Add('### Setting values and candidates with mouse');
   ML.Add('');

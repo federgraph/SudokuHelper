@@ -104,19 +104,12 @@ begin
     '9': fa := faPlace9;
 
     'a': fa := faPlace10;
-    'A': fa := faPlace10;
     'b': fa := faPlace11;
-    'B': fa := faPlace11;
     'c': fa := faPlace12;
-    'C': fa := faPlace12;
     'd': fa := faPlace13;
-    'D': fa := faPlace13;
     'e': fa := faPlace14;
-    'E': fa := faPlace14;
     'f': fa := faPlace15;
-    'F': fa := faPlace15;
     'g': fa := faPlace16;
-    'G': fa := faPlace16;
 
     'i': fa := faWheelRight;
     'I': fa := faWheelUp;

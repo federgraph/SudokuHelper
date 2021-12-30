@@ -27,7 +27,8 @@ By default the input focus will be on the Sudoku grid; the active cell is marked
 
 ### Setting values and candidates
 
-To set a cell's value just type the value. 0 will clear the cell, 1 to 9 set the cell value. For 12x12 and 16x16 Sudokus the letters A to G will set the values 10 to 16, the characters are not case-sensitive. For a Gosu-type Sudoku the spacebar will toggle the active cells "even values only" state.
+To set a cell's value just type the value. 0 will clear the cell, 1 to 9 set the cell value. For 12x12 and 16x16 Sudokus the letters a to g will set the values 10 to 16.
+For a Gosu-type Sudoku the spacebar will toggle the active cells "even values only" state.
 
 To set a candidate hold down the Alt key while typing; to remove a candidate use the Ctrl key instead. Candidates can only be set on an empty cell.
 
@@ -39,7 +40,7 @@ On the right of the Sudoku grid you see a panel with buttons. The buttons on the
 
 Click on one of the numbered buttons in the lower part of the panel to select the value (the button stays "down"), then click on the cell of the grid you want to put the value into, using the left mouse button. Using 0 as value clears the cell.
 
-To set or remove a candidate first click the value as above, then the action to perform (from the three bottommost buttons), then click on an empty cell using the right mouse button. Right clicks also work together with the modifier keys Alt (set a candidate) and Ctrl (remove a candidate). These also set the matching button to down and it stays down after you release the key!
+To set or remove a candidate first click the value as above, then the action to perform (from the three bottommost buttons), then click on an empty cell using the right mouse button. Right clicks also work together with the modifier keys Shift (set a candidate) and Ctrl (remove a candidate). These also set the matching button to down and it stays down after you release the key!
 
 ## The control buttons
 

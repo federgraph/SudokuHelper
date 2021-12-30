@@ -306,14 +306,13 @@ type
      A character not valid for our purpose is ignored. The method will
 
      * set the cell value if aChar represents one of the valid Sudoku
-       values (1..MaxValue) and neither Alt nor Ctrl are held down. If
+       values (1..MaxValue) and neither Shift nor Ctrl are held down. If
        aChar is '1' and MaxValue is 10 or higher a delay mechanism may
        be used to allow a second call to complete a two character sequence.
        (Not implemented currently!)
-       Alternatively letters A to G can be used to input the values 10
-       to 16.
+       Alternatively letters a to g can be used to input the values 10 to 16.
      * clear the cell if aChar is '0'.
-     * set a candidate if the cell is empty and Alt is down.
+     * set a candidate if the cell is empty and Shift is down.
      * remove a candidate if the cell is empty and Ctrl is down.
      * toggle the even only state of the cell if aChar is a space.
 

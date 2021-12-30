@@ -3,6 +3,7 @@ backup/
 lib/
 *.dproj
 *.bat
+*.lps
 
 ### Windows ###
 # Image file caches

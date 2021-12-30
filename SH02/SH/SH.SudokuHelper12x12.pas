@@ -148,7 +148,7 @@ end;
 
 function T12x12SudokuInputhandler.IsAllowedValue(aChar: Char): boolean;
 begin
-  Result := CharInSet(aChar, ['0'..'9','A'..'C','a'..'c']);
+  Result := CharInSet(aChar, ['0'..'9','a'..'c']);
 end;
 
 {== T12x12HexSudokuHelper =============================================}

@@ -148,7 +148,6 @@ var
 implementation
 
 uses
-  Character,
   Generics.Collections,
   SH.HelperBase,
   SH.SudokuHelper,
@@ -295,7 +294,7 @@ end;
 <returns>
  The action to take on a right click or keyboard input</returns>
 <remarks>
- To set a candidate the user can hold down the Alt key and just type
+ To set a candidate the user can hold down the Shift key and just type
  the value, or right-click with the mouse. To clear a candidate he
  can use the Ctrl key instead. The right-click action is also controlled
  with a group of speedbuttons, but the modifier keys take precedence.
@@ -306,7 +305,7 @@ var
   LState: TShiftstate;
 begin
   LState:= KeyboardStateToShiftState;
-  if ssAlt in LState then
+  if ssShift in LState then
     Result := TRightClickAction.SetCandidate
   else if ssCtrl in LState then
     Result := TRightClickAction.UnsetCandidate
@@ -509,30 +508,13 @@ procedure TFormMain.SudokuGridKeyPress(Sender: TObject; var Key: Char);
 begin
   if (SudokuGrid.Col >= 0) and (SudokuGrid.Row >= 0) then
   begin
-    Sudoku.InputHandler.HandleCharacter(SudokuGrid.Col, SudokuGrid.Row, ToUpper(Key));
+    Sudoku.InputHandler.HandleCharacter(SudokuGrid.Col, SudokuGrid.Row, Key);
     Key := #0;
   end;
 end;
 
 procedure TFormMain.SudokuGridKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
-var
-  LChar: Char;
 begin
-  if (Shift * [ssCtrl, ssAlt]) <> [] then
-  begin
-    { If Ctrl or Alt are down the OnKeyPress event will not fire!
-      We have to figure out which character key was pressed ourself. }
-    case Key of
-      VK_NUMPAD1..VK_NUMPAD9: LChar := Char(Ord('0') + Key - VK_NUMPAD0);
-      Ord('1')..Ord('9'),
-      Ord('A')..Ord('G'): LChar := Char(Key);
-    else
-      LChar := #0;
-    end;
-
-    if LChar <> #0 then
-      SudokuGridKeyPress(Sender, LChar);
-  end;
   FocusGrid;
 end;
 
@@ -568,7 +550,7 @@ begin
   inherited;
   StatusBar.Panels[1].Text := Format(SLeftMask, [CurrentValue]);
   StatusBar.Panels[2].Text := Format(SRightMask, [CurrentCandidate]);
-  if GetKeyState(VK_MENU) < 0 then
+  if GetKeyState(VK_SHIFT) < 0 then
     SetCandidatesButton.Down := true
   else if GetKeyState(VK_CONTROL) < 0 then
     UnsetCandidatesButton.Down := true;

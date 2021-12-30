@@ -106,9 +106,11 @@ begin
 end;
 
 function TAppMemory.GetLastFolder: string;
+var
+  dd: string;
 begin
-  Result := Memory.ReadString(CSettings, CLastFolder,
-    TPath.Combine(TPath.GetDocumentsPath, CDataFolder));
+  dd := TPath.GetDocumentsPath;
+  Result := Memory.ReadString(CSettings, CLastFolder, TPath.Combine(dd, CDataFolder));
 end;
 
 function TAppMemory.GetLastSudoku: string;
