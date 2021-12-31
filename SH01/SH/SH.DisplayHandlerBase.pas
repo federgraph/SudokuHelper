@@ -89,11 +89,8 @@ procedure TBaseSudokuDisplayhandler.DrawCellBorders(aCell: ISudokuCell; var Rect
 var
   g: TCanvas;
   LLocation: TCellInBlockLocation;
-begin
-  g := Grid.Canvas;
-  g.Pen.Color := clBlack;
-  g.Pen.Style := psSolid;
-  g.Pen.Width := 1;
+  procedure InitBrushColor;
+  begin
   if ([gdSelected, gdFocused] * State) <> [] then begin
     if aCell.EvenOnly then
       g.Brush.Color := clAqua
@@ -104,12 +101,25 @@ begin
     g.Brush.Color := clSilver
   else
     g.Brush.Color := clWhite;
+  end;
+begin
+  g := Grid.Canvas;
+  g.Pen.Color := clBlack;
+  g.Pen.Style := psSolid;
+  g.Pen.Width := 1;
+
+  { draw cell background }
+  InitBrushColor;
   g.Brush.Style := bsSolid;
   Rect.Inflate(1,1);
-  if Rect.Left < 0 then Rect.Left := 0;
-  if Rect.Top < 0 then Rect.Top := 0;
+  if Rect.Left < 0 then
+    Rect.Left := 0;
+  if Rect.Top < 0 then
+    Rect.Top := 0;
   g.Rectangle(Rect);
   Rect.Inflate(-1,-1);
+
+  { draw region border lines }
   LLocation := aCell.BlockLocation;
   g.Pen.Width := 2;
   if TBlockPosition.Left in LLocation then
@@ -121,7 +131,7 @@ begin
     g.Polyline([Rect.TopLeft, Point(Rect.Right, Rect.Top)]);
   if (TBlockPosition.Bottom in LLocation) and (aCell.Row = Grid.RowCount) then
     g.Polyline([Point(Rect.Left, Rect.Bottom), Point(Rect.Right, Rect.Bottom)]);
-  Rect.Inflate(-1,-1);
+  Rect.Inflate(-1, -1);
 end;
 
 procedure TBaseSudokuDisplayhandler.DrawCellData(aCell: ISudokuCell; Rect: TRect);
@@ -208,7 +218,7 @@ begin
   N:= Succ(Grid.DefaultColWidth) * LSudokuSize;
   dx :=  Grid.ClientWidth - N;
   dy :=  Grid.ClientHeight - N;
-  C:= Grid.Owner as TControl;
+  C := Grid.Owner as TControl;
   C.SetBounds(C.Left, C.Top, C.Width - dx, C.Height - dy);
 end;
 

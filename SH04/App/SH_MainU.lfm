@@ -1,12 +1,12 @@
 ﻿object FormMain: TFormMain
-  Left = 321
-  Height = 662
-  Top = 99
-  Width = 810
+  Left = 164
+  Height = 613
+  Top = 111
+  Width = 778
   ActiveControl = SudokuGrid
   Caption = 'Sudoku Helper'
-  ClientHeight = 662
-  ClientWidth = 810
+  ClientHeight = 613
+  ClientWidth = 778
   Color = clBtnFace
   Constraints.MinHeight = 600
   DefaultMonitor = dmDesktop
@@ -18,38 +18,23 @@
   OnShow = FormShow
   LCLVersion = '2.0.8.0'
   Scaled = False
-  object StatusBar: TStatusBar
-    Left = 0
-    Height = 23
-    Top = 639
-    Width = 810
-    Panels = <    
-      item
-        Width = 200
-      end    
-      item
-        Width = 100
-      end    
-      item
-        Width = 100
-      end>
-    SimplePanel = False
-  end
   object SudokuPanel: TPanel
-    Left = 0
-    Height = 639
-    Top = 0
-    Width = 658
+    Left = 6
+    Height = 601
+    Top = 6
+    Width = 608
     Align = alClient
+    BorderSpacing.Around = 6
+    BevelOuter = bvNone
     Caption = 'SudokuPanel'
-    ClientHeight = 639
-    ClientWidth = 658
-    TabOrder = 1
+    ClientHeight = 601
+    ClientWidth = 608
+    TabOrder = 0
     object SudokuGrid: TDrawGrid
-      Left = 1
-      Height = 637
-      Top = 1
-      Width = 656
+      Left = 0
+      Height = 601
+      Top = 0
+      Width = 608
       Align = alClient
       ColCount = 9
       DefaultRowHeight = 64
@@ -70,47 +55,50 @@
     end
   end
   object ButtonsPanel: TPanel
-    Left = 658
-    Height = 639
-    Top = 0
+    Left = 620
+    Height = 601
+    Top = 6
     Width = 152
     Align = alRight
+    BorderSpacing.Around = 6
+    BorderSpacing.InnerBorder = 3
+    BevelOuter = bvNone
     Caption = 'Panel1'
-    ClientHeight = 639
+    ClientHeight = 601
     ClientWidth = 152
-    TabOrder = 2
+    TabOrder = 1
     object UndoButton: TButton
-      Left = 1
+      Left = 0
       Height = 28
-      Top = 113
-      Width = 150
+      Top = 112
+      Width = 152
       Action = UndoAction
       Align = alTop
       TabOrder = 0
     end
     object ClearStackButton: TButton
-      Left = 1
+      Left = 0
       Height = 28
-      Top = 85
-      Width = 150
+      Top = 84
+      Width = 152
       Action = ClearStackAction
       Align = alTop
       TabOrder = 1
     end
     object StartNewButton: TButton
-      Left = 1
+      Left = 0
       Height = 28
-      Top = 1
-      Width = 150
+      Top = 0
+      Width = 152
       Action = StartNewAction
       Align = alTop
       TabOrder = 2
     end
     object TestButton: TButton
-      Left = 1
+      Left = 0
       Height = 28
-      Top = 197
-      Width = 150
+      Top = 196
+      Width = 152
       Align = alTop
       Caption = 'Run Test'
       OnClick = TestButtonClick
@@ -118,22 +106,23 @@
       Visible = False
     end
     object MouseButtonsPanel: TPanel
-      Left = 1
+      Left = 3
       Height = 101
-      Top = 537
-      Width = 150
+      Top = 497
+      Width = 146
       Align = alBottom
       AutoSize = True
+      BorderSpacing.Around = 3
       BevelOuter = bvNone
       ClientHeight = 101
-      ClientWidth = 150
+      ClientWidth = 146
       ParentShowHint = False
       TabOrder = 4
       object ToggleGosuButton: TSpeedButton
         Left = 0
         Height = 28
         Top = 17
-        Width = 150
+        Width = 146
         Align = alTop
         AllowAllUp = True
         Caption = '&Toggle Gosu'
@@ -144,7 +133,7 @@
         Left = 0
         Height = 28
         Top = 45
-        Width = 150
+        Width = 146
         Align = alTop
         AllowAllUp = True
         Caption = '&Set candidate'
@@ -156,7 +145,7 @@
         Left = 0
         Height = 28
         Top = 73
-        Width = 150
+        Width = 146
         Align = alTop
         AllowAllUp = True
         Caption = 'Clea&r candidate'
@@ -168,7 +157,7 @@
         Left = 0
         Height = 17
         Top = 0
-        Width = 150
+        Width = 146
         Align = alTop
         Caption = 'Right-click actions:'
         Font.Color = clWindowText
@@ -179,20 +168,21 @@
       end
     end
     object ValueButtonsPanel: TPanel
-      Left = 1
-      Height = 312
-      Top = 225
-      Width = 150
+      Left = 3
+      Height = 267
+      Top = 227
+      Width = 146
       Align = alClient
+      BorderSpacing.Around = 3
       BevelOuter = bvNone
-      ClientHeight = 312
-      ClientWidth = 150
+      ClientHeight = 267
+      ClientWidth = 146
       TabOrder = 5
       object ClearCellButton: TSpeedButton
         Left = 0
         Height = 28
-        Top = 284
-        Width = 150
+        Top = 239
+        Width = 146
         Align = alBottom
         Caption = '0 (Clear cell)'
         GroupIndex = 2
@@ -201,47 +191,41 @@
       end
     end
     object RevertToMarkButton: TButton
-      Left = 1
+      Left = 0
       Height = 28
-      Top = 169
-      Width = 150
+      Top = 168
+      Width = 152
       Action = RevertToMarkAction
       Align = alTop
       TabOrder = 6
     end
     object SetMarkButton: TButton
-      Left = 1
+      Left = 0
       Height = 28
-      Top = 141
-      Width = 150
+      Top = 140
+      Width = 152
       Action = SetMarkAction
       Align = alTop
       TabOrder = 7
     end
     object LoadSudokuButton: TButton
-      Left = 1
+      Left = 0
       Height = 28
-      Top = 57
-      Width = 150
+      Top = 56
+      Width = 152
       Action = LoadSudokuAction
       Align = alTop
       TabOrder = 8
     end
     object SaveSudokuButton: TButton
-      Left = 1
+      Left = 0
       Height = 28
-      Top = 29
-      Width = 150
+      Top = 28
+      Width = 152
       Action = SaveSudokuAction
       Align = alTop
       TabOrder = 9
     end
-  end
-  object MessageTimer: TTimer
-    Enabled = False
-    OnTimer = MessageTimerTimer
-    left = 16
-    top = 16
   end
   object ActionList: TActionList
     left = 28

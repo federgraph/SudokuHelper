@@ -89,12 +89,12 @@ procedure TBaseSudokuDisplayhandler.DrawCellBorders(aCell: ISudokuCell; var Rect
 var
   g: TCanvas;
   LLocation: TCellInBlockLocation;
-begin
-  g := Grid.Canvas;
-  g.Pen.Color := clBlack;
-  g.Pen.Style := psSolid;
-  g.Pen.Width := 1;
-  if ([gdSelected, gdFocused] * State) <> [] then begin
+  pw: Integer;
+
+  procedure InitBrushColor;
+  begin
+    if ([gdSelected, gdFocused] * State) <> [] then
+    begin
     if aCell.EvenOnly then
       g.Brush.Color := clAqua
     else
@@ -104,24 +104,69 @@ begin
     g.Brush.Color := clSilver
   else
     g.Brush.Color := clWhite;
-  g.Brush.Style := bsSolid;
-  Rect.Inflate(1,1);
-  if Rect.Left < 0 then Rect.Left := 0;
-  if Rect.Top < 0 then Rect.Top := 0;
-  g.Rectangle(Rect);
-  Rect.Inflate(-1,-1);
-  LLocation := aCell.BlockLocation;
-  g.Pen.Width := 2;
-  if TBlockPosition.Left in LLocation then
-    g.Polyline([Rect.TopLeft, Point(Rect.Left, Rect.Bottom)]);
-  if (TBlockPosition.Right in LLocation) and (aCell.Col = Grid.ColCount) then
-    g.Polyline([Point(Rect.Right, Rect.Top), Point(Rect.Right, Rect.Bottom)]);
+  end;
 
-  if TBlockPosition.Top in LLocation then
+begin
+  g := Grid.Canvas;
+
+  { draw cell background }
+  InitBrushColor;
+  g.Brush.Style := bsSolid;
+  g.Rectangle(Rect);
+
+  LLocation := aCell.BlockLocation;
+
+  { draw region border lines }
+  g.Pen.Style := psSolid;
+  pw := 5;
+
+  g.Pen.Color := clGray;
+  if (TBlockPosition.Left in LLocation) and (aCell.Col = 1) then
+  begin
+    g.Pen.Width := pw;
+    g.Polyline([Rect.TopLeft, Point(Rect.Left, Rect.Bottom)]);
+  end
+  else if TBlockPosition.Left in LLocation then
+  begin
+    g.Pen.Width := pw - 2;
+    g.Polyline([Rect.TopLeft, Point(Rect.Left, Rect.Bottom)]);
+  end;
+
+  //g.Pen.Color := clRed;
+  if (TBlockPosition.Top in LLocation) and (aCell.Row = 1) then
+  begin
+    g.Pen.Width := pw;
     g.Polyline([Rect.TopLeft, Point(Rect.Right, Rect.Top)]);
+  end
+  else if TBlockPosition.Top in LLocation then
+  begin
+    g.Pen.Width := pw - 1;
+    g.Polyline([Rect.TopLeft, Point(Rect.Right, Rect.Top)]);
+  end;
+
+  //g.Pen.Color := clGreen;
+  if (TBlockPosition.Right in LLocation) and (aCell.Col = Grid.ColCount) then
+  begin
+    g.Pen.Width := pw * 2;
+    g.Polyline([Point(Rect.Right, Rect.Top), Point(Rect.Right, Rect.Bottom)]);
+  end
+  else if (TBlockPosition.Right in LLocation) then
+  begin
+    g.Pen.Width := pw + 2;
+    g.Polyline([Point(Rect.Right, Rect.Top), Point(Rect.Right, Rect.Bottom)]);
+  end;
+
+  //g.Pen.Color := clBlue;
   if (TBlockPosition.Bottom in LLocation) and (aCell.Row = Grid.RowCount) then
+  begin
+    g.Pen.Width := pw * 2;
     g.Polyline([Point(Rect.Left, Rect.Bottom), Point(Rect.Right, Rect.Bottom)]);
-  Rect.Inflate(-1,-1);
+  end
+  else if (TBlockPosition.Bottom in LLocation) then
+  begin
+    g.Pen.Width := pw + 2;
+    g.Polyline([Point(Rect.Left, Rect.Bottom), Point(Rect.Right, Rect.Bottom)]);
+  end;
 end;
 
 procedure TBaseSudokuDisplayhandler.DrawCellData(aCell: ISudokuCell; Rect: TRect);
@@ -187,10 +232,10 @@ end;
 
 {!
 <summary>
- Set up the draw grid as appropriate for the supported Sudoku type. </summary>
+ Set up the draw grid as appropriate for the supported Sudoku type.</summary>
 <param name="aGrid">is the grid to initialize, cannot be nil</param>
 <exception cref="EParameterCannotBeNil">
- is raised if aGrid is nil. </exception>
+ is raised if aGrid is nil.</exception>
 <remarks>
  This method must be called once to connect the helper to the UI!</remarks>
 }
@@ -211,10 +256,10 @@ begin
   Grid.DefaultColWidth := DefaultCellSize;
   Grid.DoubleBuffered := true;
   FInitialized := True;
-  N:= Succ(Grid.DefaultColWidth) * LSudokuSize;
+  N:= (Grid.DefaultColWidth + 1) * LSudokuSize;
   dx :=  Grid.ClientWidth - N;
   dy :=  Grid.ClientHeight - N;
-  C:= Grid.Owner as TControl;
+  C := Grid.Owner as TControl;
   C.SetBounds(C.Left, C.Top, C.Width - dx, C.Height - dy);
 end;
 

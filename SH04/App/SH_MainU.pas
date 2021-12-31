@@ -63,10 +63,8 @@ type
 
   TFormMain = class(TForm, ISudokuHostform)
     UndoButton: TButton;
-    MessageTimer: TTimer;
     SudokuPanel: TPanel;
     ButtonsPanel: TPanel;
-    StatusBar: TStatusBar;
     SudokuGrid: TDrawGrid;
     ActionList: TActionList;
     UndoAction: TAction;
@@ -159,9 +157,6 @@ uses
 
 {$R *.lfm}
 
-const
-  MessageTimeout = 30000; // 30 seconds
-
 destructor TFormMain.Destroy;
 begin
   FSudoku := nil;
@@ -201,15 +196,7 @@ end;
 
 procedure TFormMain.Display(const S: string; Timed: Boolean = false);
 begin
-  if Statusbar.SimplePanel then
-    Statusbar.SimpleText := S
-  else if Statusbar.Panels.Count > 0 then
-    Statusbar.Panels[0].Text := S;
-  if Timed then
-  begin
-    MessageTimer.Interval := MessageTimeout;
-    MessageTimer.Enabled := true;
-  end;
+  Caption := S;
 end;
 
 procedure TFormMain.Display(const Fmt: string; const A: array of const; Timed:
@@ -234,15 +221,13 @@ begin
 
   { Display('Press F1 for a brief help overview'); }
   ShowHelpPrompt;
+
+  Constraints.MinHeight := Height;
+  Constraints.MinWidth := Width;
 end;
 
 procedure TFormMain.FormResize(Sender: TObject);
 begin
-  Statusbar.Panels[0].Width :=
-    Statusbar.ClientWidth -
-    Statusbar.Panels[1].Width -
-    Statusbar.Panels[2].Width -
-    Statusbar.Height;
 end;
 
 {! Implements ISudokuHostform.GetButtonsContainer }
@@ -364,8 +349,6 @@ end;
 
 procedure TFormMain.MessageTimerTimer(Sender: TObject);
 begin
-  MessageTimer.Enabled := false;
-  ShowHelpPrompt;
 end;
 
 procedure TFormMain.RevertToMarkActionExecute(Sender: TObject);
@@ -548,8 +531,6 @@ end;
 procedure TFormMain.UpdateActions;
 begin
   inherited;
-  StatusBar.Panels[1].Text := Format(SLeftMask, [CurrentValue]);
-  StatusBar.Panels[2].Text := Format(SRightMask, [CurrentCandidate]);
   if GetKeyState(VK_SHIFT) < 0 then
     SetCandidatesButton.Down := true
   else if GetKeyState(VK_CONTROL) < 0 then
