@@ -93,7 +93,7 @@ var
   LAppname: string;
 begin
   inherited;
-  LAppname:= TPath.GetFileNameWithoutExtension(Paramstr(0));
+  LAppname:= TPath.GetFileNameWithoutExtension(ParamStr(0));
   FMemory := TRegistryIniFile.Create(CAppRegKey + LAppname)
 end;
 

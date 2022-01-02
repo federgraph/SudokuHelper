@@ -91,10 +91,10 @@ end;
 
 {!
 <summary>
- Set up the draw grid as appropriate for the supported Sudoku type. </summary>
+ Set up the draw grid as appropriate for the supported Sudoku type.</summary>
 <param name="aGrid">is the grid to initialize, cannot be nil</param>
 <exception cref="EParameterCannotBeNil">
- is raised if aGrid is nil. </exception>
+ is raised if aGrid is nil.</exception>
 <remarks>
  This method must be called once to connect the helper to the UI!</remarks>
 }

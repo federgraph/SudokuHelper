@@ -29,14 +29,14 @@ uses
 
 type
   TFormMemo = class(TForm)
-    Memo: TMemo;
     SaveBtn: TButton;
     LoadBtn: TButton;
     TestBtn: TButton;
     HelpBtn: TButton;
-    procedure SaveBtnClick(Sender: TObject);
+    Memo: TMemo;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure SaveBtnClick(Sender: TObject);
     procedure LoadBtnClick(Sender: TObject);
     procedure TestBtnClick(Sender: TObject);
     procedure HelpBtnClick(Sender: TObject);
@@ -44,7 +44,6 @@ type
     Margin: Integer;
     ML: TStringList;
     procedure RunTest;
-  public
     procedure WriteHelpText;
   end;
 
@@ -188,7 +187,7 @@ begin
   ML.Add('The active cell is marked in yellow, or blue (aqua) for a Gosu cell.');
   ML.Add('');
   ML.Add('When keyboard is available:');
-  ML.Add('- Use cursor keys to move one cell up, down, left or right');
+  ML.Add('- Use cursor keys to move one cell up, down, left or right.');
   ML.Add('- HOME moves to the first cell in the row.');
   ML.Add('- END moves to the last cell in the row.');
   ML.Add('- PageUp moves to the top cell in the column.');
@@ -238,6 +237,13 @@ begin
   ML.Add('');
   ML.Add('[Revert to Mark] should undo all changes done after the mark was set.');
   ML.Add('  This action should be enabled if the stack mark was set.');
+  ML.Add('');
+  ML.Add('[Show Memo] should show a secondary form with save and load buttons.');
+  ML.Add('  Save Text button will write the current state to the memo control.');
+  ML.Add('  It should be possible to edit the text and load again.');
+  ML.Add('  Also you should be able to copy text via clipboard and load.');
+  ML.Add('  There should be one line for each cell in the following format:');
+  ML.Add('  (column, row) = Value;Valid;EvenOnly;[Candidates]');
 end;
 
 end.

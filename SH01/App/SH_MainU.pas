@@ -112,7 +112,6 @@ type
     procedure SudokuGridKeyPress(Sender: TObject; var Key: Char);
     procedure SudokuGridKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure SudokuGridMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-    procedure TestButtonClick(Sender: TObject);
     procedure UndoActionExecute(Sender: TObject);
     procedure UndoActionUpdate(Sender: TObject);
     procedure ShowMemoButtonClick(Sender: TObject);
@@ -126,7 +125,6 @@ type
     procedure CreateSudokuHelper(const aName: string);
     procedure FocusGrid;
     procedure InitializeSudoku;
-    procedure RunTest;
     procedure ShowHelpPrompt;
     function GetButtonsContainer: TWincontrol;
     function GetModifierkeys: TShiftstate;
@@ -166,6 +164,25 @@ uses
 
 const
   MessageTimeout = 30000; // 30 seconds
+
+procedure TFormMain.FormCreate(Sender: TObject);
+begin
+  WantHtmlHelp := True;
+
+  ShowMemoButton.Margins.Top := 6;
+  ShowMemoButton.AlignWithMargins := True;
+  ShowMemoButton.Align := alTop;
+  ShowMemoButton.Visible := True;
+
+  MouseButtonsPanel.BevelOuter := TPanelBevel.bvNone;
+  MouseButtonsPanel.Align := alBottom;
+
+  ValueButtonsPanel.BevelOuter := TPanelBevel.bvNone;
+  ValueButtonsPanel.Align := alClient;
+
+  ClearCellButton.Align := alNone;
+  ClearCellButton.Top := 160;
+end;
 
 destructor TFormMain.Destroy;
 begin
@@ -218,25 +235,6 @@ procedure TFormMain.FocusGrid;
 begin
 //  SudokuGrid.SetFocus;
   PostMessage(Handle, UM_FOCUSGRID, 0, 0);
-end;
-
-procedure TFormMain.FormCreate(Sender: TObject);
-begin
-  WantHtmlHelp := True;
-
-  ShowMemoButton.Margins.Top := 6;
-  ShowMemoButton.AlignWithMargins := True;
-  ShowMemoButton.Align := alTop;
-  ShowMemoButton.Visible := True;
-
-  MouseButtonsPanel.BevelOuter := TPanelBevel.bvNone;
-  MouseButtonsPanel.Align := alBottom;
-
-  ValueButtonsPanel.BevelOuter := TPanelBevel.bvNone;
-  ValueButtonsPanel.Align := alClient;
-
-  ClearCellButton.Align := alNone;
-  ClearCellButton.Top := 160;
 end;
 
 procedure TFormMain.FormPaint(Sender: TObject);
@@ -410,41 +408,6 @@ begin
   (Sender as TAction).Enabled := Sudoku.HasMarks;
 end;
 
-procedure TFormMain.RunTest;
-var
-  LList: TStack<Integer>;
-  I: Integer;
-  LArray: TArray<Integer>;
-  SB: TStringbuilder;
-begin
-  SB := TStringBuilder.Create(4096);
-  try
-    LList := TStack<Integer>.Create();
-    try
-      for I := 1 to 10 do
-        LList.Push(I);
-      SB.AppendLine('Enumerator sequence:');
-      for I in LList do
-        SB.AppendFormat('%d, ',[I]);
-      SB.AppendLine;
-      SB.AppendLine('ToArray sequence:');
-      LArray:= LList.ToArray;
-      for I := Low(LArray) to High(LArray) do
-        SB.AppendFormat('%d, ',[LArray[I]]);
-      SB.AppendLine;
-      SB.AppendLine('Pop sequence:');
-      while LLIst.Count >0 do
-        SB.AppendFormat('%d, ',[LList.Pop]);
-      SB.AppendLine;
-      ShowMessage(SB.ToString);
-    finally
-      LList.Free;
-    end;
-  finally
-    SB.Free;
-  end;
-end;
-
 procedure TFormMain.SaveSudokuActionAccept(Sender: TObject);
 var
   LFilename: string;
@@ -555,11 +518,6 @@ end;
 procedure TFormMain.SudokuGridMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   FLastMouseButton := Button;
-end;
-
-procedure TFormMain.TestButtonClick(Sender: TObject);
-begin
-  RunTest;
 end;
 
 procedure TFormMain.UMFocusGrid(var M: TMessage);

@@ -769,7 +769,7 @@ var
   n: string; // name
   v: string; // value
   i: Integer; // index of line in ML (MemoLines)
-  temp: TSudokuCell; // the temporarey cell record filled from persisted data
+  temp: TSudokuCell; // the temporary cell record filled from persisted data
   TL: TStringList;
   cell: PSudokuCell;
 begin
