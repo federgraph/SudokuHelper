@@ -94,7 +94,7 @@ var
   LReader: TReader;
 begin
   if not Assigned(aStream) then
-    raise EParameterCannotBeNil.Create(CProcname,'aStream');
+    raise EParameterCannotBeNil.Create(CProcname, 'aStream');
   Result := nil;
   LReader := TReader.Create(astream, CBufSize);
   try
@@ -157,9 +157,9 @@ var
   LWriter: TWriter;
 begin
   if not Assigned(aSudoku) then
-    raise EParameterCannotBeNil.Create(CProcname,'aSudoku');
+    raise EParameterCannotBeNil.Create(CProcname, 'aSudoku');
   if not Assigned(aStream) then
-    raise EParameterCannotBeNil.Create(CProcname,'aStream');
+    raise EParameterCannotBeNil.Create(CProcname, 'aStream');
 
   LWriter := TWriter.Create(aStream, CBufSize);
   try

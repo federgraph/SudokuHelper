@@ -4,6 +4,7 @@ interface
 
 uses
   System.SysUtils,
+  System.Classes,
   System.Types,
   System.UITypes,
   FMX.Dialogs,
@@ -12,33 +13,30 @@ uses
 
 type
   TSudokuMain = class
-  strict private const
-    DefaultSudokuFileName = 'MySudoku.sudoku';
-  strict private
+  private
+    ML: TStringList;
     OpenDialog: TOpenDialog;
     SaveDialog: TSaveDialog;
-    function GetOpenFileName(dn, fn: string): string;
-    function GetSaveFileName(dn, fn: string): string;
-  protected
-    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-
-    procedure HelpActionExecute(Sender: TObject);
-
-    procedure LoadSudokuActionBeforeExecute(Sender: TObject);
-    procedure SaveSudokuActionBeforeExecute(Sender: TObject);
-
-    procedure StartNewActionExecute(Sender: TObject);
-
-    procedure RevertToMarkActionUpdate(Sender: TObject);
-
-    procedure Display(const S: string; Timed: Boolean = false); overload;
-    procedure Display(const Fmt: string; const A: array of const; Timed: Boolean = false); overload;
+    function GetOpenFileName(dn, fn, filter: string): string;
+    function GetSaveFileName(dn, fn, filter: string): string;
+  public const
+    DefaultMarkName = 'M0';
+    DefaultSudokuBinFileName = 'MySudoku.sudoku';
+    DefaultSudokuTxtFileName = 'MySudoku.txt';
+    BinFilter = 'Sudoku-File|*.sudoku';
+    TxtFilter = 'Sudoku-Text-File|*.txt';
   public
     constructor Create;
-    procedure LoadSudokuActionAccept(fn: string = DefaultSudokuFileName);
-    procedure SaveSudokuActionAccept(fn: string = DefaultSudokuFileName);
-    procedure SetMarkActionExecute(Sender: TObject);
-    procedure RevertToMarkActionExecute(MarkName: string);
+    destructor Destroy; override;
+
+    procedure SetMark;
+    procedure RevertToMark(mn: string);
+
+    procedure SaveSudokuBin(fn: string = DefaultSudokuBinFileName);
+    procedure LoadSudokuBin(fn: string = DefaultSudokuBinFileName);
+
+    procedure SaveSudokuTxt(fn: string = DefaultSudokuTxtFileName);
+    procedure LoadSudokuTxt(fn: string = DefaultSudokuTxtFileName);
   end;
 
 implementation
@@ -47,51 +45,28 @@ uses
   FrmMain,
   RiggVar.App.Main,
   System.IOUtils,
+  SH.HelperBase,
   SH.Memory,
   SH.Strings,
   SH.SudokuFiler;
 
 constructor TSudokuMain.Create;
 begin
+  ML := TStringList.Create;
+end;
+
+destructor TSudokuMain.Destroy;
+begin
+  ML.Free;
   inherited;
-//  AppMemory.RestoreFormState(self);
 end;
 
-procedure TSudokuMain.Display(const S: string; Timed: Boolean = false);
-begin
-//  if Statusbar.SimplePanel then
-//    Statusbar.SimpleText := S
-//  else if Statusbar.Panels.Count > 0 then
-//    Statusbar.Panels[0].Text := S;
-//  if Timed then
-//  begin
-//    MessageTimer.Interval := MessageTimeout;
-//    MessageTimer.Enabled := true;
-//  end;
-end;
-
-procedure TSudokuMain.Display(const Fmt: string; const A: array of const; Timed: Boolean = false);
-begin
-  Display(Format(Fmt, A), Timed);
-end;
-
-procedure TSudokuMain.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-begin
-//  AppMemory.SaveFormState(self);
-end;
-
-procedure TSudokuMain.HelpActionExecute(Sender: TObject);
-begin
-//  THelpViewerForm.Execute;
-end;
-
-procedure TSudokuMain.LoadSudokuActionAccept(fn: string);
+procedure TSudokuMain.LoadSudokuBin(fn: string);
 var
   LFilename: string;
   LSudoku: ISudokuHelper;
 begin
-//  LFilename := LoadSudokuAction.Dialog.FileName;
-  LFileName := GetOpenFileName(AppMemory.LastFolder, fn);
+  LFileName := GetOpenFileName(AppMemory.LastFolder, fn, BinFilter);
   if LFileName = '' then
     Exit;
 
@@ -105,56 +80,29 @@ begin
   end;
 end;
 
-procedure TSudokuMain.LoadSudokuActionBeforeExecute(Sender: TObject);
+procedure TSudokuMain.RevertToMark(mn: string);
 begin
-//  LoadSudokuAction.Dialog.InitialDir := AppMemory.LastFolder;
+  Main.Sudoku.RevertToMark(mn);
 end;
 
-procedure TSudokuMain.RevertToMarkActionExecute(MarkName: string);
-begin
-  Main.Sudoku.RevertToMark(MarkName);
-end;
-
-procedure TSudokuMain.RevertToMarkActionUpdate(Sender: TObject);
-begin
-//  (Sender as TAction).Enabled := Sudoku.HasMarks;
-end;
-
-procedure TSudokuMain.SaveSudokuActionAccept(fn: string);
+procedure TSudokuMain.SaveSudokuBin(fn: string);
 var
   LFilename: string;
 begin
-  LFileName := fn;
-//  LFilename := SaveSudokuAction.Dialog.FileName;
-  LFileName := GetSaveFileName(AppMemory.LastFolder, fn);
+  LFileName := GetSaveFileName(AppMemory.LastFolder, fn, BinFilter);
   if LFileName = '' then
     Exit;
 
   TSudokuFiler.SaveToFile(Main.Sudoku, LFilename);
   AppMemory.LastFolder := TPath.GetDirectoryName(LFilename);
-  Display(SSaveFileMessageMask, [LFilename], true);
 end;
 
-procedure TSudokuMain.SaveSudokuActionBeforeExecute(Sender: TObject);
+procedure TSudokuMain.SetMark;
 begin
-//  SaveSudokuAction.Dialog.InitialDir := AppMemory.LastFolder;
+  Main.Sudoku.AddMark(DefaultMarkName);
 end;
 
-procedure TSudokuMain.SetMarkActionExecute(Sender: TObject);
-begin
-  Main.Sudoku.AddMark('M0');
-end;
-
-procedure TSudokuMain.StartNewActionExecute(Sender: TObject);
-var
-  LSudokuName: string;
-begin
-  LSudokuName := 'Classic Sudoku (9x9)';
-//  if TSelectSudokuDlg.Execute(LSudokuName, StartNewButton) then
-  Main.CreateSudokuHelper(LSudokuName);
-end;
-
-function TSudokuMain.GetOpenFileName(dn, fn: string): string;
+function TSudokuMain.GetOpenFileName(dn, fn, filter: string): string;
 begin
   if not Assigned(OpenDialog) then
     OpenDialog := TOpenDialog.Create(FormMain);
@@ -164,7 +112,7 @@ begin
     TOpenOption.ofFileMustExist,
     TOpenOption.ofNoNetworkButton,
     TOpenOption.ofEnableSizing];
-  OpenDialog.Filter := 'Sudoku-File|*.sudoku';
+  OpenDialog.Filter := filter;
   OpenDialog.InitialDir := ExcludeTrailingPathDelimiter(dn);
   OpenDialog.FileName := fn;
 
@@ -174,7 +122,7 @@ begin
     result := '';
 end;
 
-function TSudokuMain.GetSaveFileName(dn, fn: string): string;
+function TSudokuMain.GetSaveFileName(dn, fn, filter: string): string;
 begin
   if not Assigned(SaveDialog) then
     SaveDialog := TSaveDialog.Create(FormMain);
@@ -185,7 +133,7 @@ begin
     TOpenOption.ofNoReadOnlyReturn,
     TOpenOption.ofNoNetworkButton,
     TOpenOption.ofEnableSizing];
-  SaveDialog.Filter := 'Sudoku-File|*.sudoku';
+  SaveDialog.Filter := filter;
   SaveDialog.InitialDir := ExcludeTrailingPathDelimiter(dn);
   SaveDialog.FileName := fn;
 
@@ -195,6 +143,46 @@ begin
     result := '';
 end;
 
+procedure TSudokuMain.SaveSudokuTxt(fn: string);
+var
+  LFilename: string;
+begin
+  LFileName := GetSaveFileName(AppMemory.LastFolder, fn, TxtFilter);
+  if LFileName = '' then
+    Exit;
+
+  ML.Clear;
+  ML.Add('SudokuType = ' + Main.Sudoku.Displayname);
+  Main.Sudoku.Data.SaveToML(ML);
+  ML.SaveToFile(LFileName);
+  AppMemory.LastFolder := TPath.GetDirectoryName(LFilename);
+end;
+
+procedure TSudokuMain.LoadSudokuTxt(fn: string);
+var
+  LFilename: string;
+  LName: string;
+  LSudoku: ISudokuHelper;
+begin
+  LFileName := GetOpenFileName(AppMemory.LastFolder, fn, TxtFilter);
+  if LFileName = '' then
+    Exit;
+
+  ML.LoadFromFile(LFileName);
+
+  LName := ML.ValueFromIndex[0].Trim;
+  ML.Delete(0);
+
+  LSudoku := HelperRegistry.CreateInstance(LName);
+  if Assigned(LSudoku) then
+  begin
+    Main.Sudoku := LSudoku;
+    Main.Sudoku.Data.LoadFromML(ML);
+    Main.InitializeSudoku;
+    Main.Sudoku.Display.Refresh;
+    AppMemory.LastFolder := TPath.GetDirectoryName(LFilename);
+  end;
+end;
 
 end.
 

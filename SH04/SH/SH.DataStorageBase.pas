@@ -34,10 +34,12 @@ type
   public
     procedure Clear;
     function IsEmpty: Boolean;
+    function ToString(h: Integer): string;
+    procedure FromString(v: string; TL: TStrings);
   end;
   PSudokuCell = ^TSudokuCell;
   { Indexing is [Column, Row]! }
-  TSudokuCells = array [TSudokuCellIndex,TSudokuCellIndex] of TSudokuCell;
+  TSudokuCells = array [TSudokuCellIndex, TSudokuCellIndex] of TSudokuCell;
 
   { The Sudoku blocks form a 2D array,
     but the dimensions depend on the type of Sudoku.
@@ -79,17 +81,17 @@ type
     </remarks>
     }
   TBaseSudokuDatastorage = class abstract(TInterfacedObject, ISudokuData, ISudokuDataEvents, ISudokuProperties)
-  strict protected type
+  protected type
 
     {! This class wraps a cell in the Sudoku and gives access to it via its
      ISudokuCell interface. }
     TSudokuCellHelper = class(TInterfacedObject, ISudokuCell)
-    strict private
+    private
       FCellRef: PSudokuCell;
       FCol: TSudokuCellIndex;
       FOwner: TBaseSudokuDatastorage;
       FRow: TSudokuCellIndex;
-    strict protected type
+    protected type
       procedure AddCandidate(aValue: TSudokuValue);
       procedure Clear;
       function GetBlockLocation: TCellInBlockLocation;
@@ -128,7 +130,7 @@ type
 
     {! Undo stack, saves the full state of the Sudoku before a change is made }
     TSudokuStack = class(TStack<TSudokuCells>)
-    strict private
+    private
       FMarks: TStackMarks;
     public
       constructor Create;
@@ -145,7 +147,7 @@ type
       property Marks: TStackMarks read FMarks;
     end; {TSudokuStack}
 
-  strict protected
+  protected
     procedure AddMark(const Name: string);
     function CanUndo: Boolean;
     procedure CheckInvalidCells;
@@ -165,16 +167,20 @@ type
     function HasMarks: Boolean;
     function IsValueValid(aCol, aRow: TSudokuCellIndex; aValue: TSudokuValue): Boolean;
     procedure Load(aReader: TReader);
+    procedure LoadFromML(ML: TStrings);
+    procedure LoadCellsFromML(ML: TStrings);
     procedure NewSudoku;
     procedure RevertToMark(const Name: string);
     procedure Store(aWriter: TWriter);
+    procedure SaveToML(ML: TStrings);
+    procedure SaveCellsToML(ML: TStrings);
     procedure SetOnRedrawCell(const Value: TRedrawCellEvent);
     procedure SetOnDataChanged(const Value: TNotifyEvent);
     procedure Undo;
     procedure UpdateCandidates(aCol, aRow: TSudokuCellIndex);
     procedure ValidateCellCoord(aCol, aRow: TSudokuCellIndex; const aProcName: string);
     function ISudokuData.IsGosu = DoIsGosu;
-  strict private
+  private
     FBlocks : TSudokuBlocks;
     FCurrentState: TSudokuCells;
     FIsGosu: Boolean;
@@ -234,6 +240,19 @@ uses
   SH.Strings,
   Math,
   SysUtils;
+
+const
+  BoolInt: array[Boolean] of Integer = (0, 1);
+
+function IsTrue(const Value: string): Boolean;
+var
+  s: string;
+begin
+  result := False;
+  s := UpperCase(Value);
+  if (s = '1') or (s = 'T') or (s = 'TRUE') then
+    result := True
+end;
 
 {!
 <summary>
@@ -310,10 +329,13 @@ var
   LCell: PSudokuCell;
   LValue: TSudokuValue;
 begin
-  for LRow := 1 to MaxValue do begin
-    for LCol := 1 to MaxValue do begin
+  for LRow := 1 to MaxValue do
+  begin
+    for LCol := 1 to MaxValue do
+    begin
       LCell := @FCurrentState[LCol, LRow];
-      if not LCell.Valid then begin
+      if not LCell.Valid then
+      begin
         LValue := LCell.Value;
         try
           { Since IsValueValid just takes the passed cell's Valid member
@@ -384,11 +406,12 @@ begin
   for I := Low(FBlocks) to High(FBlocks) do
     for K := Low(FBlocks[I]) to High(FBlocks[I]) do
       for L := Low(FBlocks[I][K]) to High(FBlocks[I][K]) do
-        for N := Low(FBlocks[I][K][L]) to High(FBlocks[I][K][L]) do begin
+        for N := Low(FBlocks[I][K][L]) to High(FBlocks[I][K][L]) do
+        begin
           aEntry := FBlocks[I][K][L][N];
           if aEntry.Matches(aCol, aRow) then
             Exit;
-        end; {for}
+        end;
   raise EPostconditionViolated.Create(CProcname, SBlockNotFoundMask,
     [aCol, aRow]);
 end;
@@ -411,7 +434,7 @@ end;
 
 {!
 <summary>
- Figure out the location of cell in a block. </summary>
+ Figure out the location of cell in a block.</summary>
 <remarks>
  The location is used to determine which of the cell borders to draw
  thicker to show the block boundaries in the UI.</remarks>
@@ -493,7 +516,7 @@ end;
 
 {!
 <summary>
- Check if a value would be acceptable for a block </summary>
+ Check if a value would be acceptable for a block</summary>
 <returns>
  True if the value would be acceptible, false if not</returns>
 <param name="aCol">is the cell's column index</param>
@@ -516,25 +539,29 @@ var
 begin
   FindBlockEntry(aCol, aRow, LEntry);
   LBlock := FBlocks[LEntry.BlocksRow][LEntry.BlocksCol];
-  for I := Low(LBlock) to High(LBlock) do begin
-    for K := Low(LBlock[I]) to High(LBlock[I]) do begin
+  for I := Low(LBlock) to High(LBlock) do
+  begin
+    for K := Low(LBlock[I]) to High(LBlock[I]) do
+    begin
       LEntry := LBlock[I][K];
       LCell  := FCurrentState[LEntry.Col, LEntry.Row];
       if LCell.Value = aValue then
         Exit(false);
-    end; {for K}
-  end; {for I}
+    end;
+  end;
 
-  if IsGosu and Odd(aValue) then begin
+  if IsGosu and Odd(aValue) then
+  begin
     Result := false;
     for I := Low(LBlock) to High(LBlock) do
-      for K := Low(LBlock[I]) to High(LBlock[I]) do begin
+      for K := Low(LBlock[I]) to High(LBlock[I]) do
+      begin
         LEntry := LBlock[I][K];
         LCell  := FCurrentState[LEntry.Col, LEntry.Row];
         if LCell.IsEmpty and not LCell.EvenOnly  then
           Exit(true);
-      end; {for K}
-  end {if}
+      end;
+  end
   else
     Result := true;
 end;
@@ -557,19 +584,22 @@ var
   LRow: TSudokuCellIndex;
 begin
   Result := true;
-  for LRow := 1 to MaxValue do begin
+  for LRow := 1 to MaxValue do
+  begin
     if FCurrentState[aCol, LRow].Value = aValue  then
       Exit(false);
-  end; {for LRow}
+  end;
 
-  if IsGosu and Odd(aValue) then begin
+  if IsGosu and Odd(aValue) then
+  begin
     Result := false;
-    for LRow := 1 to MaxValue do begin
+    for LRow := 1 to MaxValue do
+    begin
       LCell := FCurrentState[aCol, LRow];
       if LCell.IsEmpty and not LCell.EvenOnly  then
         Exit(true);
-    end; {for LRow}
-  end; {if}
+    end;
+  end;
 end;
 
 {!
@@ -590,19 +620,22 @@ var
   LCol: TSudokuCellIndex;
 begin
   Result := true;
-  for LCol := 1 to MaxValue do begin
+  for LCol := 1 to MaxValue do
+  begin
     if FCurrentState[LCol, aRow].Value = aValue  then
       Exit(false);
-  end; {for LCol}
+  end;
 
-  if IsGosu and Odd(aValue) then begin
+  if IsGosu and Odd(aValue) then
+  begin
     Result := false;
-    for LCol := 1 to MaxValue do begin
+    for LCol := 1 to MaxValue do
+    begin
       LCell := FCurrentState[LCol, aRow];
       if LCell.IsEmpty and not LCell.EvenOnly  then
         Exit(true);
-    end; {for LCol}
-  end; {if}
+    end;
+  end;
 end;
 
 {! Implements ISudokuData.IsValueValid }
@@ -614,12 +647,9 @@ begin
   if LCell.Value = aValue then
     Result := LCell.Valid
   else
-    Result :=
-      IsValidRowValue(aRow, aValue)
-      and
-      IsValidColValue(aCol, aValue)
-      and
-      IsValidBlockValue(aCol, aRow, aValue);
+    Result := IsValidRowValue(aRow, aValue)
+          and IsValidColValue(aCol, aValue)
+          and IsValidBlockValue(aCol, aRow, aValue);
 end;
 
 {!
@@ -633,7 +663,7 @@ const
   CProcname = 'TBaseSudokuDatastorage.Load';
 begin
   if not Assigned(aReader) then
-    raise EParameterCannotBeNil.Create(CProcname,'aReader');
+    raise EParameterCannotBeNil.Create(CProcname, 'aReader');
   Clear;
   aReader.Read(FCurrentState, Sizeof(FCurrentState));
   UndoStack.Load(aReader);
@@ -686,25 +716,115 @@ begin
   UndoStack.Push(FCurrentState);
 end;
 
+procedure TBaseSudokuDatastorage.LoadFromML(ML: TStrings);
+const
+  CProcname = 'TBaseSudokuDatastorage.LoadFromML';
+var
+  i: Integer;
+begin
+  if not Assigned(ML) then
+    raise EParameterCannotBeNil.Create(CProcname, 'ML');
+  Clear;
+  { trim whitespace from ML }
+  for i := 0 to ML.Count - 1 do
+    ML[i] := StringReplace(ML[i], ' ', '', [rfReplaceAll]);
+  LoadCellsFromML(ML);
+end;
+
+procedure TBaseSudokuDatastorage.SaveToML(ML: TStrings);
+const
+  CProcname = 'TBaseSudokuDatastorage.SaveToML';
+begin
+  if not Assigned(ML) then
+    raise EParameterCannotBeNil.Create(CProcname, 'ML');
+  SaveCellsToML(ML);
+end;
+
+procedure TBaseSudokuDatastorage.SaveCellsToML(ML: TStrings);
+var
+  r, c: TSudokuCellIndex;
+  h: TSudokuValue;
+  cell: PSudokuCell;
+  s: string;
+begin
+  h := MaxValue;
+  for c := 1 to h do
+  begin
+    for r := 1 to h do
+    begin
+      cell := @FCurrentState[c, r];
+      s := Format('(%d, %d) = %s', [c, r, cell.ToString(h)]);
+      ML.Add(s);
+    end;
+  end;
+end;
+
+procedure TBaseSudokuDatastorage.LoadCellsFromML(ML: TStrings);
+var
+  r, c: TSudokuCellIndex; // row and column index
+  h: TSudokuValue; // high value = MaxValue
+  n: string; // name
+  v: string; // value
+  i: Integer; // index of line in ML (MemoLines)
+  temp: TSudokuCell; // the temporarey cell record filled from persisted data
+  TL: TStringList;
+  cell: PSudokuCell;
+begin
+  TL := TStringList.Create;
+  try
+    h := MaxValue;
+    for c := 1 to h do
+    begin
+      for r := 1 to h do
+      begin
+        cell := @FCurrentState[c, r];
+        n := Format('(%d,%d)', [c, r]);
+        i := ML.IndexOfName(n);
+        if i > -1 then
+        begin
+          { update with data for cell in ML }
+          v := ML.ValueFromIndex[i];
+          temp.FromString(v, TL);
+          cell.Value := temp.Value;
+          cell.Valid := temp.Valid;
+          cell.EvenOnly := temp.EvenOnly;
+          cell.Candidates := temp.Candidates;
+        end
+        else
+        begin
+          { reset to default because no data for cell found in ML }
+          cell.Clear;
+          cell.EvenOnly := False;
+        end;
+      end;
+    end;
+  finally
+    TL.Free;
+  end;
+end;
+
 {! Allocate memory for the blocks array }
 procedure TBaseSudokuDatastorage.SetBlockDimensions;
 var
   I, K, N: Integer;
 begin
-  // Set the number of rows in the blocks array
+  { Set the number of rows in the blocks array }
   SetLength(FBlocks, MaxValue div BlockHeight);
-  for I := Low(FBlocks) to High(FBlocks) do begin
-    // Set the number of blocks in a row
+  for I := Low(FBlocks) to High(FBlocks) do
+  begin
+    { Set the number of blocks in a row }
     SetLength(FBlocks[I], MaxValue div BlockWidth);
-    for K := Low(FBlocks[I]) to High(FBlocks[I]) do begin
-      // Set the number of cell rows in a block
+    for K := Low(FBlocks[I]) to High(FBlocks[I]) do
+    begin
+      { Set the number of cell rows in a block }
       SetLength(FBlocks[I][K], BlockHeight);
-      for N := Low(FBlocks[I][K]) to High(FBlocks[I][K]) do begin
-        // Set the number of cells in a row
+      for N := Low(FBlocks[I][K]) to High(FBlocks[I][K]) do
+      begin
+        { Set the number of cells in a row }
         SetLength(FBlocks[I][K][N], BlockWidth);
-      end; {for N}
-    end; {for K}
-  end; {for I}
+      end;
+    end;
+  end;
 end;
 
 {! Build the entries of the blocks array }
@@ -717,45 +837,45 @@ var
 begin
   LBlocksRow := 0;
   LBlockRow := 0;
-  // Walk the cells array in row-major order
+  { Walk the cells array in row-major order }
   for LRow := 1 to MaxValue do
   begin
     LBlocksCol := 0;
     LBlockCol := 0;
     for LCol := 1 to MaxValue do
     begin
-      // Build the entry for the current cell
+      { Build the entry for the current cell }
       LEntry.Col := LCol;
       LEntry.Row := LRow;
       LEntry.Location := GetBlockLocation(LBlockCol, LBlockRow);
       LEntry.BlocksCol := LBlocksCol;
       LEntry.BlocksRow := LBlocksRow;
 
-      // Store it into the current slot of the blocks array
+      { Store it into the current slot of the blocks array }
       FBlocks[LBlocksRow][LBlocksCol][LBlockRow][LBlockCol] := LEntry;
 
-      // Calculate the slot for the next cell
+      { Calculate the slot for the next cell }
       Inc(LBlockCol);
       if LBlockCol = BlockWidth then
       begin
-        // continue in the next block to the right, on the same row
+        { Continue in the next block to the right, on the same row }
         Inc(LBlocksCol);
         LBlockCol := 0;
         if LBlocksCol = (MaxValue div BlockWidth) then
         begin
-          // next row in this block row
+          { Next row in this block row }
           LBlocksCol := 0;
           Inc(LBlockRow);
           if LBlockRow = BlockHeight then
           begin
-            // Continue in the first block of the next blocks row
+            { Continue in the first block of the next blocks row }
             LBlockRow := 0;
             Inc(LBlocksRow);
-          end; {if}
-        end; {if}
-      end; {if}
-    end; { for LCol }
-  end; {for LRow}
+          end;
+        end;
+      end;
+    end;
+  end;
 end;
 
 {! Implements ISudokuDataEvents.SetOnRedrawCell }
@@ -849,16 +969,18 @@ var
   LFault: string;
   LFaultValue: TSudokuCellIndex;
 begin
-  if not InRange(aCol, 1, MaxValue) then begin
+  if not InRange(aCol, 1, MaxValue) then
+  begin
     LFault := CColumn;
     LFaultValue := aCol;
   end
-  else
-    if not InRange(aRow, 1, MaxValue) then begin
+  else if not InRange(aRow, 1, MaxValue) then
+  begin
       LFault := CRow;
       LFaultValue := aRow;
     end
-    else begin
+  else
+  begin
       LFault := '';
       LFaultValue := 1; // not used, to remove a warning
     end;
@@ -996,7 +1118,7 @@ var
 begin
   while Marks.Count > 0 do
   begin
-    LMark:= Marks.Peek;
+    LMark := Marks.Peek;
     if LMark.Count > Count
     then
       Marks.Pop
@@ -1166,6 +1288,69 @@ end;
 function TSudokuCell.IsEmpty: Boolean;
 begin
   Result := Value = 0;
+end;
+
+function TSudokuCell.ToString(h: Integer): string;
+var
+  v: Integer;
+  i: Integer;
+  s: string;
+begin
+  if Candidates = [] then
+    result := Format('%d;%d;%d', [Value, BoolInt[Valid], BoolInt[EvenOnly]])
+  else
+  begin
+    i := 0;
+    s := '';
+    for v := 1 to h do
+    begin
+      if not (v in Candidates) then
+        Continue;
+      if i = 0 then
+        s := s + IntToStr(v)
+      else
+        s := s + ',' + IntToStr(v);
+      Inc(i);
+    end;
+    result := Format('%d;%d;%d;[%s]', [Value, BoolInt[Valid], BoolInt[EvenOnly], s]);
+  end;
+end;
+
+procedure TSudokuCell.FromString(v: string; TL: TStrings);
+var
+  i: Integer;
+begin
+  { White space has been removed already }
+
+  { Value;Valid;EvenOnly;[Candidates] }
+  { 9;0;1;[4,5] }
+
+  TL.Delimiter := ';';
+  TL.DelimitedText := v;
+
+  if TL.Count > 0 then
+    Value := StrToIntDef(TL[0], 0);
+
+  if TL.Count > 2 then
+  begin
+    Valid := IsTrue(TL[1]);
+    EvenOnly := IsTrue(TL[2]);
+  end;
+
+  Candidates := [];
+  if TL.Count > 3 then
+  begin
+    v := TL[3];
+    if v <> '[]' then
+    begin
+      v := v.TrimLeft('[');
+      v := v.TrimRight(']');
+      TL.CommaText := v;
+      if TL.Count > 0 then
+        for i := 0 to TL.Count - 1 do
+           Include(Candidates, StrToIntDef(TL[i], 1));
+    end;
+  end;
 end;
 
 {== TSudokuBlockEntry =================================================}

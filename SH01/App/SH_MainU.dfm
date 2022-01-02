@@ -4,9 +4,10 @@
   ActiveControl = SudokuGrid
   Caption = 'Sudoku Helper'
   ClientHeight = 631
-  ClientWidth = 752
+  ClientWidth = 784
   Color = clBtnFace
   Constraints.MinHeight = 600
+  Constraints.MinWidth = 600
   DefaultMonitor = dmDesktop
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -15,6 +16,7 @@
   Font.Style = []
   OldCreateOrder = True
   Scaled = False
+  OnCreate = FormCreate
   OnPaint = FormPaint
   OnResize = FormResize
   PixelsPerInch = 96
@@ -22,7 +24,7 @@
   object StatusBar: TStatusBar
     Left = 0
     Top = 612
-    Width = 752
+    Width = 784
     Height = 19
     Panels = <
       item
@@ -38,7 +40,7 @@
   object SudokuPanel: TPanel
     Left = 0
     Top = 0
-    Width = 600
+    Width = 632
     Height = 612
     Align = alClient
     Caption = 'SudokuPanel'
@@ -51,7 +53,7 @@
     object SudokuGrid: TDrawGrid
       Left = 7
       Top = 7
-      Width = 586
+      Width = 618
       Height = 598
       Align = alClient
       ColCount = 9
@@ -93,7 +95,7 @@
     end
   end
   object ButtonsPanel: TPanel
-    Left = 600
+    Left = 632
     Top = 0
     Width = 152
     Height = 612
@@ -159,56 +161,36 @@
       Images = Images
       TabOrder = 2
     end
-    object TestButton: TButton
-      AlignWithMargins = True
-      Left = 7
-      Top = 245
-      Width = 138
-      Height = 28
-      Margins.Left = 0
-      Margins.Top = 6
-      Margins.Right = 0
-      Margins.Bottom = 0
-      Align = alTop
-      Caption = 'Run Test'
-      DisabledImageIndex = 2
-      HotImageIndex = 0
-      ImageMargins.Left = 4
-      Images = Images
-      TabOrder = 3
-      Visible = False
-      OnClick = TestButtonClick
-    end
     object MouseButtonsPanel: TPanel
       Left = 7
-      Top = 500
+      Top = 498
       Width = 138
-      Height = 105
+      Height = 107
       Align = alBottom
       AutoSize = True
-      BevelOuter = bvNone
       Caption = 'MouseButtonsPanel'
       ParentShowHint = False
       ShowCaption = False
       ShowHint = False
-      TabOrder = 4
+      TabOrder = 3
       object ToggleGosuButton: TSpeedButton
-        Left = 0
-        Top = 21
-        Width = 138
+        Left = 1
+        Top = 22
+        Width = 136
         Height = 28
         Align = alTop
         AllowAllUp = True
         GroupIndex = 1
         Caption = '&Toggle Gosu'
         OnClick = SpeedButtonClick
+        ExplicitLeft = 0
         ExplicitTop = 3
         ExplicitWidth = 121
       end
       object SetCandidatesButton: TSpeedButton
-        Left = 0
-        Top = 49
-        Width = 138
+        Left = 1
+        Top = 50
+        Width = 136
         Height = 28
         Align = alTop
         AllowAllUp = True
@@ -218,11 +200,12 @@
         OnClick = SpeedButtonClick
         ExplicitLeft = -1
         ExplicitTop = 43
+        ExplicitWidth = 138
       end
       object UnsetCandidatesButton: TSpeedButton
-        Left = 0
-        Top = 77
-        Width = 138
+        Left = 1
+        Top = 78
+        Width = 136
         Height = 28
         Align = alTop
         AllowAllUp = True
@@ -230,14 +213,15 @@
         Caption = 'Clea&r candidate'
         Spacing = 0
         OnClick = SpeedButtonClick
+        ExplicitLeft = 0
         ExplicitTop = 58
         ExplicitWidth = 121
       end
       object ActionsLabel: TLabel
         AlignWithMargins = True
-        Left = 3
-        Top = 3
-        Width = 132
+        Left = 4
+        Top = 4
+        Width = 130
         Height = 17
         Margins.Bottom = 1
         Align = alTop
@@ -253,23 +237,21 @@
     end
     object ValueButtonsPanel: TPanel
       AlignWithMargins = True
-      Left = 7
-      Top = 273
-      Width = 138
-      Height = 221
+      Left = 16
+      Top = 392
+      Width = 117
+      Height = 65
       Margins.Left = 0
       Margins.Top = 0
       Margins.Right = 0
       Margins.Bottom = 6
-      Align = alClient
-      BevelOuter = bvNone
       Caption = 'ValueButtonsPanel'
       ShowCaption = False
-      TabOrder = 5
+      TabOrder = 4
       object ClearCellButton: TSpeedButton
-        Left = 0
-        Top = 193
-        Width = 138
+        Left = 1
+        Top = 36
+        Width = 115
         Height = 28
         Align = alBottom
         GroupIndex = 2
@@ -297,7 +279,7 @@
       HotImageIndex = 0
       ImageMargins.Left = 4
       Images = Images
-      TabOrder = 6
+      TabOrder = 5
     end
     object SetMarkButton: TButton
       AlignWithMargins = True
@@ -315,7 +297,7 @@
       HotImageIndex = 0
       ImageMargins.Left = 4
       Images = Images
-      TabOrder = 7
+      TabOrder = 6
     end
     object LoadSudokuButton: TButton
       AlignWithMargins = True
@@ -357,7 +339,22 @@
       Images = Images
       PressedImageIndex = 4
       SelectedImageIndex = 4
+      TabOrder = 7
+    end
+    object ShowMemoButton: TButton
+      AlignWithMargins = True
+      Left = 7
+      Top = 245
+      Width = 138
+      Height = 25
+      Margins.Left = 0
+      Margins.Top = 6
+      Margins.Right = 0
+      Margins.Bottom = 0
+      Align = alTop
+      Caption = 'Show Memo'
       TabOrder = 9
+      OnClick = ShowMemoButtonClick
     end
   end
   object MessageTimer: TTimer
@@ -436,7 +433,7 @@
     Left = 24
     Top = 156
     Bitmap = {
-      494C010105001000400010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010105001000500010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       000000000000000000000000000000000000FFFFFF00F8F8F800F8F8F800F8F8
       F800F8F8F800F8F8F800F8F8F800F8F8F800F8F8F800F8F8F800F8F8F800F8F8

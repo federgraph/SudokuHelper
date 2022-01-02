@@ -80,6 +80,7 @@ type
     procedure WriteItems(Sender: TObject);
     procedure WriteShortcuts(Sender: TObject);
     procedure WriteDebugText(Sender: TObject);
+    procedure WriteCurrentState(Sender: TObject);
   end;
 
 var
@@ -231,6 +232,7 @@ begin
   MemoActionList.AddMemoAction('Write Shortcuts', WriteShortcuts);
   MemoActionList.AddMemoAction('Write Help Text', WriteHelpText);
   MemoActionList.AddMemoAction('Write Debug Text', WriteDebugText);
+  MemoActionList.AddMemoAction('Write Current State', WriteCurrentState);
 end;
 
 procedure TFormMemo.InitItems;
@@ -305,6 +307,16 @@ begin
   Main.RunTest01(ML);
   Main.SudokuGraph.AddToDebugText(ML);
   FormMain.AddToDebugText(ML);
+  MemoEndUpdate;
+end;
+
+procedure TFormMemo.WriteCurrentState(Sender: TObject);
+var
+  ML: TStrings;
+begin
+  ML := Memo.Lines;
+  MemoBeginUpdate;
+  Main.Sudoku.Data.SaveToML(ML);
   MemoEndUpdate;
 end;
 

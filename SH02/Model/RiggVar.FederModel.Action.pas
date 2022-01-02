@@ -196,11 +196,14 @@ begin
     faUndo: M.Sudoku.Undo;
     faClearStack: M.Sudoku.ClearUndostack;
 
-    faSaveSudoku: M.SudokuMain.SaveSudokuActionAccept;
-    faLoadSudoku: M.SudokuMain.LoadSudokuActionAccept;
+//    faSaveSudoku: M.SudokuMain.SaveSudokuBin;
+//    faLoadSudoku: M.SudokuMain.LoadSudokuBin;
 
-    faSetMark: M.SudokuMain.SetMarkActionExecute(nil);
-    faRevertToMark: M.SudokuMain.RevertToMarkActionExecute('M0');
+    faSaveSudoku: M.SudokuMain.SaveSudokuTxt;
+    faLoadSudoku: M.SudokuMain.LoadSudokuTxt;
+
+    faSetMark: M.SudokuMain.SetMark;
+    faRevertToMark: M.SudokuMain.RevertToMark('M0');
 
     else
     begin

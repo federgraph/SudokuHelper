@@ -105,7 +105,6 @@ var
   else
     g.Brush.Color := clWhite;
   end;
-
 begin
   g := Grid.Canvas;
 

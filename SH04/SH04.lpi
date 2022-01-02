@@ -36,7 +36,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="16">
+    <Units Count="17">
       <Unit0>
         <Filename Value="SH04.dpr"/>
         <IsPartOfProject Value="True"/>
@@ -110,6 +110,13 @@
         <Filename Value="SH\SH.SudokuHelper16x16.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit15>
+      <Unit16>
+        <Filename Value="App\FrmMemo.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormMemo"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit16>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

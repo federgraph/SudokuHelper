@@ -403,6 +403,7 @@ type
      is raised if aReader is nil</exception>
     }
     procedure Load(aReader: TReader);
+    procedure LoadFromML(ML: TStrings);
     {!
     <summary>
      Check if a stack mark with the given Name already exists. </summary>
@@ -434,6 +435,8 @@ type
      is raised if aWriter is nil</exception>
     }
     procedure Store(aWriter: TWriter);
+    procedure SaveToML(ML: TStrings);
+
     {!
     <summary>
      Undo the last change the user made to the Sudoku.</summary>

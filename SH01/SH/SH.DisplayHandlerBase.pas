@@ -91,16 +91,17 @@ var
   LLocation: TCellInBlockLocation;
   procedure InitBrushColor;
   begin
-  if ([gdSelected, gdFocused] * State) <> [] then begin
-    if aCell.EvenOnly then
-      g.Brush.Color := clAqua
+    if ([gdSelected, gdFocused] * State) <> [] then
+    begin
+      if aCell.EvenOnly then
+        g.Brush.Color := clAqua
+      else
+        g.Brush.Color := clYellow;
+    end
+    else if aCell.EvenOnly then
+      g.Brush.Color := clSilver
     else
-      g.Brush.Color := clYellow;
-  end
-  else if aCell.EvenOnly then
-    g.Brush.Color := clSilver
-  else
-    g.Brush.Color := clWhite;
+      g.Brush.Color := clWhite;
   end;
 begin
   g := Grid.Canvas;
@@ -191,10 +192,10 @@ end;
 
 {!
 <summary>
- Set up the draw grid as appropriate for the supported Sudoku type. </summary>
+ Set up the draw grid as appropriate for the supported Sudoku type.</summary>
 <param name="aGrid">is the grid to initialize, cannot be nil</param>
 <exception cref="EParameterCannotBeNil">
- is raised if aGrid is nil. </exception>
+ is raised if aGrid is nil.</exception>
 <remarks>
  This method must be called once to connect the helper to the UI!</remarks>
 }
@@ -215,7 +216,7 @@ begin
   Grid.DefaultColWidth := DefaultCellSize;
   Grid.DoubleBuffered := true;
   FInitialized := True;
-  N:= Succ(Grid.DefaultColWidth) * LSudokuSize;
+  N:= (Grid.DefaultColWidth + 1) * LSudokuSize;
   dx :=  Grid.ClientWidth - N;
   dy :=  Grid.ClientHeight - N;
   C := Grid.Owner as TControl;

@@ -72,7 +72,6 @@ type
     ClearStackAction: TAction;
     StartNewButton: TButton;
     StartNewAction: TAction;
-    TestButton: TButton;
     MouseButtonsPanel: TPanel;
     ToggleGosuButton: TSpeedButton;
     SetCandidatesButton: TSpeedButton;
@@ -89,11 +88,13 @@ type
     LoadSudokuButton: TButton;
     SaveSudokuButton: TButton;
     HelpAction: TAction;
+    ShowMemoButton: TButton;
+    procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure SpeedButtonClick(Sender: TObject);
-    procedure ClearStackActionExecute(Sender: TObject);
     procedure FormPaint(Sender: TObject);
     procedure FormResize(Sender: TObject);
+    procedure SpeedButtonClick(Sender: TObject);
+    procedure ClearStackActionExecute(Sender: TObject);
     procedure HelpActionExecute(Sender: TObject);
     procedure LoadSudokuActionAccept(Sender: TObject);
     procedure LoadSudokuActionBeforeExecute(Sender: TObject);
@@ -109,10 +110,11 @@ type
     procedure SudokuGridKeyPress(Sender: TObject; var Key: Char);
     procedure SudokuGridKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure SudokuGridMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-    procedure TestButtonClick(Sender: TObject);
     procedure UndoActionExecute(Sender: TObject);
     procedure UndoActionUpdate(Sender: TObject);
+    procedure ShowMemoButtonClick(Sender: TObject);
   private
+    FormShown: Boolean;
     FLastMarkNum: Integer;
     FLastMouseButton: TMouseButton;
     FSudoku: ISudokuHelper;
@@ -121,23 +123,20 @@ type
     function GetDownValue(aParent: TWincontrol): TSudokuValue;
     procedure CreateSudokuHelper(const aName: string);
     procedure FocusGrid;
-    procedure InitializeSudoku;
-    procedure RunTest;
     procedure ShowHelpPrompt;
-  protected
-    FormShown: Boolean;
     function GetButtonsContainer: TWincontrol;
     function GetModifierkeys: TShiftstate;
     function GetRightClickAction: TRightClickAction;
-    procedure UpdateActions; override;
-    procedure UMFocusGrid(var Message: TLMessage); message UM_FOCUSGRID;
-    property CurrentCandidate: TSudokuValue read GetCurrentCandidate;
-    property CurrentValue: TSudokuValue read GetCurrentValue;
-    property Sudoku: ISudokuHelper read FSudoku;
-  public
-    destructor Destroy; override;
+    procedure UMFocusGrid(var M: TLMessage); message UM_FOCUSGRID;
     procedure Display(const S: string; Timed: Boolean = false); overload;
     procedure Display(const Fmt: string; const A: array of const; Timed: Boolean = false); overload;
+  protected
+    Counter: Integer;
+    procedure UpdateActions; override;
+  public
+    destructor Destroy; override;
+    procedure InitializeSudoku;
+    property Sudoku: ISudokuHelper read FSudoku;
   end;
 
 var
@@ -146,7 +145,7 @@ var
 implementation
 
 uses
-  Generics.Collections,
+  FrmMemo,
   SH.HelperBase,
   SH.SudokuHelper,
   SH.SudokuFiler,
@@ -157,10 +156,34 @@ uses
 
 {$R *.lfm}
 
+procedure TFormMain.FormCreate(Sender: TObject);
+begin
+  ShowMemoButton.Align := alTop;
+  ShowMemoButton.Visible := True;
+
+  MouseButtonsPanel.BevelOuter := TPanelBevel.bvNone;
+  MouseButtonsPanel.Align := alBottom;
+
+  ValueButtonsPanel.BevelOuter := TPanelBevel.bvNone;
+  ValueButtonsPanel.Align := alClient;
+
+  ClearCellButton.Align := alNone;
+  ClearCellButton.Top := 160;
+end;
+
 destructor TFormMain.Destroy;
 begin
   FSudoku := nil;
   inherited Destroy;
+end;
+
+procedure TFormMain.FormShow(Sender: TObject);
+begin
+  if not FormShown then
+  begin
+    FormShown := True;
+    CreateSudokuHelper(CClassicSudoku9x9);
+  end;
 end;
 
 { This handler is used for all speedbuttons
@@ -171,15 +194,6 @@ end;
 procedure TFormMain.SpeedButtonClick(Sender: TObject);
 begin
   (Sender as TSpeedbutton).Down := true;
-end;
-
-procedure TFormMain.FormShow(Sender: TObject);
-begin
-  if not FormShown then
-  begin
-    FormShown := True;
-    CreateSudokuHelper(CClassicSudoku9x9);
-  end;
 end;
 
 procedure TFormMain.ClearStackActionExecute(Sender: TObject);
@@ -213,21 +227,23 @@ end;
 
 procedure TFormMain.FormPaint(Sender: TObject);
 begin
+  { Note: FormPaint is called after FromShow }
   OnPaint := nil;
+
   { We need to delay the helper creation at launch until the form is
     completely displayed, to avoid a collision with startup state
     restoration done by the constructor. }
-  CreateSudokuHelper(AppMemory.LastSudoku);
+  CreateSudokuHelper(CClassicSudoku9x9);
 
   { Display('Press F1 for a brief help overview'); }
   ShowHelpPrompt;
-
   Constraints.MinHeight := Height;
   Constraints.MinWidth := Width;
 end;
 
 procedure TFormMain.FormResize(Sender: TObject);
 begin
+  Inc(Counter);
 end;
 
 {! Implements ISudokuHostform.GetButtonsContainer }
@@ -306,7 +322,12 @@ end;
 
 procedure TFormMain.HelpActionExecute(Sender: TObject);
 begin
-  //
+  if FormMemo = nil then
+  begin
+    FormMemo := TFormMemo.Create(Self);
+  end;
+  FormMemo.HelpBtnClick(nil);
+  FormMemo.Show;
 end;
 
 procedure TFormMain.InitializeSudoku;
@@ -366,41 +387,6 @@ begin
   (Sender as TAction).Enabled := Sudoku.HasMarks;
 end;
 
-procedure TFormMain.RunTest;
-var
-  LList: TStack<Integer>;
-  I: Integer;
-  LArray: TArray<Integer>;
-  SB: TStringList;
-begin
-  SB := TStringList.Create;
-  try
-    LList := TStack<Integer>.Create();
-    try
-      for I := 1 to 10 do
-        LList.Push(I);
-      SB.Add('Enumerator sequence:');
-      for I in LList do
-        SB.Add(Format('%d, ', [I]));
-      SB.Add('');
-      SB.Add('ToArray sequence:');
-      LArray := LList.ToArray;
-      for I := Low(LArray) to High(LArray) do
-        SB.Add(Format('%d, ', [LArray[I]]));
-      SB.Add('');
-      SB.Add('Pop sequence:');
-      while LLIst.Count >0 do
-        SB.Add(Format('%d, ',[LList.Pop]));
-      SB.Add('');
-      ShowMessage(SB.ToString);
-    finally
-      LList.Free;
-    end;
-  finally
-    SB.Free;
-  end;
-end;
-
 procedure TFormMain.SaveSudokuActionAccept(Sender: TObject);
 var
   LFilename: string;
@@ -439,12 +425,20 @@ begin
   Display(SHelpPrompt);
 end;
 
+procedure TFormMain.ShowMemoButtonClick(Sender: TObject);
+begin
+  if FormMemo = nil then
+  begin
+    FormMemo := TFormMemo.Create(Self);
+  end;
+  FormMemo.Show;
+end;
+
 procedure TFormMain.StartNewActionExecute(Sender: TObject);
 var
   LSudokuName: string;
 begin
   LSudokuName := CClassicSudoku9x9;
-
   if TSelectSudokuDlg.Execute(LSudokuName, StartNewButton) then
     CreateSudokuHelper(LSudokuName);
   FocusGrid;
@@ -506,14 +500,9 @@ begin
   FLastMouseButton := Button;
 end;
 
-procedure TFormMain.TestButtonClick(Sender: TObject);
+procedure TFormMain.UMFocusGrid(var M: TLMessage);
 begin
-  RunTest;
-end;
-
-procedure TFormMain.UMFocusGrid(var Message: TLMessage);
-begin
-  Message.Result := 1;
+  M.Result := 1;
   SudokuGrid.SetFocus;
 end;
 

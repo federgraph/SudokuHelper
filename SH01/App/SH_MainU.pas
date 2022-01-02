@@ -75,7 +75,6 @@ type
     ClearStackAction: TAction;
     StartNewButton: TButton;
     StartNewAction: TAction;
-    TestButton: TButton;
     MouseButtonsPanel: TPanel;
     ToggleGosuButton: TSpeedButton;
     SetCandidatesButton: TSpeedButton;
@@ -92,10 +91,12 @@ type
     LoadSudokuButton: TButton;
     SaveSudokuButton: TButton;
     HelpAction: TAction;
-    procedure SpeedButtonClick(Sender: TObject);
-    procedure ClearStackActionExecute(Sender: TObject);
+    ShowMemoButton: TButton;
+    procedure FormCreate(Sender: TObject);
     procedure FormPaint(Sender: TObject);
     procedure FormResize(Sender: TObject);
+    procedure SpeedButtonClick(Sender: TObject);
+    procedure ClearStackActionExecute(Sender: TObject);
     procedure HelpActionExecute(Sender: TObject);
     procedure LoadSudokuActionAccept(Sender: TObject);
     procedure LoadSudokuActionBeforeExecute(Sender: TObject);
@@ -114,6 +115,7 @@ type
     procedure TestButtonClick(Sender: TObject);
     procedure UndoActionExecute(Sender: TObject);
     procedure UndoActionUpdate(Sender: TObject);
+    procedure ShowMemoButtonClick(Sender: TObject);
   private
     FLastMarkNum: Integer;
     FLastMouseButton: TMouseButton;
@@ -126,19 +128,20 @@ type
     procedure InitializeSudoku;
     procedure RunTest;
     procedure ShowHelpPrompt;
-  protected
     function GetButtonsContainer: TWincontrol;
     function GetModifierkeys: TShiftstate;
     function GetRightClickAction: TRightClickAction;
-    procedure UpdateActions; override;
-    procedure UMFocusGrid(var Message: TMessage); message UM_FOCUSGRID;
-    property CurrentCandidate: TSudokuValue read GetCurrentCandidate;
-    property CurrentValue: TSudokuValue read GetCurrentValue;
-    property Sudoku: ISudokuHelper read FSudoku;
-  public
-    destructor Destroy; override;
+    procedure UMFocusGrid(var M: TMessage); message UM_FOCUSGRID;
     procedure Display(const S: string; Timed: Boolean = false); overload;
     procedure Display(const Fmt: string; const A: array of const; Timed: Boolean = false); overload;
+    property CurrentCandidate: TSudokuValue read GetCurrentCandidate;
+    property CurrentValue: TSudokuValue read GetCurrentValue;
+  protected
+    procedure UpdateActions; override;
+  public
+    WantHtmlHelp: Boolean;
+    destructor Destroy; override;
+    property Sudoku: ISudokuHelper read FSudoku;
   end;
 
 var
@@ -147,6 +150,7 @@ var
 implementation
 
 uses
+  FrmMemo,
   System.Character,
   System.Generics.Collections,
   System.IOUtils,
@@ -216,9 +220,30 @@ begin
   PostMessage(Handle, UM_FOCUSGRID, 0, 0);
 end;
 
+procedure TFormMain.FormCreate(Sender: TObject);
+begin
+  WantHtmlHelp := True;
+
+  ShowMemoButton.Margins.Top := 6;
+  ShowMemoButton.AlignWithMargins := True;
+  ShowMemoButton.Align := alTop;
+  ShowMemoButton.Visible := True;
+
+  MouseButtonsPanel.BevelOuter := TPanelBevel.bvNone;
+  MouseButtonsPanel.Align := alBottom;
+
+  ValueButtonsPanel.BevelOuter := TPanelBevel.bvNone;
+  ValueButtonsPanel.Align := alClient;
+
+  ClearCellButton.Align := alNone;
+  ClearCellButton.Top := 160;
+end;
+
 procedure TFormMain.FormPaint(Sender: TObject);
 begin
+  { Note: FormPaint is called after FromShow }
   OnPaint := nil;
+
   { We need to delay the helper creation at launch until the form is
     completely displayed, to avoid a collision with startup state
     restoration done by the constructor. }
@@ -313,7 +338,18 @@ end;
 
 procedure TFormMain.HelpActionExecute(Sender: TObject);
 begin
-  THelpViewerForm.Execute;
+  if WantHtmlHelp then
+  begin
+    THelpViewerForm.Execute;
+    Exit;
+  end;
+
+  if FormMemo = nil then
+  begin
+    FormMemo := TFormMemo.Create(Self);
+  end;
+  FormMemo.HelpBtnClick(nil);
+  FormMemo.Show;
 end;
 
 procedure TFormMain.InitializeSudoku;
@@ -447,6 +483,15 @@ begin
   Display(SHelpPrompt);
 end;
 
+procedure TFormMain.ShowMemoButtonClick(Sender: TObject);
+begin
+  if FormMemo = nil then
+  begin
+    FormMemo := TFormMemo.Create(Self);
+  end;
+  FormMemo.Show;
+end;
+
 procedure TFormMain.StartNewActionExecute(Sender: TObject);
 var
   LSudokuName: string;
@@ -517,9 +562,9 @@ begin
   RunTest;
 end;
 
-procedure TFormMain.UMFocusGrid(var Message: TMessage);
+procedure TFormMain.UMFocusGrid(var M: TMessage);
 begin
-  Message.Result := 1;
+  M.Result := 1;
   SudokuGrid.SetFocus;
 end;
 

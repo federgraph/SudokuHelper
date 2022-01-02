@@ -238,7 +238,7 @@ end;
 {! Implements ISudokuHelper.GetData }
 function TBaseSudokuHelper.GetData: ISudokuData;
 begin
-  Result := FData
+  Result := FData;
 end;
 
 {! Implements ISudokuHelper.GetDisplay }

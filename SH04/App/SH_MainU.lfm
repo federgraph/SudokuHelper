@@ -13,6 +13,7 @@
   Font.Color = clWindowText
   Font.Height = -17
   Font.Name = 'Segoe UI'
+  OnCreate = FormCreate
   OnPaint = FormPaint
   OnResize = FormResize
   OnShow = FormShow
@@ -63,7 +64,6 @@
     BorderSpacing.Around = 6
     BorderSpacing.InnerBorder = 3
     BevelOuter = bvNone
-    Caption = 'Panel1'
     ClientHeight = 601
     ClientWidth = 152
     TabOrder = 1
@@ -94,35 +94,33 @@
       Align = alTop
       TabOrder = 2
     end
-    object TestButton: TButton
+    object ShowMemoButton: TButton
       Left = 0
       Height = 28
       Top = 196
       Width = 152
       Align = alTop
-      Caption = 'Run Test'
-      OnClick = TestButtonClick
+      Caption = 'Show Memo'
+      OnClick = ShowMemoButtonClick
       TabOrder = 3
-      Visible = False
     end
     object MouseButtonsPanel: TPanel
       Left = 3
-      Height = 101
-      Top = 497
+      Height = 103
+      Top = 495
       Width = 146
       Align = alBottom
       AutoSize = True
       BorderSpacing.Around = 3
-      BevelOuter = bvNone
-      ClientHeight = 101
+      ClientHeight = 103
       ClientWidth = 146
       ParentShowHint = False
       TabOrder = 4
       object ToggleGosuButton: TSpeedButton
-        Left = 0
+        Left = 1
         Height = 28
-        Top = 17
-        Width = 146
+        Top = 18
+        Width = 144
         Align = alTop
         AllowAllUp = True
         Caption = '&Toggle Gosu'
@@ -130,10 +128,10 @@
         OnClick = SpeedButtonClick
       end
       object SetCandidatesButton: TSpeedButton
-        Left = 0
+        Left = 1
         Height = 28
-        Top = 45
-        Width = 146
+        Top = 46
+        Width = 144
         Align = alTop
         AllowAllUp = True
         Caption = '&Set candidate'
@@ -142,10 +140,10 @@
         OnClick = SpeedButtonClick
       end
       object UnsetCandidatesButton: TSpeedButton
-        Left = 0
+        Left = 1
         Height = 28
-        Top = 73
-        Width = 146
+        Top = 74
+        Width = 144
         Align = alTop
         AllowAllUp = True
         Caption = 'Clea&r candidate'
@@ -154,10 +152,10 @@
         OnClick = SpeedButtonClick
       end
       object ActionsLabel: TLabel
-        Left = 0
+        Left = 1
         Height = 17
-        Top = 0
-        Width = 146
+        Top = 1
+        Width = 144
         Align = alTop
         Caption = 'Right-click actions:'
         Font.Color = clWindowText
@@ -168,21 +166,19 @@
       end
     end
     object ValueButtonsPanel: TPanel
-      Left = 3
-      Height = 267
-      Top = 227
-      Width = 146
-      Align = alClient
+      Left = 24
+      Height = 118
+      Top = 280
+      Width = 117
       BorderSpacing.Around = 3
-      BevelOuter = bvNone
-      ClientHeight = 267
-      ClientWidth = 146
+      ClientHeight = 118
+      ClientWidth = 117
       TabOrder = 5
       object ClearCellButton: TSpeedButton
-        Left = 0
+        Left = 1
         Height = 28
-        Top = 239
-        Width = 146
+        Top = 89
+        Width = 115
         Align = alBottom
         Caption = '0 (Clear cell)'
         GroupIndex = 2
