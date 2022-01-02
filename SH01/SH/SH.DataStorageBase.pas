@@ -34,6 +34,7 @@ type
   public
     procedure Clear;
     function IsEmpty: Boolean;
+    function IsDefault: Boolean;
     function ToString(h: Integer): string;
     procedure FromString(v: string; TL: TStrings);
   end;
@@ -755,8 +756,11 @@ begin
     for r := 1 to h do
     begin
       cell := @FCurrentState[c, r];
-      s := Format('(%d, %d) = %s', [c, r, cell.ToString(h)]);
-      ML.Add(s);
+      if not cell.IsDefault then
+      begin
+        s := Format('(%d, %d) = %s', [c, r, cell.ToString(h)]);
+        ML.Add(s);
+      end;
     end;
   end;
 end;
@@ -1295,6 +1299,11 @@ begin
   Result := Value = 0;
 end;
 
+function TSudokuCell.IsDefault: Boolean;
+begin
+  Result := (Value = 0) and (EvenOnly = False) and (Candidates = []);
+end;
+
 function TSudokuCell.ToString(h: Integer): string;
 var
   v: Integer;
@@ -1403,7 +1412,7 @@ end;
 }
 procedure TBaseSudokuDatastorage.TStackMarks.Store(aWriter: TWriter);
 var
-  LItem: TStackmark;
+  LItem: TStackMark;
 begin
   aWriter.WriteInteger(Count);
   if Count > 0 then

@@ -90,6 +90,7 @@ implementation
 
 uses
   RiggVar.App.Main,
+  RiggVar.App.HelpText,
   RiggVar.FB.ActionTest,
   FrmMain;
 
@@ -214,7 +215,7 @@ end;
 procedure TFormMemo.WriteHelpText(Sender: TObject);
 begin
   MemoBeginUpdate;
-  Main.WriteHelpText(Memo.Lines);
+  GetHelpText(Memo.Lines);
   MemoEndUpdate;
 end;
 

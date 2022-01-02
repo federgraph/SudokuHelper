@@ -21,7 +21,8 @@ uses
   SH.DisplayHandlerBase in 'SH\SH.DisplayHandlerBase.pas',
   SH.SudokuHelper in 'SH\SH.SudokuHelper.pas',
   SH.SudokuHelper12x12 in 'SH\SH.SudokuHelper12x12.pas',
-  SH.SudokuHelper16x16 in 'SH\SH.SudokuHelper16x16.pas';
+  SH.SudokuHelper16x16 in 'SH\SH.SudokuHelper16x16.pas',
+  RiggVar.App.HelpText in 'App\RiggVar.App.HelpText.pas';
 
 {$R *.res}
 

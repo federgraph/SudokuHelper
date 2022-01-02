@@ -1,14 +1,16 @@
 # SudokuHelper
 
 Copyright © 2021 by Dr. Peter Below.
-Adapted by Federgraph in the forked repository.
 
+> Adapted by Federgraph in the forked repository.
 
 SudokuHelper is an application that acts like an electronic Sudoku grid.
 
 It supports 9x9, 12x12, and 16x16 Sudokus, both in the classic and Gosu variant, where cells can be marked to only accept even numbers.
 
-The application neither creates Sudokus itself nor provides a solver for them; it is just a more convenient way to solve a Sudoku from a magazine or other external source than doing it on paper, using pencil and eraser.
+The application neither creates Sudokus itself nor provides a solver for them;
+it is just a more convenient way to solve a Sudoku from a magazine or other external source than doing it on paper,
+using pencil and eraser.
 
 The application's main features are:
 - Invalid cell values are marked in red.
@@ -27,7 +29,7 @@ The application's main features are:
 
 The active cell is marked in yellow, or blue (aqua) for a Gosu cell.
 
-- Use cursor keys to move one cell up, down, left or right.
+- Use **Cursor keys** to move one cell up, down, left or right.
 - **HOME** moves to the first cell in the row.
 - **END** moves to the last cell in the row.
 - **PageUp** moves to the top cell in the column.
@@ -37,20 +39,24 @@ The active cell is marked in yellow, or blue (aqua) for a Gosu cell.
 
 To set a cell's value just type the value:
 - 0 to clear the cell,
-- 1 to 9 to set the cell value.
+- 1 to 9 to set the cell value
 - a to g for values 10 to 16 (for 12x12 and 16x16 Sudokus)
+- Space should toggle the Gosu state if appropriate
 
-### Setting values and candidates with mouse
+### Setting cell state with mouse
 
 To set a normal value:
-  Click on one of the numbered buttons to SELECT the value,
-  followed by a left click on a cell in the grid to PLACE the value.
+- Click on one of the numbered buttons to SELECT the value,
+- followed by a left click on a cell in the grid to PLACE the value.
 
 To set a candidate use right mouse button:
 1. Make sure the value is selected (button is down).
 2. Make sure the right click mode is set appropriately.
    You can use Shift or Control keys to set the right click mode.
 3. Then right click a cell.
+
+To toggle the Gosu state of a cell:
+- Right click on a cell when toggle Gosu button is down and enabled.
 
 ## Sudoku commands
 
@@ -66,4 +72,22 @@ The buttons on the top part of the right-hand panel perform the following functi
 - **Show Memo** should show a secondary form with Save and Load buttons.
 The save text button will write the current state of the Sudoku to the memo control.
 It should be possible to edit the text and load again.
-Also you should be able to copy text via clipboard and load.
+You should be able to paste text via the clipboard and load.
+
+## Sudoku text format
+
+Expect one line for each non-default cell in the following text format:
+
+```
+SudokuType = Classic Sudoku Gosu (9x9)
+// (column, row) = Value;Valid;EvenOnly;[Candidates]
+(1, 1) = 1;1;0
+(2, 2) = 2;1;0
+(2, 3) = 0;1;0;[5]
+(3, 2) = 2;0;1
+(3, 3) = 0;1;0;[6,7]
+```
+Note:
+- The type of the Sudoku need to be given in first line if the text is loaded from file.
+- Comment lines are possible.
+- Lines for cells in default state can be omitted.

@@ -1,7 +1,5 @@
 ﻿# SudokuHelper App SH02
 
-> Compare to original SudokuHelper [help text](../SH01/helptext.md) by Dr. Peter Below.
-
 The text below is being adapted by *Federgraph* for the purpose of FMX application SH02.
 
 ---
@@ -90,8 +88,6 @@ make sure the SetCandidates click mode is active.
 ## Sudoku commands
 
 These commands affect the whole Sudoku, not just a single cell.
-
-Some of the commands should work already:
 
 - **Undo** should undo the last user action that changed the Sudoku's content,
 including the candidates.

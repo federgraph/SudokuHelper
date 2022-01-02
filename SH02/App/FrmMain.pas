@@ -84,6 +84,7 @@ implementation
 uses
   FrmAction,
   FrmMemo,
+  RiggVar.App.HelpText,
   RiggVar.App.Main;
 
 { TFormMain }
@@ -172,7 +173,7 @@ begin
   begin
     FormMemo := TFormMemo.Create(nil);
     FormMemo.Memo.Lines.Clear;
-    Main.WriteHelpText(FormMemo.Memo.Lines);
+    GetHelpText(FormMemo.Memo.Lines);
   end;
   FormMemo.Visible := True;
 end;
