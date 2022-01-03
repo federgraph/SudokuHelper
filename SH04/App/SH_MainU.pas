@@ -169,6 +169,9 @@ begin
 
   ClearCellButton.Align := alNone;
   ClearCellButton.Top := 160;
+
+  SudokuPanel.Align := alClient;
+  SudokuGrid.Align := alClient;
 end;
 
 destructor TFormMain.Destroy;
@@ -178,9 +181,19 @@ begin
 end;
 
 procedure TFormMain.FormShow(Sender: TObject);
+var
+  n: Integer;
 begin
   if not FormShown then
   begin
+    n := 6;
+    SaveSudokuButton.BorderSpacing.Top := n;
+    ClearStackButton.BorderSpacing.Top := n;
+    UndoButton.BorderSpacing.Top := n;
+    SetMarkButton.BorderSpacing.Top := n;
+    RevertToMarkButton.BorderSpacing.Top := n;
+    ShowMemoButton.BorderSpacing.Top := n;
+
     FormShown := True;
     CreateSudokuHelper(CClassicSudoku9x9);
   end;

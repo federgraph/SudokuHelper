@@ -1,14 +1,11 @@
 ﻿program SH01;
 
-{$R 'helptext.res' 'helptext.rc'}
-
 uses
   Forms,
   SH_MainU in 'App\SH_MainU.pas' {FormMain},
   SH_SelectFromListDlgU in 'App\SH_SelectFromListDlgU.pas' {SelectFromListDlg},
   SH_SelectMarkDlgU in 'App\SH_SelectMarkDlgU.pas' {SelectMarkDlg},
   SH_SelectSudokuDlgU in 'App\SH_SelectSudokuDlgU.pas' {SelectSudokuDlg},
-  SH_HelpviewerU in 'App\SH_HelpviewerU.pas' {HelpViewerForm},
   FrmMemo in 'App\FrmMemo.pas' {FormMemo},
   SH.Exceptions in 'SH\SH.Exceptions.pas',
   SH.Memory in 'SH\SH.Memory.pas',

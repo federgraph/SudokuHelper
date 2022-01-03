@@ -69,7 +69,6 @@ type
     StatusBar: TStatusBar;
     SudokuGrid: TDrawGrid;
     ActionList: TActionList;
-    Images: TImageList;
     UndoAction: TAction;
     ClearStackButton: TButton;
     ClearStackAction: TAction;
@@ -137,7 +136,6 @@ type
   protected
     procedure UpdateActions; override;
   public
-    WantHtmlHelp: Boolean;
     destructor Destroy; override;
     property Sudoku: ISudokuHelper read FSudoku;
   end;
@@ -156,7 +154,6 @@ uses
   SH.SudokuFiler,
   SH.Memory,
   SH.Strings,
-  SH_HelpviewerU,
   SH_SelectSudokuDlgU,
   SH_SelectMarkDlgU;
 
@@ -167,8 +164,6 @@ const
 
 procedure TFormMain.FormCreate(Sender: TObject);
 begin
-  WantHtmlHelp := True;
-
   ShowMemoButton.Margins.Top := 6;
   ShowMemoButton.AlignWithMargins := True;
   ShowMemoButton.Align := alTop;
@@ -182,6 +177,9 @@ begin
 
   ClearCellButton.Align := alNone;
   ClearCellButton.Top := 160;
+
+  SudokuPanel.Align := alClient;
+  SudokuGrid.Align := alClient;
 end;
 
 destructor TFormMain.Destroy;
@@ -336,12 +334,6 @@ end;
 
 procedure TFormMain.HelpActionExecute(Sender: TObject);
 begin
-  if WantHtmlHelp then
-  begin
-    THelpViewerForm.Execute;
-    Exit;
-  end;
-
   if FormMemo = nil then
   begin
     FormMemo := TFormMemo.Create(Self);

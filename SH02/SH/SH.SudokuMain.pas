@@ -19,6 +19,7 @@ type
     SaveDialog: TSaveDialog;
     function GetOpenFileName(dn, fn, filter: string): string;
     function GetSaveFileName(dn, fn, filter: string): string;
+    function LookForSudokuName: string;
   public const
     DefaultMarkName = 'M0';
     DefaultSudokuBinFileName = 'MySudoku.sudoku';
@@ -45,6 +46,9 @@ uses
   FrmMain,
   RiggVar.App.Main,
   System.IOUtils,
+  RiggVar.FB.ActionConst,
+  RiggVar.FB.ActionLong,
+  RiggVar.FB.ActionShort,
   SH.HelperBase,
   SH.Memory,
   SH.Strings,
@@ -170,8 +174,7 @@ begin
 
   ML.LoadFromFile(LFileName);
 
-  LName := ML.ValueFromIndex[0].Trim;
-  ML.Delete(0);
+  LName := LookForSudokuName;
 
   LSudoku := HelperRegistry.CreateInstance(LName);
   if Assigned(LSudoku) then
@@ -182,6 +185,43 @@ begin
     Main.Sudoku.Display.Refresh;
     AppMemory.LastFolder := TPath.GetDirectoryName(LFilename);
   end;
+end;
+
+function TSudokuMain.LookForSudokuName: string;
+var
+  s: string;
+  t: string;
+  fa: TFederAction;
+begin
+  result := '';
+
+  { first attempt: look for valid ID }
+  s := ML.Values['SudokuID'];
+  for fa := faSudoku09A to faSudoku16D do
+  begin
+    t := GetFederActionShort(fa);
+    if s = t then
+    begin
+      result := GetFederActionLong(fa);
+      Exit;
+    end;
+  end;
+
+  { second attempt: look for valid Name }
+  s := ML.Values['SudokuName'];
+  for fa := faSudoku09A to faSudoku16D do
+  begin
+    t := GetFederActionLong(fa);
+    if s = t then
+    begin
+      result := t;
+      Exit;
+    end;
+  end;
+
+  { third attempt: look for name in value of first line }
+  { SudokuType = Classic Sudoku (9x9) }
+  result := ML.ValueFromIndex[0].Trim;
 end;
 
 end.
