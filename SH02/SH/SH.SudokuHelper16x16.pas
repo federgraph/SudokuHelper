@@ -34,9 +34,9 @@ type
     procedure CreateDataStorage; override;
     procedure CreateDisplayHandler; override;
     procedure CreateInputHandler; override;
-
   public
     class function GetDisplayname: string; override;
+    class function GetSudokuID: string; override;
   end;
 
   T16x16SudokuGosuHelper = class(T16x16SudokuHelper)
@@ -44,6 +44,7 @@ type
     procedure CreateDataStorage; override;
   public
     class function GetDisplayname: string; override;
+    class function GetSudokuID: string; override;
   end;
 
   T16x16HeptSudokuHelper = class(T16x16SudokuHelper)
@@ -52,6 +53,7 @@ type
     procedure CreateInputHandler; override;
   public
     class function GetDisplayname: string; override;
+    class function GetSudokuID: string; override;
   end;
 
   T16x16HeptSudokuGosuHelper = class(T16x16HeptSudokuHelper)
@@ -59,6 +61,7 @@ type
     procedure CreateDataStorage; override;
   public
     class function GetDisplayname: string; override;
+    class function GetSudokuID: string; override;
   end;
 
 implementation
@@ -68,6 +71,7 @@ uses
   FMX.StdCtrls,
   RiggVar.FB.ActionConst,
   RiggVar.FB.ActionLong,
+  RiggVar.FB.ActionShort,
   SH.DataStorageBase,
   SH.DisplayhandlerBase,
   SH.InputhandlerBase;
@@ -120,6 +124,11 @@ begin
   result := GetFederActionLong(faSudoku16A);
 end;
 
+class function T16x16SudokuHelper.GetSudokuID: string;
+begin
+  result := GetFederActionShort(faSudoku16A);
+end;
+
 procedure T16x16SudokuGosuHelper.CreateDataStorage;
 begin
   Data := T16x16SudokuDataStorage.Create(CMaxValue, CBlockHeight, CBlockWidth, true);
@@ -128,6 +137,11 @@ end;
 class function T16x16SudokuGosuHelper.GetDisplayname: string;
 begin
   result := GetFederActionLong(faSudoku16B);
+end;
+
+class function T16x16SudokuGosuHelper.GetSudokuID: string;
+begin
+  result := GetFederActionShort(faSudoku16B);
 end;
 
 function T16x16SudokuDisplayhandler.GetDefaultCellSize: Integer;
@@ -157,6 +171,11 @@ begin
   result := GetFederActionLong(faSudoku16C);
 end;
 
+class function T16x16HeptSudokuHelper.GetSudokuID: string;
+begin
+  result := GetFederActionShort(faSudoku16C);
+end;
+
 {== T16x16HeptSudokuGosuHelper =========================================}
 
 procedure T16x16HeptSudokuGosuHelper.CreateDataStorage;
@@ -167,6 +186,11 @@ end;
 class function T16x16HeptSudokuGosuHelper.GetDisplayname: string;
 begin
   result := GetFederActionLong(faSudoku16D);
+end;
+
+class function T16x16HeptSudokuGosuHelper.GetSudokuID: string;
+begin
+  result := GetFederActionShort(faSudoku16D);
 end;
 
 {== T16x16HeptSudokuDisplayHandler =====================================}

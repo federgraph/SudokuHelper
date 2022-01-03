@@ -58,6 +58,7 @@ type
     procedure SetData(const Value: ISudokuData);
     procedure SetDisplay(const Value: ISudokuDisplay);
     function GetDisplayname2: string;
+    function GetSudokuID2: string;
     procedure SetInputHandler(const Value: ISudokuInputHandler);
   strict protected
     procedure AddMark(const Name: string);
@@ -75,6 +76,7 @@ type
     function GetData: ISudokuData;
     function GetDisplay: ISudokuDisplay;
     function ISudokuHelper.GetDisplayname = GetDisplayname2;
+    function ISudokuHelper.GetSudokuID = GetSudokuID2;
     function GetInputHandler: ISudokuInputHandler;
     procedure GetMarks(aList: TStrings);
     function HasMarks: Boolean;
@@ -104,6 +106,7 @@ type
     {! Descendants must override this method to return a descriptive
      name for the Sudoku type they support. }
     class function GetDisplayname: string; virtual; abstract;
+    class function GetSudokuID: string; virtual; abstract;
   end;
 
   TBaseSudokuHelperClass = class of TBaseSudokuHelper;
@@ -249,6 +252,12 @@ begin
   Result := GetDisplayname;
 end;
 
+{! Implements ISudokuHelper.GetSudokuID }
+function TBaseSudokuHelper.GetSudokuID2: string;
+begin
+  Result := GetSudokuID;
+end;
+
 {! Implements ISudokuHelper.GetInputHandler }
 function TBaseSudokuHelper.GetInputHandler: ISudokuInputHandler;
 begin
@@ -347,8 +356,7 @@ begin
   inherited Destroy;
 end;
 
-function THelperRegistry.CreateInstance(const aDisplayname: string):
-    ISudokuHelper;
+function THelperRegistry.CreateInstance(const aDisplayname: string): ISudokuHelper;
 const
   CProcName = 'THelperRegistry.CreateInstance';
 var
@@ -356,10 +364,11 @@ var
 begin
   Result := nil;
   for aClass in KnownHelpers do
-    if aClass.GetDisplayname.Equals(aDisplayname) then begin
+    if aClass.GetDisplayname.Equals(aDisplayname) then
+    begin
       Result := aClass.Create as ISudokuHelper;
       Break;
-    end;  {if}
+    end;
   if not Assigned(Result) then
     raise EPostconditionViolated.Create(CProcName, SNoHelperFound, [aDisplayname]);
 end;

@@ -156,7 +156,8 @@ begin
     Exit;
 
   ML.Clear;
-  ML.Add('SudokuType = ' + Main.Sudoku.Displayname);
+  ML.Add('SudokuName = ' + Main.Sudoku.Displayname);
+  ML.Add('SudokuID = ' + Main.Sudoku.SudokuID);
   Main.Sudoku.Data.SaveToML(ML);
   ML.SaveToFile(LFileName);
   AppMemory.LastFolder := TPath.GetDirectoryName(LFilename);
@@ -176,7 +177,13 @@ begin
 
   LName := LookForSudokuName;
 
-  LSudoku := HelperRegistry.CreateInstance(LName);
+  LSudoku := nil;
+  try
+    LSudoku := HelperRegistry.CreateInstance(LName);
+  except
+    { sorry, LName not recognized }
+  end;
+
   if Assigned(LSudoku) then
   begin
     Main.Sudoku := LSudoku;
@@ -192,11 +199,18 @@ var
   s: string;
   t: string;
   fa: TFederAction;
+  i: Integer;
 begin
   result := '';
 
   { first attempt: look for valid ID }
-  s := ML.Values['SudokuID'];
+  s := ML.Values['SudokuID '].Trim;
+  if s <> '' then
+    s := ML.Values['SudokuID'].Trim;
+  if s <> '' then
+    for i := 0 to 2 do
+      if ML[i].Trim.StartsWith('SudokuID') then
+        s := ML.ValueFromIndex[i].Trim;
   for fa := faSudoku09A to faSudoku16D do
   begin
     t := GetFederActionShort(fa);
@@ -207,8 +221,9 @@ begin
     end;
   end;
 
-  { second attempt: look for valid Name }
-  s := ML.Values['SudokuName'];
+  { second (sloppy) attempt: look for valid Name }
+  s := ML.Values['SudokuName '].Trim;
+  if s <> '' then
   for fa := faSudoku09A to faSudoku16D do
   begin
     t := GetFederActionLong(fa);
@@ -219,7 +234,7 @@ begin
     end;
   end;
 
-  { third attempt: look for name in value of first line }
+  { third (sloppiest) attempt: look for name in value of first line }
   { SudokuType = Classic Sudoku (9x9) }
   result := ML.ValueFromIndex[0].Trim;
 end;

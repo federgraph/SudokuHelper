@@ -34,6 +34,7 @@ type
     procedure CreateInputHandler; override;
   public
     class function GetDisplayname: string; override;
+    class function GetSudokuID: string; override;
   end;
 
   {! Helper for the classic 9x9 Sudoku Gosu }
@@ -42,6 +43,7 @@ type
     procedure CreateDataStorage; override;
   public
     class function GetDisplayname: string; override;
+    class function GetSudokuID: string; override;
   end;
 
 implementation
@@ -49,6 +51,7 @@ implementation
 uses
   RiggVar.FB.ActionConst,
   RiggVar.FB.ActionLong,
+  RiggVar.FB.ActionShort,
   SH.DataStorageBase,
   SH.DisplayHandlerBase,
   SH.InputHandlerBase;
@@ -96,6 +99,11 @@ begin
   result := GetFederActionLong(faSudoku09A);
 end;
 
+class function TClassicSudokuHelper.GetSudokuID: string;
+begin
+  result := GetFederActionShort(faSudoku09A);
+end;
+
 {== TClassicSudokuGosuHelper ==========================================}
 
 procedure TClassicSudokuGosuHelper.CreateDataStorage;
@@ -106,6 +114,11 @@ end;
 class function TClassicSudokuGosuHelper.GetDisplayname: string;
 begin
   result := GetFederActionLong(faSudoku09B);
+end;
+
+class function TClassicSudokuGosuHelper.GetSudokuID: string;
+begin
+  result := GetFederActionShort(faSudoku09B);
 end;
 
 initialization

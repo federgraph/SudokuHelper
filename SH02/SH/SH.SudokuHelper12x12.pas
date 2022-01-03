@@ -37,6 +37,7 @@ type
     procedure CreateInputHandler; override;
   public
     class function GetDisplayname: string; override;
+    class function GetSudokuID: string; override;
   end;
 
   {! Helper for the 12x12 Sudoku Gosu }
@@ -45,6 +46,7 @@ type
     procedure CreateDataStorage; override;
   public
     class function GetDisplayname: string; override;
+    class function GetSudokuID: string; override;
   end;
 
   {! Helper for the 12x12 Sudoku using hexadecimal numbers }
@@ -54,6 +56,7 @@ type
     procedure CreateInputHandler; override;
   public
     class function GetDisplayname: string; override;
+    class function GetSudokuID: string; override;
   end;
 
   {! Helper for the 12x12 Sudoku Gosu using hexadecimal numbers }
@@ -62,6 +65,7 @@ type
     procedure CreateDataStorage; override;
   public
     class function GetDisplayname: string; override;
+    class function GetSudokuID: string; override;
   end;
 
 implementation
@@ -71,6 +75,7 @@ uses
   FMX.StdCtrls,
   RiggVar.FB.ActionConst,
   RiggVar.FB.ActionLong,
+  RiggVar.FB.ActionShort,
   SH.DataStorageBase,
   SH.DisplayHandlerBase,
   SH.InputHandlerBase;
@@ -132,6 +137,11 @@ begin
   result := GetFederActionLong(faSudoku12A);
 end;
 
+class function T12x12SudokuHelper.GetSudokuID: string;
+begin
+  result := GetFederActionShort(faSudoku12A);
+end;
+
 {== T12x12SudokuGosuHelper ============================================}
 
 procedure T12x12SudokuGosuHelper.CreateDataStorage;
@@ -142,6 +152,11 @@ end;
 class function T12x12SudokuGosuHelper.GetDisplayname: string;
 begin
   result := GetFederActionLong(faSudoku12B);
+end;
+
+class function T12x12SudokuGosuHelper.GetSudokuID: string;
+begin
+  result := GetFederActionShort(faSudoku12B);
 end;
 
 {== T12x12SudokuInputhandler ==========================================}
@@ -168,6 +183,11 @@ begin
   result := GetFederActionLong(faSudoku12C);
 end;
 
+class function T12x12HexSudokuHelper.GetSudokuID: string;
+begin
+  result := GetFederActionShort(faSudoku12C);
+end;
+
 {== T12x12HexSudokuGosuHelper =========================================}
 
 procedure T12x12HexSudokuGosuHelper.CreateDataStorage;
@@ -178,6 +198,11 @@ end;
 class function T12x12HexSudokuGosuHelper.GetDisplayname: string;
 begin
   result := GetFederActionLong(faSudoku12D);
+end;
+
+class function T12x12HexSudokuGosuHelper.GetSudokuID: string;
+begin
+  result := GetFederActionShort(faSudoku12D);
 end;
 
 {== T12x12HexSudokuDisplayhandler =====================================}

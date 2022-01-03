@@ -509,6 +509,8 @@ type
     function GetDisplay: ISudokuDisplay;
     {! Getter for the Displayname property. }
     function GetDisplayname: string;
+    {! Getter for the SodukuID property. }
+    function GetSudokuID: string;
     {! Getter for the InputHandler property. }
     function GetInputHandler: ISudokuInputHandler;
     {!
@@ -582,6 +584,7 @@ type
      for display in the UI selection dropdown.
     </value>}
     property Displayname: string read GetDisplayname;
+    property SudokuID: string read GetSudokuID;
     {!
     <value>
      Interface for the input handler
