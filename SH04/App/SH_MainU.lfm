@@ -1,7 +1,7 @@
 ﻿object FormMain: TFormMain
-  Left = 164
+  Left = 166
   Height = 613
-  Top = 111
+  Top = 39
   Width = 778
   ActiveControl = SudokuGrid
   Caption = 'Sudoku Helper'

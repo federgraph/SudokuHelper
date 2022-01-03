@@ -126,6 +126,7 @@ var
   I: Integer;
   LArray: TArray<Integer>;
 begin
+  ML.Clear;
   LList := TStack<Integer>.Create();
   try
     for I := 1 to 10 do

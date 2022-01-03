@@ -1051,7 +1051,7 @@ end;
 procedure TBaseSudokuDatastorage.TSudokuStack.Load(aReader: TReader);
 var
   LItem: TSudokuCells;
-  LCount: integer;
+  LCount: Integer;
 begin
   Clear;
   LCount := aReader.ReadInteger;
@@ -1398,7 +1398,7 @@ end;
 procedure TBaseSudokuDatastorage.TStackMarks.Load(aReader: TReader);
 var
   LItem: TStackmark;
-  LCount: integer;
+  LCount: Integer;
 begin
   Clear;
   LCount := aReader.ReadInteger;

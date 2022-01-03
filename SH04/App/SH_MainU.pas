@@ -167,8 +167,8 @@ begin
   ValueButtonsPanel.BevelOuter := TPanelBevel.bvNone;
   ValueButtonsPanel.Align := alClient;
 
-  ClearCellButton.Align := alNone;
-  ClearCellButton.Top := 160;
+  ClearCellButton.BorderSpacing.Bottom := 10;
+  ClearCellButton.Align := alBottom;
 
   SudokuPanel.Align := alClient;
   SudokuGrid.Align := alClient;
@@ -188,6 +188,7 @@ begin
   begin
     n := 6;
     SaveSudokuButton.BorderSpacing.Top := n;
+    LoadSudokuButton.BorderSpacing.Top := n;
     ClearStackButton.BorderSpacing.Top := n;
     UndoButton.BorderSpacing.Top := n;
     SetMarkButton.BorderSpacing.Top := n;

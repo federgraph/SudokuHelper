@@ -6,7 +6,8 @@
 <history>
  Version 1.0 created 2015-09-26<p>
  Version 2.0 created 2021-09-30<p>
- Last modified       2021-11-16<p>
+ Last modified by PB 2021-11-16<p>
+ Last modified by GS 2021-01-xx<p>
 </history>
 <copyright>Copyright 2021 by Dr. Peter Below</copyright>
 <licence> The code in this unit is released to the public domain without
@@ -18,15 +19,14 @@
  This unit implements the main form of the SudokuHelper aqpplication.
  Its main features are a draw grid for the display of the Sudoku and
  a set of buttons on a panel to the right of the grid. The grid and the
- set of buttons used to select values for mouse/touch input are adapted
+ set of buttons - used to select values for mouse/touch input - are adapted
  to the requirements of a specific kind of Sudoku. This will also adjust
  the form size as needed.
 
  The program logic is completely handled by a set of classes the main form
  only accesses via as set of interfaces, and the form also implements an
  interface itself to allow the classes in question (especially the one
- handling mouse and keyboard input) to get some info on the state of the
- UI.
+ handling mouse and keyboard input) to get some info on the state of the UI.
 </remarks>
 }
 unit SH_MainU;
@@ -150,6 +150,7 @@ uses
   System.Character,
   System.Generics.Collections,
   System.IOUtils,
+  SH.SudokuHelper,
   SH.HelperBase,
   SH.SudokuFiler,
   SH.Memory,
@@ -176,7 +177,7 @@ begin
   ValueButtonsPanel.Align := alClient;
 
   ClearCellButton.Align := alNone;
-  ClearCellButton.Top := 160;
+  ClearCellButton.Top := 200;
 
   SudokuPanel.Align := alClient;
   SudokuGrid.Align := alClient;
@@ -243,10 +244,14 @@ begin
   { We need to delay the helper creation at launch until the form is
     completely displayed, to avoid a collision with startup state
     restoration done by the constructor. }
-  CreateSudokuHelper(AppMemory.LastSudoku);
+
+//  CreateSudokuHelper(AppMemory.LastSudoku);
+  CreateSudokuHelper(CClassicSudoku9x9); // but I want the most basic, always
 
   { Display('Press F1 for a brief help overview'); }
   ShowHelpPrompt;
+  Constraints.MinHeight := Height;
+  Constraints.MinWidth := Width;
 end;
 
 procedure TFormMain.FormResize(Sender: TObject);
@@ -373,6 +378,7 @@ begin
     AppMemory.LastFolder := TPath.GetDirectoryName(LFilename);
   end;
   FocusGrid;
+  ValueButtonsPanel.Invalidate; // needed to repaint the SpeedButtons
 end;
 
 procedure TFormMain.LoadSudokuActionBeforeExecute(Sender: TObject);
@@ -451,9 +457,11 @@ procedure TFormMain.StartNewActionExecute(Sender: TObject);
 var
   LSudokuName: string;
 begin
+  LSudokuName := CClassicSudoku9x9;
   if TSelectSudokuDlg.Execute(LSudokuName, StartNewButton) then
     CreateSudokuHelper(LSudokuName);
   FocusGrid;
+  ValueButtonsPanel.Invalidate;
 end;
 
 procedure TFormMain.SudokuGridClick(Sender: TObject);
