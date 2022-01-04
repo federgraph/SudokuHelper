@@ -6,7 +6,8 @@
 <author>Dr. Peter Below</author>
 <history>
  Version 1.0 created 2021-10-03<p>
- Last modified       2021-11-19<p>
+ Last modified by PB 2021-11-19<p>
+ Last modified by GS 2022-01-xx<p>
 </history>
 <remarks>
 <copyright>Copyright 2021 by Dr. Peter Below</copyright>
@@ -202,6 +203,7 @@ type
     procedure SetBlockDimensions;
     procedure SetBlockEntries;
   public
+    WantUndoStack: Boolean;
     constructor Create(const AMaxValue, ABlockHeight, ABlockWidth: TSudokuValue; const AIsGosu: Boolean = false);
     destructor Destroy; override;
     function MarkExists(const aMark: string): Boolean;
@@ -280,6 +282,8 @@ begin
 
   CalculateBlocks;
   FUndoStack := TSudokuStack.Create();
+
+  WantUndoStack := True;
 end;
 
 {! Destroys the Undo stack. }
@@ -667,6 +671,7 @@ begin
     raise EParameterCannotBeNil.Create(CProcname, 'aReader');
   Clear;
   aReader.Read(FCurrentState, Sizeof(FCurrentState));
+  if WantUndoStack then
   UndoStack.Load(aReader);
   {
     Note: We do not force a refresh of the display here, since the
@@ -709,6 +714,7 @@ begin
   if not Assigned(aWriter) then
     raise EParameterCannotBeNil.Create(CProcname,'aWriter');
   aWriter.Write(FCurrentState, Sizeof(FCurrentState));
+  if WantUndoStack then
   UndoStack.Store(aWriter);
 end;
 

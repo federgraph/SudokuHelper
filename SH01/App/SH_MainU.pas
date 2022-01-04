@@ -7,7 +7,7 @@
  Version 1.0 created 2015-09-26<p>
  Version 2.0 created 2021-09-30<p>
  Last modified by PB 2021-11-16<p>
- Last modified by GS 2021-01-xx<p>
+ Last modified by GS 2022-01-xx<p>
 </history>
 <copyright>Copyright 2021 by Dr. Peter Below</copyright>
 <licence> The code in this unit is released to the public domain without

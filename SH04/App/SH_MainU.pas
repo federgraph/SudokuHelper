@@ -6,7 +6,8 @@
 <history>
  Version 1.0 created 2015-09-26<p>
  Version 2.0 created 2021-09-30<p>
- Last modified       2021-11-16<p>
+ Last modified by PB 2021-11-16<p>
+ Last modified by GS 2022-01-xx<p>
 </history>
 <copyright>Copyright 2021 by Dr. Peter Below</copyright>
 <licence> The code in this unit is released to the public domain without
@@ -18,15 +19,14 @@
  This unit implements the main form of the SudokuHelper aqpplication.
  Its main features are a draw grid for the display of the Sudoku and
  a set of buttons on a panel to the right of the grid. The grid and the
- set of buttons used to select values for mouse/touch input are adapted
+ set of buttons - used to select values for mouse/touch input - are adapted
  to the requirements of a specific kind of Sudoku. This will also adjust
  the form size as needed.
 
  The program logic is completely handled by a set of classes the main form
  only accesses via as set of interfaces, and the form also implements an
  interface itself to allow the classes in question (especially the one
- handling mouse and keyboard input) to get some info on the state of the
- UI.
+ handling mouse and keyboard input) to get some info on the state of the UI.
 </remarks>
 }
 unit SH_MainU;
@@ -118,6 +118,8 @@ type
     FLastMarkNum: Integer;
     FLastMouseButton: TMouseButton;
     FSudoku: ISudokuHelper;
+    procedure ConfigureLoadAction;
+    procedure ConfigureSaveAction;
     function GetCurrentCandidate: TSudokuValue;
     function GetCurrentValue: TSudokuValue;
     function GetDownValue(aParent: TWincontrol): TSudokuValue;
@@ -197,6 +199,9 @@ begin
 
     FormShown := True;
     CreateSudokuHelper(CClassicSudoku9x9);
+
+    ConfigureLoadAction;
+    ConfigureSaveAction;
   end;
 end;
 
@@ -538,6 +543,68 @@ begin
     SetCandidatesButton.Down := true
   else if GetKeyState(VK_CONTROL) < 0 then
     UnsetCandidatesButton.Down := true;
+end;
+
+procedure TFormMain.ConfigureLoadAction;
+var
+  la: TFileOpen;
+begin
+  la := LoadSudokuAction;
+  la.Category := 'File';
+  la.Caption := '&Load Sudoku...';
+  la.Dialog.Title := 'Load Sudoku';
+
+  { Delphi version }
+  //la.Dialog.DefaultExt := '.sudoku';
+  //la.Dialog.Filter := 'Sudoku|*.sudoku';
+
+  { Lazarus version }
+  la.Dialog.DefaultExt := '.sudokuLazarus';
+  la.Dialog.Filter := 'Sudoku|*.sudokuLazarus';
+
+  la.Dialog.Options := [
+    ofHideReadOnly,
+    ofPathMustExist,
+    ofFileMustExist,
+    ofEnableSizing];
+  la.Hint := 'Load|Load a saved Sudoku';
+
+  la.BeforeExecute := LoadSudokuActionBeforeExecute;
+  la.OnAccept := LoadSudokuActionAccept;
+end;
+
+procedure TFormMain.ConfigureSaveAction;
+var
+  sa: TFileSaveAs;
+begin
+  sa := SaveSudokuAction;
+  sa.Category := 'File';
+  sa.Caption := 'Save Sud&oku...';
+  sa.Dialog.Title := 'Save Sudoku';
+
+  { The problem is that the binary files are incompatible.
+    Delphi TWriter / TReader just creates different binary output than Lazarus.
+    This is why we need different extensions. }
+
+  { Delphi version }
+  //sa.Dialog.DefaultExt := '.sudoku';
+  //sa.Dialog.Filter := 'Sudoku|*.sudoku';
+
+  { Lazarus version }
+  sa.Dialog.DefaultExt := '.sudokuLazarus';
+  sa.Dialog.Filter := 'Sudoku|*.sudokuLazarus';
+
+  sa.Dialog.Options := [
+    ofOverwritePrompt,
+    ofHideReadOnly,
+    ofPathMustExist,
+    ofNoReadOnlyReturn,
+    ofNoDereferenceLinks,
+    ofEnableSizing];
+  sa.Hint := 'Save|Saves the Sudoku to file';
+
+  sa.BeforeExecute := SaveSudokuActionBeforeExecute;
+  sa.OnAccept := SaveSudokuActionAccept;
 end;
 
 end.

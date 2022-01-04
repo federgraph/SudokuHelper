@@ -6,7 +6,8 @@
 <author>Dr. Peter Below</author>
 <history>
  Version 1.0 created 2021-10-03<p>
- Last modified       2021-11-19<p>
+ Last modified by PB 2021-11-19<p>
+ Last modified by GS 2022-01-xx<p>
 </history>
 <remarks>
 <copyright>Copyright 2021 by Dr. Peter Below</copyright>
@@ -761,8 +762,8 @@ begin
       begin
         s := Format('(%d, %d) = %s', [c, r, cell.ToString(h)]);
         ML.Add(s);
-      end;
     end;
+  end;
   end;
 end;
 

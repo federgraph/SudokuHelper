@@ -6,7 +6,8 @@
 <author>Dr. Peter Below</author>
 <history>
  Version 1.0 created 2021-10-20<p>
- Last modified       2021-11-10<p>
+ Last modified by PB 2021-11-10<p>
+ Last modified by GS 2022-01-xx<p>
 </history>
 <copyright>Copyright 2021 by Dr. Peter Below</copyright>
 <licence> The code in this unit is released to the public domain without

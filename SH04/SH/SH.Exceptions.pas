@@ -13,7 +13,8 @@
  Version 1.5 created 2019-08-04, refactored the exception class
    hierarchy to make it easier to derive other classes from the common
    base class.
- Last modified       2019-08-04<p>
+ Last modified by PB 2019-08-04<p>
+ Last modified by GS 2022-01-xx<p>
 </history>
 <copyright>Copyright 2009, 2019 by Dr. Peter Below</copyright>
 <licence> The code in this unit is released to the public domain without
