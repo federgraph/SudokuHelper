@@ -45,7 +45,7 @@ uses
   RiggVar.FederModel.ActionMapPhone in 'Model\RiggVar.FederModel.ActionMapPhone.pas',
   RiggVar.FederModel.ActionMapTablet in 'Model\RiggVar.FederModel.ActionMapTablet.pas',
   RiggVar.FederModel.Keyboard01 in 'Model\RiggVar.FederModel.Keyboard01.pas',
-  RiggVar.App.HelpText in 'App\RiggVar.App.HelpText.pas';
+  SH.HelpText in 'SH\SH.HelpText.pas';
 
 {$R *.res}
 

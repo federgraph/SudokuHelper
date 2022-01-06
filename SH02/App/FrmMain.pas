@@ -84,7 +84,7 @@ implementation
 uses
   FrmAction,
   FrmMemo,
-  RiggVar.App.HelpText,
+  SH.HelpText,
   RiggVar.App.Main;
 
 { TFormMain }

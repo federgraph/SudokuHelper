@@ -1,11 +1,11 @@
-﻿unit RiggVar.App.HelpText;
+﻿unit SH.HelpText;
 
 { This file need to be saved as UTF-8 with BOM, so that it can be managed (merged) with tool. }
 
 interface
 
 uses
-  System.Classes;
+  Classes;
 
 procedure GetHelpText(ML: TStrings);
 
@@ -60,7 +60,7 @@ begin
   ML.Add('- Click on one of the numbered buttons to SELECT the value,');
   ML.Add('- followed by a left click on a cell in the grid to PLACE the value.');
   ML.Add('');
-  ML.Add('To set or clear a candidate use right mouse button:');
+  ML.Add('To set a candidate use right mouse button:');
   ML.Add('  1. Make sure the value is selected (button is down).');
   ML.Add('  2. Make sure the right click mode is set appropriately.');
   ML.Add('     You can use Shift or Control keys to set the right click mode.');

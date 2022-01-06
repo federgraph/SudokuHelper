@@ -90,7 +90,7 @@ implementation
 
 uses
   RiggVar.App.Main,
-  RiggVar.App.HelpText,
+  SH.HelpText,
   RiggVar.FB.ActionTest,
   FrmMain;
 

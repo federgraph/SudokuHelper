@@ -55,7 +55,7 @@ implementation
 
 uses
   SH_MainU,
-  RiggVar.App.HelpText,
+  SH.HelpText,
   Generics.Collections;
 
 procedure TFormMemo.FormCreate(Sender: TObject);
