@@ -511,7 +511,47 @@ begin
 end;
 
 procedure TFormMain.SudokuGridKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+var
+  LChar: char;
 begin
+  { The purpose of this is to enable Shift-Number or Ctrl-Number
+    to set or uset a candidate.
+
+    This does NOT work with NumPad keys. ( I am not using the NumPad. )
+    The original Alt key (instead of Shift key) version did work with NumPad,
+      with NumPad in number mode.
+
+    We are using Shift now instead of Alt to set candidates because Alt has problems:
+    1. Alt + Number does not work in FMX project at all.
+    2. Alt + Number (not NumPad) will issue unwanted warning sound.
+    4. Alt or Shift alone can be used to toggle the right click mode (ok).
+       But Alt alone will also activate the sytems menu,
+       and if followed by an arrow key it will navigate the system menu
+         instead of navigating the Sudoku-Grid.
+       Pressing Alt (alone) twice would mitigate this but is not considered beautiful.
+
+    ( There is a trade off between the Shift and Alt key 'solutions'. )
+  }
+
+  if (Shift * [ssCtrl, ssShift]) <> [] then
+  begin
+    { If Ctrl or Shift are down the OnKeyPress event will not fire!
+      We have to figure out which character key was pressed ourself. }
+    case Key of
+      Ord('1')..Ord('9'): LChar := Char(Key);
+      Ord('a')..Ord('g'): LChar := Char(Key);
+    else
+      LChar := #0;
+    end;
+
+    if LChar <> #0 then
+    begin
+      if (SudokuGrid.Col >= 0) and (SudokuGrid.Row >= 0) then
+      begin
+        Sudoku.InputHandler.HandleCharacter(SudokuGrid.Col, SudokuGrid.Row, LChar);
+      end;
+    end;
+  end;
   FocusGrid;
 end;
 
