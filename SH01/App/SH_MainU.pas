@@ -177,7 +177,9 @@ begin
   ValueButtonsPanel.Align := alClient;
 
   ClearCellButton.Align := alNone;
-  ClearCellButton.Top := 200;
+
+  { The problem is that we do not know how much space is needed above. }
+  ClearCellButton.Top := 200; // by try and error
 
   SudokuPanel.Align := alClient;
   SudokuGrid.Align := alClient;
@@ -237,6 +239,8 @@ begin
 end;
 
 procedure TFormMain.FormPaint(Sender: TObject);
+var
+  d: Integer;
 begin
   { Note: FormPaint is called after FromShow }
   OnPaint := nil;
@@ -252,6 +256,16 @@ begin
   ShowHelpPrompt;
   Constraints.MinHeight := Height;
   Constraints.MinWidth := Width;
+
+  { ClearCellButton.Top was set so that enough space will be available for other buttons,
+    and for small 9x9 Sudoku ValueButtonsPanel.Height (when alClient) may not be big enough. }
+  d := ValueButtonsPanel.Top +
+       ClearCellButton.Top +
+       ClearCellButton.Height +
+       ValueButtonsPanel.Margins.Bottom - MouseButtonsPanel.Top;
+
+  if d > 0 then
+    Constraints.MinHeight := Height + d;
 end;
 
 procedure TFormMain.FormResize(Sender: TObject);
@@ -524,7 +538,7 @@ begin
     We are using Shift now instead of Alt to set candidates because Alt has problems:
     1. Alt + Number does not work in FMX project at all.
     2. Alt + Number (not NumPad) will issue unwanted warning sound.
-    4. Alt or Shift alone can be used to toggle the right click mode (ok).
+    3. Alt or Shift alone can be used to toggle the right click mode (ok).
        But Alt alone will also activate the sytems menu,
        and if followed by an arrow key it will navigate the system menu
          instead of navigating the Sudoku-Grid.
